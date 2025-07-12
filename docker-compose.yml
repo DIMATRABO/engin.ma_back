@@ -1,0 +1,91 @@
+version: '3.3'
+services:
+
+  traefik:
+    image: "traefik:v2.8.4"
+    container_name: traefik
+    hostname: traefik
+    command:
+      - --entrypoints.web.address=:80
+      - --entrypoints.websecure.address=:443
+      - --providers.docker
+      - --providers.docker.exposedByDefault=false
+      - --api
+      - --entrypoints.web.http.redirections.entryPoint.to=websecure
+      - --entrypoints.web.http.redirections.entryPoint.scheme=https
+      - --entrypoints.web.http.redirections.entrypoint.permanent=true
+      - --certificatesresolvers.le.acme.email=aitbenhaanass@gmail.com
+      - --certificatesresolvers.le.acme.storage=/letsencrypt/acme.json
+      - --certificatesresolvers.le.acme.tlschallenge=true
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "./letsencrypt:/letsencrypt"
+    labels:
+      - "traefik.enable=false"
+      - "traefik.http.routers.traefik.service=api@internal"
+      - "traefik.http.routers.traefik.tls=true"
+      - "traefik.http.routers.traefik.tls.certresolver=le"
+      - "traefik.http.routers.traefik.entrypoints=websecure"
+      - "traefik.http.routers.traefik.middlewares=authtraefik"
+      - "traefik.http.middlewares.authtraefik.basicauth.users="
+    restart: unless-stopped
+
+
+  backend:
+    image: backend:latest
+    command: bash run.sh
+    build: .
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.backend.rule=Host(`api.enginchanier.ma`)"
+      - "traefik.http.routers.backend.entrypoints=websecure"
+      - "traefik.http.routers.backend.tls=true"
+      - "traefik.http.routers.backend.tls.certresolver=le"
+      - "traefik.http.routers.backend.service=backend"
+      - "traefik.http.services.backend.loadbalancer.server.port=5656"
+    environment:
+      - APP_NAME=engin.ma
+      - APP_HOST=backend
+      - APP_PORT=5599
+      - APP_DEBUG=false
+      - IS_PRODUCTION=true
+      - DB_HOST=trabo-prod.c96oi2g4ga2p.eu-west-1.rds.amazonaws.com
+      - DB_PORT=5432
+      - DB_NAME=trabo
+      - DB_USER=backendprod
+      - DB_PASSWORD=backendprodpass
+      - LOGGING_LEVEL=INFO
+      - LOGGING_FILENAME=_
+      - JWT_SECRET=TRABORODJWTSECRET
+      - JWT_EXPIRATION=120 
+      - JWT_REFRESH_EXPIRATION=2592000
+      - Postgres.DATABASE_URL
+
+    depends_on:
+      - db
+
+
+  db:
+    image: postgres:14.1-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=enginchanier
+      - POSTGRES_PASSWORD=jG806sNiP756
+      - POSTGRES_DB=enginchanier
+    ports:
+      - '5432:5432'
+    volumes:
+      - mydata:/var/lib/postgresql/data
+
+volumes:
+  mydata:
+  vault-data:
+
+networks:
+  default:
+    external: true
+    name: proxy
