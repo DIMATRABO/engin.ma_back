@@ -1,0 +1,6 @@
+Generic single-database configuration.
+to create new revision : alembic revision --autogenerate -m "revision name"
+to upgrade to a version : alembic upgrade '4c5a6fcd231a'
+to downgrade to version : alembic downgrade 'id_revision'
+to downgrade by 1 version : alembic downgrade -1
+to upgrade to last version : alembic upgrade head

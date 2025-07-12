@@ -1,0 +1,7 @@
+*.pyc
+*.yml
+*.json
+### VS Code ###
+.vscode/
+.env
+environments.env
