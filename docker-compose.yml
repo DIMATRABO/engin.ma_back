@@ -8,9 +8,9 @@ services:
     command:
       - --entrypoints.web.address=:80
       - --entrypoints.websecure.address=:443
-      - --providers.docker
+      - --providers.docker=true
       - --providers.docker.exposedByDefault=false
-      - --api
+      - --api=true
       - --entrypoints.web.http.redirections.entryPoint.to=websecure
       - --entrypoints.web.http.redirections.entryPoint.scheme=https
       - --entrypoints.web.http.redirections.entrypoint.permanent=true
@@ -50,14 +50,14 @@ services:
     environment:
       - APP_NAME=engin.ma
       - APP_HOST=backend
-      - APP_PORT=5599
+      - APP_PORT=5656
       - APP_DEBUG=false
       - IS_PRODUCTION=true
-      - DB_HOST=trabo-prod.c96oi2g4ga2p.eu-west-1.rds.amazonaws.com
+      - DB_HOST=db
       - DB_PORT=5432
-      - DB_NAME=trabo
-      - DB_USER=backendprod
-      - DB_PASSWORD=backendprodpass
+      - DB_NAME=enginchantier
+      - DB_USER=enginchantier
+      - DB_PASSWORD=jG806sNiP756
       - LOGGING_LEVEL=INFO
       - LOGGING_FILENAME=_
       - JWT_SECRET=TRABORODJWTSECRET
@@ -67,6 +67,9 @@ services:
 
     depends_on:
       - db
+    networks:
+      - default
+      - proxy  
 
 
   db:
