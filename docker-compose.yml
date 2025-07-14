@@ -67,9 +67,6 @@ services:
 
     depends_on:
       - db
-    networks:
-      - proxy  
-
 
   db:
     image: postgres:14.1-alpine
