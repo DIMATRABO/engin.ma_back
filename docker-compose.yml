@@ -22,7 +22,7 @@ services:
       - "443:443"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
-      - "./letsencrypt:/letsencrypt"
+      - "letsencrypt:/letsencrypt"
     labels:
       - "traefik.enable=false"
       - "traefik.http.routers.traefik.service=api@internal"
@@ -63,7 +63,6 @@ services:
       - JWT_SECRET=TRABORODJWTSECRET
       - JWT_EXPIRATION=120 
       - JWT_REFRESH_EXPIRATION=2592000
-      - Postgres.DATABASE_URL
 
     depends_on:
       - db
@@ -81,6 +80,7 @@ services:
       - mydata:/var/lib/postgresql/data
 
 volumes:
+  letsencrypt:
   mydata:
   vault-data:
 
