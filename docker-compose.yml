@@ -41,7 +41,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=proxy"
-      - "traefik.http.routers.backend.rule=Host(`api.enginchanier.ma`)"
+      - "traefik.http.routers.backend.rule=Host(`api.enginchantier.ma`)"
       - "traefik.http.routers.backend.entrypoints=websecure"
       - "traefik.http.routers.backend.tls=true"
       - "traefik.http.routers.backend.tls.certresolver=le"
@@ -73,9 +73,9 @@ services:
     image: postgres:14.1-alpine
     restart: always
     environment:
-      - POSTGRES_USER=enginchanier
+      - POSTGRES_USER=enginchantier
       - POSTGRES_PASSWORD=jG806sNiP756
-      - POSTGRES_DB=enginchanier
+      - POSTGRES_DB=enginchantier
     ports:
       - '5432:5432'
     volumes:
