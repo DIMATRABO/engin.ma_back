@@ -1,6 +1,6 @@
 '''This module defines the UserEntity  which represent the user entities in the database.'''
 from sqlalchemy import Column, String , DateTime
-from declarative_base_factory import Base
+from entities.declarative_base_factory import Base
 from models.user import User
 from models.user_status import UserStatus
 
