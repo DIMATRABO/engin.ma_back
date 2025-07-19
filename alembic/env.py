@@ -25,7 +25,7 @@ config.set_main_option("sqlalchemy.url", url)
 
 # add your model's MetaData object here
 # for 'autogenerate' support
-from entities.user_entity import UserEntity
+from entities.declarative_base_factory import Base
 target_metadata = Base.metadata
 
 # other values from the config, defined by the needs of env.py,
