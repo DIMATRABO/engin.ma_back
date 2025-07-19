@@ -4,8 +4,6 @@ import json
 from datetime import datetime
 from exceptions.exception import ValidationException
 from croniter import croniter
-from models.model import FieldType
-
 
 def required(field_name , json):
             if(  not  field_name in  json):
@@ -154,29 +152,4 @@ def valid_webhook_payload(value):
     
     return value
 
-def is_valid_instance(value: str, type: FieldType) -> bool:
-    if type == FieldType.STRING:
-        return isinstance(value, str)
-    elif type == FieldType.INTEGER: 
-        try:
-             converted_value = int(value)
-        except:
-             return False
-        return isinstance(converted_value, int)
-    elif type == FieldType.FLOAT:
-        try:
-             converted_value = float(value)
-        except:
-             return False
-        return isinstance(converted_value, float)
-    elif type == FieldType.BOOLEAN:
-        try:
-             converted_value = bool(value)
-        except:
-             return False
-        return isinstance(converted_value, bool)
-    else:
-        # If the FieldType provided is not recognized
-        return False
-     
          

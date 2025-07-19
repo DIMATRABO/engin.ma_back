@@ -1,15 +1,12 @@
+'''This module defines the UserEntity  which represent the user entities in the database.'''
 from sqlalchemy import Column, String , DateTime
-from sqlalchemy.orm import declarative_base
-from models.model import *
-
-from gateways.log import Log
-Base = declarative_base()
-
-
-logger = Log()
+from declarative_base_factory import Base
+from models.user import User
+from models.user_status import UserStatus
 
 
 class UserEntity(Base):
+    '''UserEntity class representing a user in the database.'''
     __tablename__ = "users"
     id = Column("id",String , primary_key=True)
     username= Column("username",String, unique=True )
@@ -23,11 +20,11 @@ class UserEntity(Base):
     email_verified_at = Column("email_verified_at",String)
     reset_password_otp = Column("reset_password_otp",String)
     otp_expiration_date = Column("otp_expiration_date",DateTime)
-    subscription_id = Column("subscription_id",String)
-    creation_date = Column("creation_date", DateTime) 
+    created_at = Column("created_at", DateTime)
 
 
     def __init__(self,id=None , username=None , password=None, full_name =None,email = None,  birthdate =None,address=None, phone_number=None, user_status=None):
+        '''Initialize a UserEntity instance.'''
         self.id=id
         self.username=username
         self.password=password
@@ -37,14 +34,16 @@ class UserEntity(Base):
         self.address=address
         self.phone_number=phone_number
         self.user_status=user_status
-  
+
     def __repr__(self):
+        '''Return a string representation of the UserEntity instance.'''
         return "<UserEntity(id='%s', full_name='%s')>" % (
             self.id,
             self.full_name
         )
-        
+    
     def from_domain(self,model : User):
+        '''Populate the UserEntity instance from a User domain model.'''
         self.id=model.id
         self.username=model.username
         self.password=model.password
@@ -57,71 +56,31 @@ class UserEntity(Base):
         self.email_verified_at=model.email_verified_at
         self.reset_password_otp=model.reset_password_otp
         self.otp_expiration_date=model.otp_expiration_date
-        self.subscription_id = model.subscription_id
+        self.created_at = model.created_at
 
 
     def update_non_null_fields_from_model(self, model: User):
+        '''Update non-null fields of the UserEntity instance from a User domain model.'''
         attributes = [attr for attr in dir(model) if not callable(getattr(model, attr)) and not attr.startswith("__")]
         for attr in attributes:
             value = getattr(model, attr)
             if value is not None:
                 setattr(self, attr, value)
-                
- 
+
     def to_domain(self):
+        '''Convert the UserEntity instance to a User domain model.'''
         return User(
             id=self.id,
             username =self.username,
             password=self.password,
             full_name = self.full_name,
             email=self.email,
-            birthdate = self.birthdate ,
+            birthdate = self.birthdate,
             address= self.address,
-            #user_status= UserStatus(self.user_status),
+            phone_number=self.phone_number,
+            user_status= UserStatus(self.user_status),
             email_verified_at=self.email_verified_at,
             reset_password_otp=self.reset_password_otp,
             otp_expiration_date=self.otp_expiration_date,
-            subscription_id=self.subscription_id
+            created_at=self.created_at
             )
-       
-    
-
-class AdminEntity(Base):
-    __tablename__ = "admins"
-    id = Column("id",String , primary_key=True)
-    username= Column("username",String, unique=True )
-    password=Column("password",String)
-    full_name= Column("full_name",String)
-    role=Column("role",String)
-   
-
-    def __init__(self,id=None , username=None , password=None, full_name =None, role =None):
-        self.id=id
-        self.username=username
-        self.password=password
-        self.full_name=full_name
-        self.role=role
-
-        
-    def __repr__(self):
-        return "<UserEntity(id='%s', full_name='%s')>" % (
-            self.id,
-            self.full_name
-        )
-        
-    def from_domain(self,model : Admin):
-        self.id=model.id
-        self.username=model.username
-        self.password=model.password
-        self.full_name=model.full_name
-        self.role=model.role
- 
-    def to_domain(self):
-        return Admin(
-            id=self.id,
-            username =self.username,
-            password=self.password,
-            full_name = self.full_name,
-            role = self.role
-            )
-    

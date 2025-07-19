@@ -63,6 +63,7 @@ services:
       - JWT_SECRET=TRABORODJWTSECRET
       - JWT_EXPIRATION=120 
       - JWT_REFRESH_EXPIRATION=2592000
+      - ENABLE_SWAGGER_UI=True #False to disable Swagger UI
 
     depends_on:
       - db

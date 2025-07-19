@@ -18,11 +18,6 @@ class BadGatewayException(Exception):
     def __init__(self, message="Bad Gateway Exception"):
         super().__init__(message)
 
-
-class InvalidBotException(Exception):
-    def __init__(self, message="Invalid Bot Exception"):
-        super().__init__(message)
-
 class UsernameAlreadyExists(Exception):
     def __init__(self, message="username already exists"):
         super().__init__(message)
@@ -31,11 +26,6 @@ class EmailAlreadyExists(Exception):
     def __init__(self, message="Email already exists"):
         super().__init__(message)
 
-class PaymentRequiredException(Exception):
-    def __init__(self, message="Payment required"):
-        self.message = message
-        super().__init__(self.message)
-
 class EmailNotVerifiedException(Exception):
     def __init__(self, message="Email not verified"):
         super().__init__(message)
@@ -43,12 +33,6 @@ class EmailNotVerifiedException(Exception):
 class UserBlockedException(Exception):
     def __init__(self, message="User blocked"):
         super().__init__(message)
-
-class ExchangeIntegrationError(Exception):
-    """Exception raised for errors in the exchange integration."""
-    def __init__(self, message="Exchange integration failed"):
-        super().__init__(message)
-
 
 class VariableTypeError(Exception):
     """Exception raised in variable type error."""

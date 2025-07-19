@@ -2,7 +2,7 @@ from functools import wraps
 from exceptions.exception import *
 from json import loads
 from gateways.log import Log
-from gateways.config_handler import Config_handler 
+from config.config_handler import Config_handler 
 import traceback
 
 config = Config_handler()
@@ -31,9 +31,6 @@ def handle_exceptions(endpoint_function):
             logging.debug(str(e))
             return {"error": str(e)}, 401
         
-        except PaymentRequiredException as e:    
-            return {"error": str(e)}, 402
-        
         except EmailNotVerifiedException as e:
             logging.debug(str(e))
             return {"error": str(e)}, 428
@@ -54,20 +51,9 @@ def handle_exceptions(endpoint_function):
             logging.debug(str(e))
             return {"error": str(e)}, 502
         
-        except InvalidBotException as e:
-            logging.debug(str(e))
-            return loads(str(e)), 400
-        
         except VariableTypeError as e:
             logging.debug(str(e))
             return {"error": str(e)}, 400
-        
-        except ExchangeIntegrationError as e:
-            logging.error(f"Exchange integration error: {e}")
-            return {"error": "Exchange Integration Error", "details": str(e)}, 422
-        except InvalidJsonException as e:
-            logging.debug(str(e))
-            return {"error": str(e)}, 502
         
         except Exception as e:
             if config.app_debug == "true":
@@ -75,8 +61,4 @@ def handle_exceptions(endpoint_function):
             else:
                 return {"error": "Internal Server Error"}, 500
        
-        
-        
-       
-
     return wrapper

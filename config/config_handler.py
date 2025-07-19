@@ -27,4 +27,4 @@ class Config_handler :
         self.jwt_secret = os.getenv('JWT_SECRET')
         self.jwt_expiration = int(os.getenv('JWT_EXPIRATION'))
         self.jwt_refresh_expiration = int(os.getenv('JWT_REFRESH_EXPIRATION'))
-        
+        self.enable_swagger_ui = os.getenv('ENABLE_SWAGGER_UI', 'False').lower() == 'true'
