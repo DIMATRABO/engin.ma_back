@@ -21,19 +21,9 @@ delete_handler = Delete()
 creating_handler = Create()
 
 
-signup_model = user_ns.model("SignUp", {
-    "username": fields.String(required=True),
-    "password": fields.String(required=True),
-    "fullname": fields.String(required=True),
-    "email": fields.String(required=True),
-    "birthdate": fields.String(required=False,description="Birth date in format YYYY-MM-DD"),
-    "address": fields.String(required=False),
-    "phoneNumber": fields.String(required=False),
-})
-
 @user_ns.route('/signup')
 class SignUp(Resource):
-    @user_ns.expect(signup_model)
+    @user_ns.expect(CreateUserForm(None).api_model(user_ns))
     @handle_exceptions
     def post(self):
         """Create a new user"""

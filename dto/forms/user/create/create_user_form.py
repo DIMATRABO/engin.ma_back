@@ -1,35 +1,38 @@
 ''' form to create a user '''
+from flask_restx import Namespace, fields
 from models.user import User
 from models.user_status import UserStatus
 from models.user_role import UserRole
 from dto.forms.validator import *
 
 
+
 class CreateUserForm:
 
-    def __init__(self , jsonUser):
+    def __init__(self , json_user=None):
+        if not json_user is None:
 
-        self.username = required("username" , jsonUser)
-        self.username = valid_string(self.username)
+            self.username = required("username" , json_user)
+            self.username = valid_string(self.username)
 
-        self.password = required("password",jsonUser)
-        self.password =valid_password(self.password)
+            self.password = required("password",json_user)
+            self.password =valid_password(self.password)
 
-        self.full_name = required("fullname" , jsonUser)
-        self.full_name = valid_string(self.full_name)
+            self.full_name = required("fullname" , json_user)
+            self.full_name = valid_string(self.full_name)
 
 
-        self.email = required("email",jsonUser)
-        self.email = valid_email_format(self.email)
+            self.email = required("email",json_user)
+            self.email = valid_email_format(self.email)
 
-        self.birthdate = optional("birthdate" , jsonUser)
-        self.birthdate = valid_datetime(self.birthdate,  "%Y-%m-%d")
+            self.birthdate = optional("birthdate" , json_user)
+            self.birthdate = valid_datetime(self.birthdate,  "%Y-%m-%d")
 
-        self.address = optional("address", jsonUser)
-        self.address = valid_string(self.address)
+            self.address = optional("address", json_user)
+            self.address = valid_string(self.address)
 
-        self.phone_number = optional("phoneNumber", jsonUser)
-        self.phone_number = valid_string(self.phone_number)
+            self.phone_number = optional("phoneNumber", json_user)
+            self.phone_number = valid_string(self.phone_number)
 
 
     def to_domain(self):
@@ -45,3 +48,14 @@ class CreateUserForm:
             user_status=UserStatus(UserStatus.PENDING.value),
             role=[UserRole(UserRole.CLIENT.value)],
                             )
+    def api_model(self, namespace: Namespace):
+        """Returns the API model for the user creation form."""
+        return namespace.model("SignUp", {
+        "username": fields.String(required=True),
+        "password": fields.String(required=True),
+        "fullname": fields.String(required=True),
+        "email": fields.String(required=True),
+        "birthdate": fields.String(required=False,description="Birth date in format YYYY-MM-DD"),
+        "address": fields.String(required=False),
+        "phoneNumber": fields.String(required=False),
+    })
