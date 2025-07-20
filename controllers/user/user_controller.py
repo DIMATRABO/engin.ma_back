@@ -23,7 +23,7 @@ creating_handler = Create()
 
 @user_ns.route('/signup')
 class SignUp(Resource):
-    @user_ns.expect(CreateUserForm(None).api_model(user_ns))
+    @user_ns.expect(CreateUserForm.api_model(user_ns))
     @handle_exceptions
     def post(self):
         """Create a new user"""

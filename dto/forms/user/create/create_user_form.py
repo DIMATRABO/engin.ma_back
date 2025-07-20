@@ -48,7 +48,8 @@ class CreateUserForm:
             user_status=UserStatus(UserStatus.PENDING.value),
             role=[UserRole(UserRole.CLIENT.value)],
                             )
-    def api_model(self, namespace: Namespace):
+    @staticmethod
+    def api_model(namespace: Namespace):
         """Returns the API model for the user creation form."""
         return namespace.model("SignUp", {
         "username": fields.String(required=True),
