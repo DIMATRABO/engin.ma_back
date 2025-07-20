@@ -5,7 +5,7 @@ from sqlalchemy import pool
 
 from alembic import context
 
-from config.ConfigHandler import ConfigHandler
+from config.config_handler import ConfigHandler
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
