@@ -51,7 +51,7 @@ services:
       - APP_NAME=engin.ma
       - APP_HOST=backend
       - APP_PORT=5656
-      - APP_DEBUG=false
+      - APP_DEBUG=true
       - IS_PRODUCTION=true
       - DB_HOST=db
       - DB_PORT=5432
