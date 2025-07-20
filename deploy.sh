@@ -2,12 +2,12 @@
 git pull 
 
 # Build the Docker image
-docker build -t backend:prod .
+docker build --no-cache -t backend:latest .
 
 # Bring down existing containers
-docker-compose down
+docker compose down
 
 # Start containers with the specified environment variables
-docker-compose up -d
+docker compose up -d
 
-docker rmi -f `docker images -qa `
+docker image prune
