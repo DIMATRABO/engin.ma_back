@@ -8,13 +8,25 @@ from controllers.user.user_controller import user_ns
 def setup_api(app):
     """Setup Flask-RESTX API and register all namespaces."""
     config = ConfigHandler()
-    
+
+
+    authorizations = {
+        "Bearer Auth": {
+            "type": "apiKey",
+            "in": "header",
+            "name": "Authorization",
+            "description": "JWT Authorization header using the Bearer scheme. Example: 'Bearer {token}'"
+        }
+    }
+
     # Create API instance
     api = Api(
         app,
         version="1.0",
         title="EnginChantier.ma API",
         description="Swagger documentation for EnginChantier.ma API",
+        authorizations=authorizations,
+        security="Bearer Auth",
         doc="/docs" if config.enable_swagger_ui else False,
         validate=True,  # Enable request validation
         ordered=True    # Maintain endpoint order in docs

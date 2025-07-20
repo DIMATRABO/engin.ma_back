@@ -52,8 +52,9 @@ delete_model = user_ns.model("DeleteUser", {
 @user_ns.route('/delete')
 class DeleteUser(Resource):
     @user_ns.expect(delete_model)
-    @jwt_required()
+    @user_ns.doc(security="Bearer Auth")
     @handle_exceptions
+    @jwt_required()
     def delete(self):
         """Delete an existing user (admin only)"""
         user_id = request.get_json().get("id")
