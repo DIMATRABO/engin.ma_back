@@ -26,7 +26,6 @@ def setup_api(app):
         title="EnginChantier.ma API",
         description="Swagger documentation for EnginChantier.ma API",
         authorizations=authorizations,
-        security="Bearer Auth",
         doc="/docs" if config.enable_swagger_ui else False,
         validate=True,  # Enable request validation
         ordered=True    # Maintain endpoint order in docs
