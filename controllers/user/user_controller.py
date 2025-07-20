@@ -1,27 +1,33 @@
 ''' UserController.py'''
-from flask import request 
-from flask_jwt_extended import jwt_required
-from flask_restx import Namespace, Resource
+from flask import request
+from flask_restx import Namespace, Resource, fields
 
 from gateways.log import Log
 from decorations.exception_handling import handle_exceptions
 
-from dto.forms.user.create.create_user_api_model import signup_model
-from dto.forms.user.delete.delete_user_api_model import delete_model
 from dto.forms.user.create.create_user_form import CreateUserForm
 from dto.output.user.user_response_form import UserResponseForm
 
-from flask_restx import Namespace
 from usecases.user.create import Create
 from usecases.user.delete import Delete
 
 
+# Create a namespace
+user_ns = Namespace("user", description="User management operations")
 logger = Log()
 delete_handler = Delete()
 creating_handler = Create()
 
-user_ns = Namespace("user", description="User management operations")
 
+signup_model = user_ns.model("SignUp", {
+    "username": fields.String(required=True),
+    "password": fields.String(required=True),
+    "fullname": fields.String(required=True),
+    "email": fields.String(required=True),
+    "birthdate": fields.String(required=False,description="Birth date in format YYYY-MM-DD"),
+    "address": fields.String(required=False),
+    "phoneNumber": fields.String(required=False),
+})
 
 @user_ns.route('/signup')
 class SignUp(Resource):
@@ -37,6 +43,8 @@ class SignUp(Resource):
         return UserResponseForm(response).to_dict(), 201
 
 
+'''
+
 @user_ns.route('/delete')
 class DeleteUser(Resource):
     @user_ns.expect(delete_model)
@@ -47,3 +55,5 @@ class DeleteUser(Resource):
         user_id = request.get_json().get("id")
         logger.log(f'Deleting User {user_id}')
         return delete_handler.handle(user_id), 200
+
+        '''
