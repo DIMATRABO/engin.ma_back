@@ -1,3 +1,4 @@
+''' This module defines an enumeration for user statuses. '''
 from enum import Enum
 
 class UserStatus(str, Enum):

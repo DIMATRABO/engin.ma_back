@@ -1,7 +1,7 @@
 from config.app_factory import create_app
-from config.config_handler import Config_handler
+from config.config_handler import ConfigHandler
 
-config = Config_handler()
+config = ConfigHandler()
 app = create_app()
 
 if __name__ == "__main__":

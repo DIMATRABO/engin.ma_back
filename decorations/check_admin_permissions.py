@@ -1,4 +1,4 @@
-from use_cases.admin.checkAdmin import CheckAdmin
+from usecases.admin.checkAdmin import CheckAdmin
 from gateways.admin.repository import Repository as AdminRepo
 from gateways.log import Log
 from flask_jwt_extended import get_jwt

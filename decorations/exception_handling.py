@@ -2,10 +2,10 @@ from functools import wraps
 from exceptions.exception import *
 from json import loads
 from gateways.log import Log
-from config.config_handler import Config_handler 
+from config.config_handler import ConfigHandler 
 import traceback
 
-config = Config_handler()
+config = ConfigHandler()
 logging = Log(config.app_debug)
 
 def handle_exceptions(endpoint_function):

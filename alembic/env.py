@@ -5,11 +5,11 @@ from sqlalchemy import pool
 
 from alembic import context
 
-from config.config_handler import Config_handler
+from config.ConfigHandler import ConfigHandler
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
-conf_hanler=Config_handler()
+conf_hanler=ConfigHandler()
 config = context.config
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.

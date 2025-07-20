@@ -1,12 +1,13 @@
 ''' configration for Flask-RESTX API '''
 from flask_restx import Api
-from config.config_handler import Config_handler
+from config.config_handler import ConfigHandler
 from controllers.health_check_controller import healthcheck_ns
+from controllers.user.user_controller import user_ns
 
 
 def setup_api(app):
     """Setup Flask-RESTX API and register all namespaces."""
-    config = Config_handler()
+    config = ConfigHandler()
     
     # Create API instance
     api = Api(
@@ -29,5 +30,5 @@ def register_namespaces(api):
     """Register all API namespaces."""
 
     api.add_namespace(healthcheck_ns, path="/health")
-    #api.add_namespace(user_ns, path="/users")
+    api.add_namespace(user_ns, path="/users")
     #api.add_namespace(auth_ns, path="/auth")

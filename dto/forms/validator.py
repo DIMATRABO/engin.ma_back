@@ -3,7 +3,6 @@ import re
 import json
 from datetime import datetime
 from exceptions.exception import ValidationException
-from croniter import croniter
 
 def required(field_name , json):
             if(  not  field_name in  json):
@@ -73,19 +72,6 @@ def valid_json(value):
     except (json.JSONDecodeError, TypeError) as e:
         raise ValidationException(f"Invalid JSON format: {str(e)}")
 
-def valid_cron_expression(value):
-    if value is None:
-        return None
-    if not isinstance(value, str):
-        raise ValidationException("Invalid cron expression format")
-    # Check if the string is empty
-    if not value.strip():
-        return value
-
-    if not croniter.is_valid(value):
-        raise ValidationException("Invalid cron expression format")
-    return value
-
 
 def valid_int(value):
     if value is None:
@@ -151,5 +137,3 @@ def valid_webhook_payload(value):
         raise ValidationException("Invalid webhook payload format")
     
     return value
-
-         

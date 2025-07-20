@@ -1,3 +1,4 @@
+''' This module defines an enumeration for user roles in the system. '''
 from enum import Enum
 
 class UserRole(str, Enum):

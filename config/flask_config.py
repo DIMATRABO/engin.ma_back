@@ -1,10 +1,10 @@
 from datetime import timedelta
-from config.config_handler import Config_handler
+from config.config_handler import ConfigHandler
 
 
 def configure_flask_app(app):
     """Configure Flask application settings."""
-    config = Config_handler()
+    config = ConfigHandler()
     
     app.config.update({
         'TIMEOUT': 300,  # 5 minutes timeout
