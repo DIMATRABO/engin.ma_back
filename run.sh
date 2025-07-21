@@ -1,5 +1,5 @@
 sleep 5
-alembic downgrade base
+#alembic downgrade base
 #alembic upgrade 190720252148 #initial migration
 #alembic downgrade b0c7ba5d9a9f
 alembic upgrade head
