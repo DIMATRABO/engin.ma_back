@@ -3,7 +3,7 @@ from flask_restx import Namespace, fields
 from models.user import User
 from models.user_status import UserStatus
 from models.user_role import UserRole
-from dto.forms.validator import *
+from dto.input.validator import *
 
 
 
