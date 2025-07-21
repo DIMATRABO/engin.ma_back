@@ -7,7 +7,7 @@ from flask_jwt_extended import  jwt_required
 from gateways.log import Log
 from decorations.exception_handling import handle_exceptions
 
-from dto.forms.user.create.create_user_form import CreateUserForm
+from dto.input.user.create_user_form import CreateUserForm
 from dto.output.user.user_response_form import UserResponseForm
 
 from usecases.user.create import Create
