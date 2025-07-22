@@ -39,39 +39,39 @@ def upgrade() -> None:
 
     op.create_table(
         'user_roles',
-        sa.Column('user_id', sa.UUID(as_uuid=True), sa.ForeignKey('users.id', ondelete='CASCADE'), primary_key=True),
-        sa.Column('role', sa.String(50), primary_key=True)
+        sa.Column('user_id', sa.String(), sa.ForeignKey('users.id', ondelete='CASCADE'), primary_key=True),
+        sa.Column('role', sa.String(), primary_key=True)
     )
 
     op.create_table(
         'cities',
-        sa.Column('id', sa.UUID(as_uuid=True), primary_key=True),
+        sa.Column('id', sa.String(), primary_key=True),
         sa.Column('name', sa.String(100), nullable=False)
     )
 
     op.create_table(
         'equipment_brands',
-        sa.Column('id', sa.UUID(as_uuid=True), primary_key=True),
+        sa.Column('id', sa.String(), primary_key=True),
         sa.Column('name', sa.String(100), nullable=False)
     )
 
     op.create_table(
         'equipment_models',
-        sa.Column('id', sa.UUID(as_uuid=True), primary_key=True),
+        sa.Column('id', sa.String(), primary_key=True),
         sa.Column('name', sa.String(100), nullable=False)
     )
 
     op.create_table(
         'equipment',
-        sa.Column('id', sa.UUID(as_uuid=True), primary_key=True),
-        sa.Column('owner_id', sa.UUID(as_uuid=True), sa.ForeignKey('users.id', ondelete='SET NULL')),
-        sa.Column('pilot_id', sa.UUID(as_uuid=True), sa.ForeignKey('users.id', ondelete='SET NULL')),
-        sa.Column('brand_id', sa.UUID(as_uuid=True), sa.ForeignKey('equipment_brands.id')),
-        sa.Column('model_id', sa.UUID(as_uuid=True), sa.ForeignKey('equipment_models.id')),
+        sa.Column('id', sa.String(), primary_key=True),
+        sa.Column('owner_id', sa.String(), sa.ForeignKey('users.id', ondelete='SET NULL')),
+        sa.Column('pilot_id', sa.String(), sa.ForeignKey('users.id', ondelete='SET NULL')),
+        sa.Column('brand_id', sa.String(), sa.ForeignKey('equipment_brands.id')),
+        sa.Column('model_id', sa.String(), sa.ForeignKey('equipment_models.id')),
         sa.Column('model_year', sa.Integer),
         sa.Column('construction_year', sa.Integer),
         sa.Column('date_of_customs_clearance', sa.Integer),
-        sa.Column('city_id', sa.UUID(as_uuid=True), sa.ForeignKey('cities.id')),
+        sa.Column('city_id', sa.String(), sa.ForeignKey('cities.id')),
         sa.Column('title', sa.String(255)),
         sa.Column('description', sa.Text),
         sa.Column('price_per_day', sa.Numeric),
@@ -83,14 +83,14 @@ def upgrade() -> None:
 
     op.create_table(
         'equipment_images',
-        sa.Column('id', sa.UUID(as_uuid=True), primary_key=True),
-        sa.Column('equipment_id', sa.UUID(as_uuid=True), sa.ForeignKey('equipment.id', ondelete='CASCADE')),
+        sa.Column('id', sa.String(), primary_key=True),
+        sa.Column('equipment_id', sa.String(), sa.ForeignKey('equipment.id', ondelete='CASCADE')),
         sa.Column('url', sa.String(500), nullable=False)
     )
 
     op.create_table(
         'pilot_profiles',
-        sa.Column('user_id', sa.UUID(as_uuid=True), sa.ForeignKey('users.id', ondelete='CASCADE'), primary_key=True),
+        sa.Column('user_id', sa.String(), sa.ForeignKey('users.id', ondelete='CASCADE'), primary_key=True),
         sa.Column('experience_years', sa.Integer),
         sa.Column('rating_average', sa.Float, default=0.0),
         sa.Column('fields_of_experience', sa.Text)
@@ -98,10 +98,10 @@ def upgrade() -> None:
 
     op.create_table(
         'bookings',
-        sa.Column('id', sa.UUID(as_uuid=True), primary_key=True, default=uuid.uuid4),
-        sa.Column('client_id', sa.UUID(as_uuid=True), sa.ForeignKey('users.id')),
-        sa.Column('equipment_id', sa.UUID(as_uuid=True), sa.ForeignKey('equipment.id')),
-        sa.Column('pilot_id', sa.UUID(as_uuid=True), sa.ForeignKey('users.id')),
+        sa.Column('id', sa.String(), primary_key=True, default=uuid.uuid4),
+        sa.Column('client_id', sa.String(), sa.ForeignKey('users.id')),
+        sa.Column('equipment_id', sa.String(), sa.ForeignKey('equipment.id')),
+        sa.Column('pilot_id', sa.String(), sa.ForeignKey('users.id')),
         sa.Column('start_date', sa.Date),
         sa.Column('end_date', sa.Date),
         sa.Column('status', sa.String(50)),
@@ -110,10 +110,10 @@ def upgrade() -> None:
 
     op.create_table(
         'reviews',
-        sa.Column('id', sa.UUID(as_uuid=True), primary_key=True),
-        sa.Column('client_id', sa.UUID(as_uuid=True), sa.ForeignKey('users.id')),
-        sa.Column('equipment_id', sa.UUID(as_uuid=True), sa.ForeignKey('equipment.id')),
-        sa.Column('pilot_id', sa.UUID(as_uuid=True), sa.ForeignKey('users.id')),
+        sa.Column('id', sa.String(), primary_key=True),
+        sa.Column('client_id', sa.String(), sa.ForeignKey('users.id')),
+        sa.Column('equipment_id', sa.String(), sa.ForeignKey('equipment.id')),
+        sa.Column('pilot_id', sa.String(), sa.ForeignKey('users.id')),
         sa.Column('rating', sa.Integer),
         sa.Column('comment', sa.Text),
         sa.Column('created_at', sa.TIMESTAMP(timezone=True), server_default=sa.func.now())
