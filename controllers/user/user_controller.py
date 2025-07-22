@@ -34,7 +34,7 @@ class AuthUser(Resource):
     @handle_exceptions
     @user_ns.doc(security=None)
     @user_ns.expect(LoginForm.api_model(user_ns))
-    def auth_user(self):
+    def post(self):
         ''' Authenticate a user and return access and refresh tokens.'''
         form = LoginForm(request.get_json())
         user = auth.handle(form)
