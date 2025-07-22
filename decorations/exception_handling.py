@@ -1,7 +1,6 @@
 from functools import wraps
 from exceptions.exception import *
 from flask_jwt_extended.exceptions import NoAuthorizationError
-from json import loads
 from gateways.log import Log
 from config.config_handler import ConfigHandler
 import traceback

@@ -58,7 +58,7 @@ class SignUp(Resource):
         user = form.to_domain()
         logger.log(f'Creating User {user.username}')
         response = creating_handler.handle(user)
-        return UserResponseForm(response).to_dict(), 201
+        return UserResponseForm(response).to_dict()
 
 
 delete_model = user_ns.model("DeleteUser", {
@@ -76,4 +76,4 @@ class DeleteUser(Resource):
         """Delete an existing user (admin only)"""
         user_id = request.get_json().get("id")
         logger.log(f'Deleting User {user_id}')
-        return delete_handler.handle(user_id), 200
+        return delete_handler.handle(user_id)
