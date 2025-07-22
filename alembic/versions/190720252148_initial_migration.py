@@ -5,9 +5,11 @@ Revises:
 Create Date: 2025-07-19 21:48:00
 
 """
+import uuid
 from typing import Sequence, Union
 import sqlalchemy as sa
 from alembic import op
+
 
 # revision identifiers, used by Alembic.
 revision: str = '190720252148'
