@@ -19,7 +19,7 @@ class LoginForm:
     @staticmethod
     def api_model(namespace: Namespace):
         """Returns the API model."""
-        return namespace.model("SignUp", {
+        return namespace.model("AuthUser", {
         "username_or_email": fields.String(required=True, description="Username or email of the user"),
         "password": fields.String(required=True, description="Password of the user")
     })
