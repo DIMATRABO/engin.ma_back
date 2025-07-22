@@ -1,7 +1,7 @@
 ''' Repository for user management operations.'''
 import uuid
 from datetime import datetime
-from sqlalchemy import  exc
+from sqlalchemy import  exc, or_, func
 from models.user import User
 from models.user_status import UserStatus
 from entities.user_entity import UserEntity
@@ -37,6 +37,17 @@ class Repository:
         user = session.query(UserEntity).filter(UserEntity.email == email).first()
         if user is None:
             return None
+        return user.to_domain()
+    
+    def get_user_by_username_or_email(self, session , username_or_email:str) -> User:
+        '''Retrieve a user by username or email from the database.'''
+        username_or_email_lower = username_or_email.lower()
+        user = session.query(UserEntity).filter(
+            or_(UserEntity.username == username_or_email,
+                func.lower(UserEntity.email) == username_or_email_lower)
+            ).first()
+        if user is None:
+            return None  
         return user.to_domain()
     
         
