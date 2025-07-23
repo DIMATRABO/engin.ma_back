@@ -27,13 +27,13 @@ def upgrade():
         INSERT INTO users (
             id, username, password, full_name, email, birthdate, address,
             phone_number, user_status, email_verified_at,
-            reset_password_otp, passwordotp_expiration_date, created_at
+            reset_password_otp, otp_expiration_date, created_at
         ) VALUES (
             '{admin_id}', 'Admin', '{password}', 'admin', 'admin@engin.ma',
             NULL, NULL, NULL, 'ACTIVE', '{now}',
             NULL, NULL, '{now}'
         )
-    """) 
+    """)
 
     # Assign ADMIN role to admin user
     op.execute(f"""
