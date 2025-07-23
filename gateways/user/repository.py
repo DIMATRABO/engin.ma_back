@@ -5,8 +5,10 @@ from sqlalchemy import  exc, or_, func
 from models.user import User
 from models.user_status import UserStatus
 from entities.user_entity import UserEntity
+from entities.user_role_entity import UserRoleEntity
 from gateways.log import Log
-
+from typing import List
+from models.user_role import UserRole 
 from exceptions.exception import NotFoundException
 
 logger = Log()
@@ -67,3 +69,12 @@ class Repository:
             return {"msg":"deleted"}
         raise NotFoundException("User not found")
     
+
+    def get_roles_by_user_id(self, session, user_id: str) -> List[UserRole]:
+        '''Retrieve all roles for a user by user_id.'''
+        roles = (
+            session.query(UserRoleEntity.role)
+            .filter(UserRoleEntity.user_id == user_id)
+            .all()
+        )
+        return [UserRole(role[0]) for role in roles] if roles else []

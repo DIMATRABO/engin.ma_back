@@ -10,6 +10,7 @@ from exceptions.exception import UserBlockedException, UnauthorizedException
 
 
 class Auth:
+    ''' Use case for handling user authentication. '''
     def __init__(self):
         self.repo = UserRepo()
         self.session_context = SessionContext()
@@ -19,6 +20,7 @@ class Auth:
         with self.session_context as session:
             user = self.repo.get_user_by_username_or_email(session , auth_form.username_or_email)
             if not user is None:
+                user.role = self.repo.get_roles_by_user_id(session, user.id)
                 if bcrypt.checkpw(auth_form.password.encode('utf-8'), user.password.encode('utf-8')):
                     if user.user_status.value == "ACTIVE":
                             return user
