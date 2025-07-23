@@ -18,10 +18,6 @@ depends_on = None
 
 
 def upgrade():
-    '''Insert roles and create an admin user.'''
-    roles = ['ADMIN', 'CLIENT', 'OWNER', 'PILOT']
-    for role in roles:
-        op.execute(f"INSERT INTO roles (name) VALUES ('{role}') ON CONFLICT DO NOTHING")
 
     # Create admin user
     admin_id = str(uuid.uuid4())
