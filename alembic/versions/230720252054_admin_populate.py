@@ -1,0 +1,46 @@
+"""populate roles and create admin
+
+Revision ID: 230720252054
+Revises: 190720252148
+Create Date: 2025-07-23 20:54:00.000000
+"""
+from datetime import datetime
+import uuid
+import bcrypt
+from alembic import op
+
+
+# revision identifiers, used by Alembic.
+revision = '230720252054'
+down_revision = '190720252148'
+branch_labels = None
+depends_on = None
+
+
+def upgrade():
+    '''Insert roles and create an admin user.'''
+    roles = ['ADMIN', 'CLIENT', 'OWNER', 'PILOT']
+    for role in roles:
+        op.execute(f"INSERT INTO roles (name) VALUES ('{role}') ON CONFLICT DO NOTHING")
+
+    # Create admin user
+    admin_id = str(uuid.uuid4())
+    now = datetime.utcnow().isoformat()
+    password = bcrypt.hashpw('admin123'.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+    op.execute(f"""
+        INSERT INTO users (id, name, email, phone, password_hash, created_at)
+        VALUES ('{admin_id}', 'Admin', 'admin@engin.ma', '+212600000000', '{password}', '{now}')
+    """)
+
+    # Assign ADMIN role to admin user
+    op.execute(f"""
+        INSERT INTO user_roles (user_id, role)
+        VALUES ('{admin_id}', 'ADMIN')
+    """)
+
+
+def downgrade():
+    '''Remove admin user and roles.'''
+    op.execute("DELETE FROM user_roles WHERE role = 'ADMIN'")
+    op.execute("DELETE FROM users WHERE email = 'admin@engin.ma'")
+    op.execute("DELETE FROM roles WHERE name IN ('ADMIN', 'CLIENT', 'OWNER', 'PILOT')")
