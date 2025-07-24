@@ -87,6 +87,7 @@ class DeleteUser(Resource):
 class UserList(Resource):
     ''' Endpoint to get a list of users.'''
     @user_ns.doc(security="Bearer Auth")
+    @user_ns.expect(InputForm.api_model(user_ns))
     @handle_exceptions
     @jwt_required()
     @check_permission("ADMIN")

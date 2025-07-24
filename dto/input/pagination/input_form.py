@@ -1,4 +1,5 @@
 ''' InputForm class for handling pagination and sorting input data.'''
+from flask_restx import Namespace, fields
 from dto.input.validator import *
 
 
@@ -36,5 +37,21 @@ class InputForm:
         if not filter_data is None:
             self.status = required('status', filter_data)
             self.status = valid_string(self.status)
+
+    @staticmethod
+    def api_model(namespace: Namespace):
+        ''' Returns the API model for InputForm.'''
+        return namespace.model('InputForm', {
+                'pageIndex': fields.Integer(required=True, description='Page index for pagination'),
+                'pageSize': fields.Integer(required=True, description='Number of items per page'),
+                'sort': fields.Nested(namespace.model('Sort', {
+                    'order': fields.String(required=True, description='Sort order (asc/desc)'),
+                    'key': fields.String(required=True, description='Field to sort by')
+                })),
+                'query': fields.String(required=False, description='Search query'),
+                'filterData': fields.Nested(namespace.model('FilterData', {
+                    'status': fields.String(required=False, description='User status filter')
+                }), required=False)
+            })
 
 
