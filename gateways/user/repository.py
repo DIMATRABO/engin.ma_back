@@ -83,19 +83,18 @@ class Repository:
         )
         return [UserRole(role[0]) for role in roles] if roles else []
     
-        
     def get_all_paginated(self, session, input_form: InputForm) -> UsersPaginated:
         '''Retrieve all users with pagination, filtering, and sorting.'''
-        allowed_sort_keys = ['username', 'full_name', 'email','craetion_date']
+        allowed_sort_keys = ['username', 'full_name', 'email', 'creation_date']
 
         query = session.query(UserEntity)
-        # Apply filters
-        if input_form.status != '' and not input_form.status is None :
+
+        # Filter by status
+        if input_form.status:
             query = query.filter(UserEntity.user_status == input_form.status.upper())
 
-
-         # Apply query
-        if  not input_form.query is None and not input_form.query == '':
+        # Filter by search query
+        if input_form.query:
             search_criteria = or_(
                 UserEntity.username.ilike(f'%{input_form.query}%'),
                 UserEntity.full_name.ilike(f'%{input_form.query}%'),
@@ -103,19 +102,21 @@ class Repository:
             )
             query = query.filter(search_criteria)
 
-        # Apply sorting
-        if  not input_form.order is None and not input_form.order == '' and not input_form.key == '' :
-            sort_key = input_form.key.lower()  # Ensure case-insensitive comparison
+        # Sorting
+        if input_form.key and input_form.order:
+            sort_key = input_form.key.lower()
             if sort_key in allowed_sort_keys:
-                if input_form.order.lower() == 'desc':
-                    query = query.order_by(desc(sort_key))
-                else:
-                    query = query.order_by(sort_key)
+                sort_column = getattr(UserEntity, sort_key, None)
+                if sort_column is None:
+                    raise InvalidRequestException(f"Invalid sort key: {sort_key}")
+                query = query.order_by(desc(sort_column) if input_form.order.lower() == 'desc' else sort_column)
             else:
-                raise InvalidRequestException(f"Warning: Invalid sort key requested: {input_form.key}")
-            
-        query = query.order_by(desc(text("creation_date")))
-        # Apply pagination
+                raise InvalidRequestException(f"Invalid sort key: {sort_key}")
+        else:
+            # Default sorting
+            query = query.order_by(desc(UserEntity.creation_date))
+
+        # Pagination
         total_records = query.count()
         starting_index = (input_form.pageIndex - 1) * input_form.pageSize
         users = query.offset(starting_index).limit(input_form.pageSize).all()
@@ -124,4 +125,5 @@ class Repository:
             total=total_records,
             data=[UserResponseForm(user=user.to_domain()) for user in users]
         )
-    
+
+        
