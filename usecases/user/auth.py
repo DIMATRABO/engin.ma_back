@@ -28,6 +28,8 @@ class Auth:
                         raise EmailNotVerifiedException()
                     elif user.user_status.value == "BLOCKED":
                         raise UserBlockedException("User blocked")
+                    else:
+                        raise UnauthorizedException("Unknown user status")
                 else:
                     status_message = "Bad Username or password "
                     raise UnauthorizedException(status_message)
