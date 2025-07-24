@@ -29,7 +29,6 @@ def handle_exceptions(endpoint_function):
 
         except UnauthorizedException as e:
             logging.debug(str(e))
-            return {"error": "Internal Server Error --" + f'{str(e)} -- Traceback: -- {traceback.format_exc()}'}, 500
             return {"error": str(e)}, 401
 
         except NoAuthorizationError as e:  # <-- Add this block
