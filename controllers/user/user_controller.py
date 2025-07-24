@@ -16,6 +16,7 @@ from usecases.user.create import Create
 from usecases.user.delete import Delete
 from usecases.utils.auth import create_additional_claims_from_user
 
+from decorations.check_permission import check_permission
 
 # Create a namespace
 user_ns = Namespace("user", description="User management operations")
@@ -72,6 +73,7 @@ class DeleteUser(Resource):
     @user_ns.doc(security="Bearer Auth")
     @handle_exceptions
     @jwt_required()
+    @check_permission("ADMIN")
     def delete(self):
         """Delete an existing user (admin only)"""
         user_id = request.get_json().get("id")

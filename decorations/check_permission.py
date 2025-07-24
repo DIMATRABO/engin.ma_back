@@ -1,26 +1,21 @@
-from usecases.admin.checkAdmin import CheckAdmin
-from gateways.admin.repository import Repository as AdminRepo
-from gateways.log import Log
-from flask_jwt_extended import get_jwt
+''' Decorator to check if the user has the required permission. '''
 from functools import wraps
+from flask_jwt_extended import get_jwt
+from gateways.log import Log
 from exceptions.exception import UnauthorizedException
 
-
-checkAdmin = CheckAdmin(AdminRepo())
 logger = Log()
 
-def check_admin_permission(permission):
+def check_permission(permission):
+    ''' Decorator to check if the user has the required permission.'''
     def decorator(func):
         @wraps(func)
         def decorated_function(*args, **kwargs):
             try:
-                if not  get_jwt()["authority"] in permission:
+                if set(get_jwt()["authority"]) & set(permission):
                     raise UnauthorizedException()
             except:
                 raise UnauthorizedException()
-            
             return func(*args, **kwargs)
-
         return decorated_function
-
     return decorator
