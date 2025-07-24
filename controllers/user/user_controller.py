@@ -91,7 +91,7 @@ class UserList(Resource):
     @handle_exceptions
     @jwt_required()
     @check_permission("ADMIN")
-    def get(self):
+    def post(self):
         """Get a list of users (admin only)"""
         form = InputForm(request.get_json())
         data = get_all_users_handler.handle(form)
