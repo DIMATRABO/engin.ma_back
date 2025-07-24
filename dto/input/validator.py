@@ -118,8 +118,10 @@ def valid_non_empty_list(value):
 
 
 def valid_order(value: str):
+    ''' Validates the sorting order for pagination.'''
     if value not in ["asc", "desc", ""]:
         raise ValidationException("Invalid sorting Order")
+    return value
     
 def valid_webhook_payload(value):
     if value is None:

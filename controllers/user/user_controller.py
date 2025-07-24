@@ -10,9 +10,11 @@ from decorations.exception_handling import handle_exceptions
 from dto.input.user.create_user_form import CreateUserForm
 from dto.output.user.user_response_form import UserResponseForm
 from dto.input.user.login_form import LoginForm
+from dto.input.pagination.input_form import InputForm
 
 from usecases.user.auth import Auth
 from usecases.user.create import Create
+from usecases.user.get_all_paginated import GetAllUsersPaginated
 from usecases.user.delete import Delete
 from usecases.utils.auth import create_additional_claims_from_user
 
@@ -24,6 +26,7 @@ logger = Log()
 auth = Auth()
 delete_handler = Delete()
 creating_handler = Create()
+get_all_users_handler = GetAllUsersPaginated()
 
 
 @user_ns.route('/auth')
@@ -79,3 +82,16 @@ class DeleteUser(Resource):
         user_id = request.get_json().get("id")
         logger.log(f'Deleting User {user_id}')
         return delete_handler.handle(user_id)
+
+@user_ns.route('/')
+class UserList(Resource):
+    ''' Endpoint to get a list of users.'''
+    @user_ns.doc(security="Bearer Auth")
+    @handle_exceptions
+    @jwt_required()
+    @check_permission("ADMIN")
+    def get(self):
+        """Get a list of users (admin only)"""
+        form = InputForm(request.get_json())
+        data = get_all_users_handler.handle(form)
+        return data.to_dict()

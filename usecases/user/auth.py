@@ -28,6 +28,8 @@ class Auth:
                         raise EmailNotVerifiedException()
                     elif user.user_status.value == "BLOCKED":
                         raise UserBlockedException("User blocked")
+                    elif user.user_status.value == "DELETED":
+                        raise UnauthorizedException("User deleted")
                     else:
                         raise UnauthorizedException("Unknown user status")
                 else:

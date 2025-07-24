@@ -1,15 +1,19 @@
 ''' Repository for user management operations.'''
 import uuid
+from typing import List
 from datetime import datetime
-from sqlalchemy import  exc, or_, func
+from sqlalchemy import  func , exc, desc , or_, text
 from models.user import User
 from models.user_status import UserStatus
+from models.user_role import UserRole
 from entities.user_entity import UserEntity
 from entities.user_role_entity import UserRoleEntity
 from gateways.log import Log
-from typing import List
-from models.user_role import UserRole 
 from exceptions.exception import NotFoundException
+from exceptions.exception import InvalidRequestException
+from dto.input.pagination.input_form import InputForm
+from dto.output.user.user_response_form import UserResponseForm
+from dto.output.user.users_paginated import UsersPaginated
 
 logger = Log()
 class Repository:
@@ -78,3 +82,46 @@ class Repository:
             .all()
         )
         return [UserRole(role[0]) for role in roles] if roles else []
+    
+        
+    def get_all_paginated(self, session, input_form: InputForm) -> UsersPaginated:
+        '''Retrieve all users with pagination, filtering, and sorting.'''
+        allowed_sort_keys = ['username', 'full_name', 'email','craetion_date']
+
+        query = session.query(UserEntity)
+        # Apply filters
+        if input_form.status != '' and not input_form.status is None :
+            query = query.filter(UserEntity.user_status == input_form.status.upper())
+
+
+         # Apply query
+        if  not input_form.query is None and not input_form.query == '':
+            search_criteria = or_(
+                UserEntity.username.ilike(f'%{input_form.query}%'),
+                UserEntity.full_name.ilike(f'%{input_form.query}%'),
+                UserEntity.email.ilike(f'%{input_form.query}%')
+            )
+            query = query.filter(search_criteria)
+
+        # Apply sorting
+        if  not input_form.order is None and not input_form.order == '' and not input_form.key == '' :
+            sort_key = input_form.key.lower()  # Ensure case-insensitive comparison
+            if sort_key in allowed_sort_keys:
+                if input_form.order.lower() == 'desc':
+                    query = query.order_by(desc(sort_key))
+                else:
+                    query = query.order_by(sort_key)
+            else:
+                raise InvalidRequestException(f"Warning: Invalid sort key requested: {input_form.key}")
+            
+        query = query.order_by(desc(text("creation_date")))
+        # Apply pagination
+        total_records = query.count()
+        starting_index = (input_form.pageIndex - 1) * input_form.pageSize
+        users = query.offset(starting_index).limit(input_form.pageSize).all()
+
+        return UsersPaginated(
+            total=total_records,
+            data=[UserResponseForm(user=user.to_domain()) for user in users]
+        )
+    
