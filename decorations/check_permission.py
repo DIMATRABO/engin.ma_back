@@ -6,13 +6,12 @@ from exceptions.exception import UnauthorizedException
 
 logger = Log()
 
-def     check_permission(permission):
+def check_permission(permission):
     ''' Decorator to check if the user has the required permission.'''
     def decorator(func):
         @wraps(func)
         def decorated_function(*args, **kwargs):
             try:
-                raise UnauthorizedException(f"checking permissionm {get_jwt()['authority']} for {permission} result {set(get_jwt()['authority']) & set(permission)}")
                 if set(get_jwt()["authority"]) & set(permission):
                     raise UnauthorizedException()
             except:
