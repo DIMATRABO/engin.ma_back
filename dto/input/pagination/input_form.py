@@ -1,6 +1,7 @@
 ''' InputForm class for handling pagination and sorting input data.'''
 from flask_restx import Namespace, fields
 from dto.input.validator import *
+from exceptions.exception import InvalidRequestException
 
 
 class InputForm:
@@ -18,7 +19,7 @@ class InputForm:
         self.pageIndex = required('pageIndex', json_input)
         self.pageIndex = valid_int(self.pageIndex)
         if self.pageIndex < 1:
-            raise ValueError("pageIndex must be greater than or equal to 1")
+            raise InvalidRequestException("pageIndex must be greater than or equal to 1")
 
         self.pageSize = required('pageSize', json_input)
         self.pageSize = valid_int(self.pageSize)
