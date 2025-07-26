@@ -1,13 +1,12 @@
 ''' Utility functions for authentication and JWT claims. '''
 from models.user import User
 
-
 def create_additional_claims_from_user(user:User):
         '''Create additional claims for JWT from user object.'''
         additional_claims ={
                 "name": user.full_name,
                 "sub": user.username,
-                "authority": user.roles,
+                "authority": ",".join([role.value for role in user.roles]),
                 "email": user.email,
                 "userId": user.id
                 }
