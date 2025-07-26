@@ -85,7 +85,7 @@ class ChangeStatusEndPoint(Resource):
         """Change the status of an existing user (admin only)"""
         form = ChangeStatusForm(request.get_json())
         logger.log(f'Changing status for User {form.id} to {form.user_status}')
-        return change_status_handler.handle(form.to_domain())
+        return change_status_handler.handle(form.to_domain()).to_dict()
     
 
 @user_ns.route('/delete')

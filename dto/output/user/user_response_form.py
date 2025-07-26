@@ -19,7 +19,7 @@ class UserResponseForm:
         self.name = user.full_name
         self.email = user.email
         self.username = user.username
-        self.status = user.user_status.value.lower()
+        self.status = user.user_status.value.upper()
         self.location = user.address
         self.birthday = user.birthdate
 
