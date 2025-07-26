@@ -18,7 +18,7 @@ class User:
     address: str = None
     phone_number: str = None
     user_status: UserStatus = None
-    role: List[UserRole] = field(default_factory=list)
+    roles: List[UserRole] = field(default_factory=list)
     email_verified_at: str =None
     reset_password_otp: str = None
     otp_expiration_date: datetime = None
@@ -35,7 +35,7 @@ class User:
         d_string = json.dumps(asdict(self))
         d_ = json.loads(d_string)
         d_["user_status"] = None if self.user_status is None else self.user_status.name
-        d_["role"] = None if self.role is None else self.role
+        d_["roles"] = None if self.roles is None else self.roles
         d_["password"] = None
         self.otp_expiration_date = self.otp_expiration_date.isoformat() if self.otp_expiration_date else None
         return d_

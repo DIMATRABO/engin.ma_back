@@ -36,7 +36,7 @@ class CreateUserForm:
             self.phone_number = valid_string(self.phone_number)
 
 
-    def to_domain(self, user_role: UserRole = UserRole.CLIENT):
+    def to_domain(self, user_roles: list[UserRole] = UserRole.CLIENT):
         return User(
             id=None,
             username=self.username,
@@ -47,7 +47,7 @@ class CreateUserForm:
             address=self.address,
             phone_number=self.phone_number,
             user_status=UserStatus(UserStatus.PENDING.value),
-            role=[user_role.value]
+            roles=user_roles
             )
     @staticmethod
     def api_model(namespace: Namespace):

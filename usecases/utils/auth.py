@@ -8,7 +8,7 @@ def create_additional_claims_from_user(user:User):
         additional_claims ={
                 "name": user.full_name,
                 "sub": user.username,
-                "authority": ",".join([UserRole(role).value for role in user.role]),
+                "authority": ",".join([role.value for role in user.roles]),
                 "email": user.email,
                 "userId": user.id
                 }
@@ -17,24 +17,11 @@ def create_additional_claims_from_user(user:User):
 
 def refresh_additional_claims(old_claims):
         '''Refresh additional claims from old JWT claims.'''
-        additional_claims = {}
-        role = old_claims['authority']
-        if role == "user":
-                additional_claims = {
-                        "name": old_claims['name'],
-                        "sub": old_claims['sub'],
-                        "authority": old_claims['authority'],
-                        "email": old_claims['email'],
-                        "userId": old_claims['userId']
+        additional_claims = {
+                "name": old_claims['name'],
+                "sub": old_claims['sub'],
+                "authority": old_claims['authority'],
+                "email": old_claims['email'],
+                "userId": old_claims['userId']
                 }
-
-        elif role == "admin":
-                additional_claims = {
-                        "name": old_claims['name'],
-                        "sub": old_claims['sub'],
-                        "authority": old_claims['authority'],
-                        "email": old_claims['email'],
-                        "userId": old_claims['userId']
-                }
-        
         return additional_claims
