@@ -140,3 +140,12 @@ class Repository:
         )
 
         
+    def change_status(self, session, user: User) -> User:
+        '''Change the status of a user.'''
+        user_entity = session.query(UserEntity).filter(UserEntity.id == user.id).first()
+        if not user_entity:
+            raise NotFoundException("User not found")
+
+        # Update the status
+        user_entity.user_status = user.user_status.value
+        return user_entity.to_domain()

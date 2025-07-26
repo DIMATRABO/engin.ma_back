@@ -13,11 +13,13 @@ from dto.input.user.create_user_form import CreateUserForm
 from dto.output.user.user_response_form import UserResponseForm
 from dto.input.user.login_form import LoginForm
 from dto.input.pagination.input_form import InputForm
+from dto.input.user.change_status_form import ChangeStatusForm
 
 from usecases.user.auth import Auth
 from usecases.user.create import Create
 from usecases.user.get_all_paginated import GetAllUsersPaginated
 from usecases.user.delete import Delete
+from usecases.user.change_status import ChangeStatus
 from usecases.utils.auth import create_additional_claims_from_user
 
 # Create a namespace
@@ -27,6 +29,7 @@ auth = Auth()
 delete_handler = Delete()
 creating_handler = Create()
 get_all_users_handler = GetAllUsersPaginated()
+change_status_handler = ChangeStatus()
 
 
 @user_ns.route('/auth')
@@ -68,6 +71,22 @@ class SignUp(Resource):
 delete_model = user_ns.model("DeleteUser", {
     "id": fields.String(required=True)
 })
+
+
+@user_ns.route('/change_status')
+class ChangeStatusEndPoint(Resource):
+    ''' User status change endpoint.'''
+    @user_ns.expect(ChangeStatusForm.api_model(user_ns))
+    @user_ns.doc(security="Bearer Auth")
+    @handle_exceptions
+    @jwt_required()
+    @check_permission("ADMIN")
+    def post(self):
+        """Change the status of an existing user (admin only)"""
+        form = ChangeStatusForm(request.get_json())
+        logger.log(f'Changing status for User {form.id} to {form.user_status}')
+        return change_status_handler.handle(form.to_domain())
+    
 
 @user_ns.route('/delete')
 class DeleteUser(Resource):
