@@ -12,6 +12,7 @@ def check_permission(permission):
         @wraps(func)
         def decorated_function(*args, **kwargs):
             try:
+                logger.log("authorities: " + str(get_jwt()["authority"]) + " permission: " + str(permission))
                 if not set(get_jwt()["authority"]) & set(permission):
                     raise UnauthorizedException()
             except:
