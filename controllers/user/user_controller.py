@@ -6,6 +6,8 @@ from flask_jwt_extended import  jwt_required, create_access_token, create_refres
 
 from gateways.log import Log
 from decorations.exception_handling import handle_exceptions
+from decorations.check_permission import check_permission
+from models.user_role import UserRole
 
 from dto.input.user.create_user_form import CreateUserForm
 from dto.output.user.user_response_form import UserResponseForm
@@ -17,8 +19,6 @@ from usecases.user.create import Create
 from usecases.user.get_all_paginated import GetAllUsersPaginated
 from usecases.user.delete import Delete
 from usecases.utils.auth import create_additional_claims_from_user
-
-from decorations.check_permission import check_permission
 
 # Create a namespace
 user_ns = Namespace("user", description="User management operations")
@@ -50,7 +50,7 @@ class AuthUser(Resource):
 
 
 
-@user_ns.route('/signup')
+@user_ns.route('/register')
 class SignUp(Resource):
     ''' User signup endpoint.'''
     @user_ns.expect(CreateUserForm.api_model(user_ns))
@@ -59,7 +59,7 @@ class SignUp(Resource):
         """Create a new user"""
         user_json = request.get_json()
         form = CreateUserForm(user_json)
-        user = form.to_domain()
+        user = form.to_domain(UserRole.CLIENT)
         logger.log(f'Creating User {user.username}')
         response = creating_handler.handle(user)
         return UserResponseForm(response).to_dict()

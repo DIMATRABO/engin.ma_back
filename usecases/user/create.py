@@ -19,6 +19,7 @@ class Create:
                 if not self.repo.get_user_by_email(session,user.email):    
                     user.password = (bcrypt.hashpw(user.password.encode('utf-8'), bcrypt.gensalt())).decode("utf-8")
                     saved_user = self.repo.save(session , user)
+                    saved_user = self.repo.set_roles_by_user_id(session, saved_user.id, user.role)
                     return saved_user
                 raise EmailAlreadyExists
             raise UsernameAlreadyExists

@@ -29,7 +29,7 @@ class Repository:
         user_entity.id=str(uuid.uuid4())
         user_entity.created_at = datetime.now()
         session.add(user_entity)
-        return user_entity.to_domain()  
+        return user_entity.to_domain()
           
     def get_user_by_username(self, session , username:str) -> User:
         '''Retrieve a user by username from the database.'''
@@ -82,6 +82,19 @@ class Repository:
             .all()
         )
         return [UserRole(role[0]) for role in roles] if roles else []
+    
+    def set_roles_by_user_id(self, session, user:User, new_roles: List[UserRole]) ->User:
+        '''Set roles for a user by user_id.'''
+        # Delete existing roles
+        session.query(UserRoleEntity).filter(UserRoleEntity.user_id == user.id).delete()
+
+        # Add new roles
+        for role in new_roles:
+            user_role_entity = UserRoleEntity(user_id=user.id, role=role.value)
+            session.add(user_role_entity)
+        user.role = new_roles
+        return user
+      
     
     def get_all_paginated(self, session, input_form: InputForm) -> UsersPaginated:
         '''Retrieve all users with pagination, filtering, and sorting.'''
