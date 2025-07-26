@@ -59,7 +59,7 @@ class SignUp(Resource):
         """Create a new user"""
         user_json = request.get_json()
         form = CreateUserForm(user_json)
-        user = form.to_domain(UserRole.CLIENT)
+        user = form.to_domain([UserRole(UserRole.CLIENT.value)])
         logger.log(f'Creating User {user.username}')
         response = creating_handler.handle(user)
         return UserResponseForm(response).to_dict()
