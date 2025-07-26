@@ -13,6 +13,7 @@ class ChangeStatusForm:
 
         self.user_status = optional("status", jsonUser)
         self.user_status = valid_string(self.user_status)
+        self.user_status = valid_status(self.user_status)
 
 
 

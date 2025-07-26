@@ -3,6 +3,7 @@ import re
 import json
 from datetime import datetime
 from exceptions.exception import ValidationException
+from models.user_status import UserStatus
 
 def required(field_name , json):
             if(  not  field_name in  json):
@@ -139,3 +140,11 @@ def valid_webhook_payload(value):
         raise ValidationException("Invalid webhook payload format")
     
     return value
+
+def valid_status(value):
+    ''' Validates the user status by checking if it is a valid UserStatus.'''
+    try:
+        UserStatus(value.upper())
+    except Exception as exception:
+        raise ValidationException(f"Invalid user status: {value}. Error: {str(exception)}")
+    
