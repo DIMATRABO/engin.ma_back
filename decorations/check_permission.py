@@ -16,7 +16,7 @@ def check_permission(permission):
                 permissions = permission.split(",")
 
                 logger.log("authorities: " + str(authorities) + ", permissions: " + str(permissions) +"condition: " + str(set(authorities) & set(permissions)))
-                if not set(get_jwt()["authority"]) & set(permission):
+                if not set(authorities) & set(permissions):
                     raise UnauthorizedException()
             except:
                 raise UnauthorizedException()
