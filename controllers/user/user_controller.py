@@ -81,7 +81,7 @@ class ChangeStatusEndPoint(Resource):
     @handle_exceptions
     @jwt_required()
     @check_permission("ADMIN")
-    def post(self):
+    def put(self):
         """Change the status of an existing user (admin only)"""
         form = ChangeStatusForm(request.get_json())
         logger.log(f'Changing status for User {form.id} to {form.user_status}')

@@ -148,4 +148,4 @@ class Repository:
 
         # Update the status
         user_entity.user_status = user.user_status.value
-        return user_entity.to_domain()
+        return UserResponseForm(user_entity.to_domain())
