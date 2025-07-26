@@ -145,6 +145,7 @@ def valid_status(value):
     ''' Validates the user status by checking if it is a valid UserStatus.'''
     try:
         UserStatus(value.upper())
+        return value.upper()
     except Exception as exception:
         raise ValidationException(f"Invalid user status: {value}. Error: {str(exception)}")
     

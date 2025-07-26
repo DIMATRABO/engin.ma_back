@@ -21,7 +21,7 @@ class ChangeStatusForm:
         '''Converts the form to a User domain model.'''
         return User(
             id=self.id,
-            user_status=UserStatus(self.user_status.upper())     
+            user_status=UserStatus(self.user_status)
         )
 
     @staticmethod
