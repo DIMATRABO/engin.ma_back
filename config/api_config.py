@@ -4,6 +4,9 @@ from config.config_handler import ConfigHandler
 from controllers.health_check_controller import healthcheck_ns
 from controllers.user.user_controller import user_ns
 from controllers.city.city_controller import city_ns
+from controllers.brand.brand_controller import brand_ns
+from controllers.model.model_controller import model_ns
+
 
 
 def setup_api(app):
@@ -43,5 +46,7 @@ def register_namespaces(api):
 
     api.add_namespace(healthcheck_ns, path="/health")
     api.add_namespace(user_ns, path="/users")
-    api.add_namespace(city_ns, path="/cities")  # This line was commented out in the original code
+    api.add_namespace(city_ns, path="/cities")
+    api.add_namespace(brand_ns, path="/brands")
+    api.add_namespace(model_ns, path="/models")
     #api.add_namespace(auth_ns, path="/auth")
