@@ -3,6 +3,7 @@ from flask_restx import Api
 from config.config_handler import ConfigHandler
 from controllers.health_check_controller import healthcheck_ns
 from controllers.user.user_controller import user_ns
+from controllers.city.city_controller import city_ns
 
 
 def setup_api(app):
@@ -42,4 +43,5 @@ def register_namespaces(api):
 
     api.add_namespace(healthcheck_ns, path="/health")
     api.add_namespace(user_ns, path="/users")
+    api.add_namespace(city_ns, path="/cities")  # This line was commented out in the original code
     #api.add_namespace(auth_ns, path="/auth")
