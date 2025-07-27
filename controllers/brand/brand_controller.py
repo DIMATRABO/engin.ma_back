@@ -13,7 +13,7 @@ from usecases.brand.create import Create
 from usecases.brand.get_all import GetAll
 
 # Create a namespace
-brand_ns = Namespace("brands", description="Cities management operations")
+brand_ns = Namespace("brands", description="Brands management operations")
 logger = Log()
 create_brand_handler = Create()
 get_all_brands_handler = GetAll()

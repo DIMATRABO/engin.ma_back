@@ -13,7 +13,7 @@ from usecases.model.create import Create
 from usecases.model.get_all import GetAll
 
 # Create a namespace
-model_ns = Namespace("models", description="Cities management operations")
+model_ns = Namespace("models", description="Models management operations")
 logger = Log()
 create_model_handler = Create()
 get_all_models_handler = GetAll()
