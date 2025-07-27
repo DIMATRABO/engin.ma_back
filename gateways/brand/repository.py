@@ -26,5 +26,5 @@ class Repository:
     
     def get_all(self, session)->List[Brand]:
         '''Retrieve all brand entities from the database.'''
-        cities = session.query(BrandEntity).all()
-        return [citie.to_domain() for citie in cities]
+        brands = session.query(BrandEntity).all()
+        return [citie.to_domain() for citie in brands]

@@ -18,7 +18,7 @@ logger = Log()
 create_city_handler = Create()
 get_all_cities_handler = GetAll()
 
-@city_ns.route('/')
+@city_ns.route('')
 class CreateEndpoint(Resource):
     '''Endpoint to create a new city.'''
     @city_ns.doc(security="Bearer Auth")

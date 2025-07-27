@@ -7,7 +7,7 @@ Base = declarative_base()
 
 class BrandEntity(Base):
     ''' Brandentity class representing a brand in the database. '''
-    __tablename__ = "cities"
+    __tablename__ = "equipment_brands"
 
     id = Column("id", String, primary_key=True)
     name = Column("name", String, nullable= False)

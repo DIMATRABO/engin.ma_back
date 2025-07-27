@@ -26,5 +26,5 @@ class Repository:
     
     def get_all(self, session)->List[Model]:
         '''Retrieve all model entities from the database.'''
-        cities = session.query(ModelEntity).all()
-        return [citie.to_domain() for citie in cities]
+        models = session.query(ModelEntity).all()
+        return [citie.to_domain() for citie in models]

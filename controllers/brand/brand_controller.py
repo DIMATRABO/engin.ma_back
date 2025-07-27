@@ -16,9 +16,9 @@ from usecases.brand.get_all import GetAll
 brand_ns = Namespace("brands", description="Cities management operations")
 logger = Log()
 create_brand_handler = Create()
-get_all_cities_handler = GetAll()
+get_all_brands_handler = GetAll()
 
-@brand_ns.route('/')
+@brand_ns.route('')
 class CreateEndpoint(Resource):
     '''Endpoint to create a new brand.'''
     @brand_ns.doc(security="Bearer Auth")
@@ -33,7 +33,7 @@ class CreateEndpoint(Resource):
     
     @handle_exceptions
     def get(self):
-        '''Get all cities'''
-        cities = get_all_cities_handler.handle()
-        return [brand.to_dict() for brand in cities]
+        '''Get all brands'''
+        brands = get_all_brands_handler.handle()
+        return [brand.to_dict() for brand in brands]
     

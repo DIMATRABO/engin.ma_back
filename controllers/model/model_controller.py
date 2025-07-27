@@ -16,9 +16,9 @@ from usecases.model.get_all import GetAll
 model_ns = Namespace("models", description="Cities management operations")
 logger = Log()
 create_model_handler = Create()
-get_all_cities_handler = GetAll()
+get_all_models_handler = GetAll()
 
-@model_ns.route('/')
+@model_ns.route('')
 class CreateEndpoint(Resource):
     '''Endpoint to create a new model.'''
     @model_ns.doc(security="Bearer Auth")
@@ -33,7 +33,7 @@ class CreateEndpoint(Resource):
     
     @handle_exceptions
     def get(self):
-        '''Get all cities'''
-        cities = get_all_cities_handler.handle()
-        return [model.to_dict() for model in cities]
+        '''Get all models'''
+        models = get_all_models_handler.handle()
+        return [model.to_dict() for model in models]
     
