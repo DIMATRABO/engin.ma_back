@@ -1,8 +1,10 @@
 ''' Repository for user management operations.'''
 import uuid
+from typing import List
 from entities.city_entity import CityEntity
 from models.city import City
 from gateways.log import Log
+
 
 logger = Log()
 class Repository:
@@ -21,3 +23,8 @@ class Repository:
         session.add(city_entity)
         logger.debug("City saved successfully")
         return city_entity.to_domain()
+    
+    def get_all(self, session)->List[City]:
+        '''Retrieve all city entities from the database.'''
+        cities = session.query(CityEntity).all()
+        return [citie.to_domain() for citie in cities]
