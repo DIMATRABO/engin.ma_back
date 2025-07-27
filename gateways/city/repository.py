@@ -18,6 +18,6 @@ class Repository:
         city_entity = CityEntity()
         city_entity.from_domain(model=city)
         city_entity.id = str(uuid.uuid4())
-        session.add(city)
+        session.add(city_entity)
         logger.debug("City saved successfully")
         return city_entity.to_domain()
