@@ -50,5 +50,5 @@ def register_namespaces(api):
     api.add_namespace(city_ns, path="/cities")
     api.add_namespace(brand_ns, path="/brands")
     api.add_namespace(model_ns, path="/models")
-    api.add_namespace(equipment_image_ns, path="/equipment_images")
+    api.add_namespace(equipment_image_ns, path="/equipment-images")
     #api.add_namespace(auth_ns, path="/auth")
