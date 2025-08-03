@@ -9,6 +9,7 @@ class City:
 
     @classmethod
     def from_dict(cls, self, d):
+        '''Create a City instance from a dictionary.'''
         return self(**d)
 
     def to_dict(self):
