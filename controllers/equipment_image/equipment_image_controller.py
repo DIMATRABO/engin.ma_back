@@ -40,7 +40,7 @@ class EquipmentImageEndpoint(Resource):
     def post(self):
         '''Create a new equipment image (admin only)'''
         form = CreateImageForm(request.get_json())
-        return create_image_handler.handle(form.to_domain()).to_dict()
+        return create_image_handler.handle(form.to_domain())
     
 
     @equipment_image_ns.route('')
