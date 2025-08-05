@@ -5,11 +5,9 @@ from dto.input.validator import required, valid_string
 
 class CreateImageForm:
     ''' Form to create a equipment image '''
-    def __init__(self, form_data=None, file_url=None):
-        if form_data is not None:
-            self.equipment_id = required("equipment_id", form_data)
-            self.equipment_id = valid_string(self.equipment_id)
-
+    def __init__(self, equipment_id=None, file_url=None):
+        ''' Initializes the form with equipment ID and file URL. '''
+        self.equipment_id = valid_string(equipment_id)
         self.image_url = file_url  # generated in backend, not sent by client
 
     def to_domain(self):
