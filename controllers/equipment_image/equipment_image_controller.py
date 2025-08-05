@@ -47,11 +47,12 @@ upload_parser.add_argument('equipment_id', type=str, location='form', required=T
 
 
 def allowed_file(filename):
+    '''Check if the uploaded file is allowed based on its extension'''
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @equipment_image_ns.route('')
 class EquipmentImageListEndpoint(Resource):
-
+    '''List and upload equipment images'''
     @equipment_image_ns.expect(upload_parser)
     @equipment_image_ns.doc(security="Bearer Auth")
     @handle_exceptions
@@ -70,11 +71,15 @@ class EquipmentImageListEndpoint(Resource):
             file_path = os.path.join(UPLOAD_FOLDER, filename)
             file.save(file_path)
 
-            # Save image URL or path in DB
-            form = CreateImageForm({
-                "equipment_id": equipment_id,
-                "url": f"/{file_path}"  # or full URL depending on your frontend
-            })
+            # URL (adjust if hosted elsewhere or served statically)
+            file_url = f"/{file_path}"
+
+            # Now use DTO
+            form = CreateImageForm(
+                form_data={"equipment_id": equipment_id},
+                file_url=file_url
+            )
+
             return create_image_handler.handle(form.to_domain())
 
         return {"error": "Invalid file type"}, 400
