@@ -76,7 +76,7 @@ class EquipmentImageListEndpoint(Resource):
 
             # Now use DTO
             form = CreateImageForm(equipment_id=equipment_id,file_url=file_url)
-            return create_image_handler.handle(form.to_domain())
+            return create_image_handler.handle(form.to_domain()).to_dict()
 
         return {"error": "Invalid file type"}, 400
 
