@@ -1,8 +1,6 @@
 ''' This module defines the UserRoleEntity class, which represents a user role in the database.'''
 from sqlalchemy import Column, String
-from sqlalchemy.ext.declarative import declarative_base
-
-Base = declarative_base()
+from entities.declarative_base_factory import Base
 
 class UserRoleEntity(Base):
     ''' UserRoleEntity class representing a user role in the database. '''

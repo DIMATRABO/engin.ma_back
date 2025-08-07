@@ -1,10 +1,10 @@
 ''' This module defines the EquipmentImageEntity class representing equipment images in the database. '''
 
 from sqlalchemy import Column, String, ForeignKey
-from sqlalchemy.ext.declarative import declarative_base
 from models.equipment_image import EquipmentImage
+from entities.declarative_base_factory import Base
 
-Base = declarative_base()
+
 
 class EquipmentImageEntity(Base):
     ''' EquipmentImageEntity class representing an image associated with an equipment. '''

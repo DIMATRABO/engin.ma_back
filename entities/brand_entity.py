@@ -1,9 +1,8 @@
 ''' This module defines the Brandentity class in the database. '''
 from sqlalchemy import Column, String
-from sqlalchemy.ext.declarative import declarative_base
 from models.brand import Brand
+from entities.declarative_base_factory import Base
 
-Base = declarative_base()
 
 class BrandEntity(Base):
     ''' Brandentity class representing a brand in the database. '''

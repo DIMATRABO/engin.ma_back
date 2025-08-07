@@ -1,9 +1,8 @@
 ''' This module defines the Cityentity class in the database. '''
 from sqlalchemy import Column, String
-from sqlalchemy.ext.declarative import declarative_base
 from models.city import City
 
-Base = declarative_base()
+from entities.declarative_base_factory import Base
 
 class CityEntity(Base):
     ''' Cityentity class representing a city in the database. '''

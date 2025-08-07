@@ -1,10 +1,8 @@
 ''' This module defines the EquipmentEntity class representing an equipment listing in the database. '''
 from sqlalchemy import Column, String, Integer, Text, Numeric, Boolean, Float, ForeignKey, TIMESTAMP, func
-from sqlalchemy.ext.declarative import declarative_base
 from models.equipment import Equipment  # Your domain model
-from typing import Optional
 
-Base = declarative_base()
+from entities.declarative_base_factory import Base
 
 class EquipmentEntity(Base):
     ''' EquipmentEntity class representing a construction machine. '''

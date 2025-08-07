@@ -1,9 +1,8 @@
 ''' This module defines the Modelentity class in the database. '''
 from sqlalchemy import Column, String
-from sqlalchemy.ext.declarative import declarative_base
 from models.model import Model
+from entities.declarative_base_factory import Base
 
-Base = declarative_base()
 
 class ModelEntity(Base):
     ''' Modelentity class representing a model in the database. '''
