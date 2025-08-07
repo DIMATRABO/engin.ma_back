@@ -8,12 +8,12 @@ class EquipmentImage:
     equipment_id: str
     url: str
 
-@classmethod
-def from_dict(cls, self, d):
-    '''Create an EquipmentImage instance from a dictionary.'''
-    return self(**d)
+    @classmethod
+    def from_dict(cls, self, d):
+        '''Create an EquipmentImage instance from a dictionary.'''
+        return self(**d)
 
-def to_dict(self):
-    '''Convert the equipment image instance to a dictionary.'''
-    return asdict(self)
+    def to_dict(self):
+        '''Convert the equipment image instance to a dictionary.'''
+        return asdict(self)
 
