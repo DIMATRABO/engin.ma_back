@@ -44,6 +44,4 @@ def upgrade():
 
 def downgrade():
     '''Remove admin user and roles.'''
-    op.execute("DELETE FROM user_roles WHERE role = 'ADMIN'")
-    op.execute("DELETE FROM users WHERE email = 'admin@engin.ma'")
-    op.execute("DELETE FROM roles WHERE name IN ('ADMIN', 'CLIENT', 'OWNER', 'PILOT')")
+    pass
