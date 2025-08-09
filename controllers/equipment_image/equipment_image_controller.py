@@ -1,11 +1,10 @@
 ''' equipment image controller '''
-from flask import request
+from flask import request, send_from_directory
 from flask_restx import Namespace, Resource, reqparse
 from flask_jwt_extended import jwt_required
 from werkzeug.datastructures import FileStorage
 import os
 from datetime import datetime
-
 
 from gateways.log import Log
 from decorations.exception_handling import handle_exceptions
@@ -43,7 +42,6 @@ delete_image_handler = Delete()
 upload_parser = reqparse.RequestParser()
 upload_parser.add_argument('file', location='files', type=FileStorage, required=True, help='Image file')
 upload_parser.add_argument('equipment_id', type=str, location='form', required=True)
-
 
 
 def allowed_file(filename):
@@ -121,3 +119,15 @@ class EquipmentImageDeleteEndpoint(Resource):
             return {"message": "Image deleted successfully"}
         else:
             return {"message": "Image not found"}
+        
+
+@equipment_image_ns.route("/uploads/<path:filename>")
+class ExposeUploadedFiles(Resource):
+    '''Endpoint to expose uploaded files for download'''
+    @equipment_image_ns.doc(security="Bearer Auth", params={'path': 'Path to the uploaded file'})
+    @handle_exceptions
+    @jwt_required()
+    @check_permission("ADMIN")
+    def get(self, filename):
+        '''Get an uploaded file by filename'''
+        return send_from_directory(UPLOAD_FOLDER, filename)
