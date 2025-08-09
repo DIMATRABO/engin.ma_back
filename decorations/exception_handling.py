@@ -1,4 +1,5 @@
 from functools import wraps
+from flask import Response
 from exceptions.exception import *
 from flask_jwt_extended.exceptions import NoAuthorizationError
 from gateways.log import Log
@@ -13,6 +14,8 @@ def handle_exceptions(endpoint_function):
     def wrapper(*args, **kwargs):
         try:
             result = endpoint_function(*args, **kwargs)
+            if isinstance(result, Response):
+                return result
             return result, 200
 
         except UsernameAlreadyExists as e:
