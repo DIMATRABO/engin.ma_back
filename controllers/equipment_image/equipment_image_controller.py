@@ -130,5 +130,8 @@ class ExposeUploadedFiles(Resource):
     @check_permission("ADMIN")
     def get(self, filename):
         '''Get an uploaded file by filename'''
-        logger.log(f"Request to download file: {UPLOAD_FOLDER}/{filename}")
-        return send_from_directory(UPLOAD_FOLDER, filename)
+        BASE_DIR = os.path.dirname(os.path.abspath(__file__)) 
+        UPLOAD_FOLDER_1 = os.path.join(BASE_DIR, "..", "uploads","equipment_images")  # absolute path
+
+        logger.log(f"Request to download file: {UPLOAD_FOLDER_1}/{filename}")
+        return send_from_directory(UPLOAD_FOLDER_1, filename)
