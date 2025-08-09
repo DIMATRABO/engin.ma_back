@@ -124,7 +124,7 @@ class EquipmentImageDeleteEndpoint(Resource):
 @equipment_image_ns.route("/uploads/<path:filename>")
 class ExposeUploadedFiles(Resource):
     '''Endpoint to expose uploaded files for download'''
-    @equipment_image_ns.doc(security="Bearer Auth", params={'path': 'Path to the uploaded file'})
+    @equipment_image_ns.doc(security="Bearer Auth", params={'filename': 'Path to the uploaded file'})
     @handle_exceptions
     @jwt_required()
     @check_permission("ADMIN")
