@@ -64,6 +64,8 @@ services:
       - JWT_EXPIRATION=120 
       - JWT_REFRESH_EXPIRATION=2592000
       - ENABLE_SWAGGER_UI=True #False to disable Swagger UI
+      - EMAIL_NOTIFICATION_SENDER=naderennawader@gmail.com
+      - EMAIL_NOTIFICATION_PASSWORD=zlhm dutz lomr tmby
 
     volumes:
       - ./uploads:/Enginchantier/uploads

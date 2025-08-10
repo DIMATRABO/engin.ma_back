@@ -28,3 +28,5 @@ class ConfigHandler :
         self.jwt_expiration = int(os.getenv('JWT_EXPIRATION'))
         self.jwt_refresh_expiration = int(os.getenv('JWT_REFRESH_EXPIRATION'))
         self.enable_swagger_ui = os.getenv('ENABLE_SWAGGER_UI', 'False').lower() == 'true'
+        self.email_notification_sender = os.getenv('EMAIL_NOTIFICATION_SENDER')
+        self.email_notification_password = os.getenv('EMAIL_NOTIFICATION_PASSWORD')

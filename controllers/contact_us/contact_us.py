@@ -19,5 +19,4 @@ class ContactUsController(Resource):
     def post(self):
         ''' Handle contact us form submission.'''
         form = ContactUsForm(request.get_json())
-        contact_use_case.handle(form)
-        return {"message": "Your message has been sent successfully."}
+        return contact_use_case.handle(form)
