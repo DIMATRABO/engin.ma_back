@@ -1,6 +1,6 @@
 ''' Contact Us API Controller'''
 from flask import request
-from flask_restx import Namespace
+from flask_restx import Namespace, Resource
 from decorations.exception_handling import handle_exceptions
 
 from dto.input.contact_us.contact_us_form import ContactUsForm
@@ -11,7 +11,7 @@ contact_ns = Namespace("contact", description="Contact us operations")
 contact_use_case = ContactUsUseCase()
 
 @contact_ns.route('')
-class ContactUsController:
+class ContactUsController(Resource):
     ''' Contact Us endpoint.'''
     
     @contact_ns.expect(ContactUsForm.api_model(contact_ns))
