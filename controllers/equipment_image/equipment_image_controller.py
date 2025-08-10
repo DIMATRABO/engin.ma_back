@@ -34,7 +34,6 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 
 create_image_handler = Create()
-get_all_images_handler = GetAll()
 get_all_by_equipment_id_handler = GetAllByEquipmentId()
 delete_image_handler = Delete()
 
@@ -77,15 +76,6 @@ class EquipmentImageListEndpoint(Resource):
             return create_image_handler.handle(form.to_domain()).to_dict()
 
         return {"error": "Invalid file type"}, 400
-
-    @equipment_image_ns.doc(security="Bearer Auth")
-    @handle_exceptions
-    @jwt_required()
-    @check_permission("ADMIN")
-    def get(self):
-        '''Get all equipment images'''
-        images = get_all_images_handler.handle()
-        return [image.to_dict() for image in images]
 
 
 @equipment_image_ns.route('/by-equipment/<string:equipment_id>')
