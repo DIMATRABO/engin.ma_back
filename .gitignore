@@ -1,6 +1,7 @@
 *.pyc
 *.yml
 *.json
+uploads/
 ### VS Code ###
 .vscode/
 .env
