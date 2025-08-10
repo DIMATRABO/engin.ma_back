@@ -10,15 +10,49 @@ class SendEmail:
         self.sender_email = config.email_notification_sender
         self.sender_password = config.email_notification_password
 
-    def handle(self, to_email, subject, body):
-        """Send an email."""
+    def handle(self, to_email, subject, body, is_html=False):
+        """Send an email with plain text or HTML."""
         msg = MIMEMultipart()
         msg["From"] = self.sender_email
         msg["To"] = to_email
         msg["Subject"] = subject
-        msg.attach(MIMEText(body, "plain"))
 
-
+        # If HTML, wrap in basic styling
+        if is_html:
+            html_body = f"""
+            <html>
+            <head>
+                <style>
+                    body {{
+                        font-family: Arial, sans-serif;
+                        background-color: #f9f9f9;
+                        padding: 20px;
+                        color: #333;
+                    }}
+                    .container {{
+                        background-color: #ffffff;
+                        padding: 20px;
+                        border-radius: 8px;
+                        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                    }}
+                    h2 {{
+                        color: #007BFF;
+                    }}
+                    p {{
+                        line-height: 1.6;
+                    }}
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    {body}
+                </div>
+            </body>
+            </html>
+            """
+            msg.attach(MIMEText(html_body, "html"))
+        else:
+            msg.attach(MIMEText(body, "plain"))
         # Connect to Gmail SMTP server
         server = smtplib.SMTP("smtp.gmail.com", 587)
         server.starttls()  # Upgrade to secure connection

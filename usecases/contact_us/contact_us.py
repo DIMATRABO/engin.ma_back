@@ -11,9 +11,20 @@ class ContactUsUseCase:
     def handle(self, form: ContactUsForm) -> None:
         """ Process the contact us form submission."""
         logger.log(f"new message from {form.name} // phone number : {form.phone} ({form.email}): {form.message}")
-        if email_sender.handle('aitbenhaanass@gmail.com', 
-                               'New Contact Us Message', 
-                               f"new message from {form.name} // phone number : {form.phone} ({form.email}): {form.message}"):
+        html_message = f"""
+        <h2>New Contact Us Message</h2>
+        <p><strong>From:</strong> {form.name}</p>
+        <p><strong>Phone:</strong> {form.phone}</p>
+        <p><strong>Email:</strong> {form.email}</p>
+        <p><strong>Message:</strong> {form.message}</p>
+        """
+
+        if email_sender.handle(
+            "aitbenhaanass@gmail.com", 
+            "New Contact Us Message", 
+            html_message,
+            is_html=True
+        ):
             return {"message": "Your message has been sent successfully."}
         else:
             raise Exception("Failed to send email notification.")
