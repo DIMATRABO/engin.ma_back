@@ -17,7 +17,6 @@ from dto.input.equipment_image.delete_image_form import DeleteImageForm
 
 
 from usecases.equipment_image.get_all_by_equipment_id import GetAllByEquipmentId
-from usecases.equipment_image.get_all import GetAll
 from usecases.equipment_image.create import Create
 from usecases.equipment_image.delete import Delete
 
@@ -47,7 +46,7 @@ def allowed_file(filename):
     '''Check if the uploaded file is allowed based on its extension'''
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-@equipment_image_ns.route('')
+@equipment_image_ns.route('/add')
 class EquipmentImageListEndpoint(Resource):
     '''List and upload equipment images'''
     @equipment_image_ns.expect(upload_parser)
