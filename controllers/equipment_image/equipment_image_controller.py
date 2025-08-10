@@ -92,17 +92,18 @@ class EquipmentImageByEquipmentEndpoint(Resource):
         return [image.to_dict() for image in images]
 
 
-@equipment_image_ns.route('/<string:image_id>')
+@equipment_image_ns.route('')
 class EquipmentImageDeleteEndpoint(Resource):
     '''Delete an equipment image'''
-
-    @equipment_image_ns.doc(security="Bearer Auth", params={'image_id': 'ID of the image to delete'})
+    @equipment_image_ns.expect(DeleteImageForm.api_model(equipment_image_ns))
+    @equipment_image_ns.doc(security="Bearer Auth")
     @handle_exceptions
     @jwt_required()
     @check_permission("ADMIN")
-    def delete(self, image_id):
+    def delete(self):
         '''Delete an equipment image by ID (admin only)'''
-        if delete_image_handler.handle(image_id):
+        form = DeleteImageForm(request.get_json())
+        if delete_image_handler.handle(form.to_domain()):
             return {"message": "Image deleted successfully"}
         else:
             return {"message": "Image not found"}
