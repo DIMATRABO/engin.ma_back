@@ -102,15 +102,13 @@ class EquipmentImageDeleteEndpoint(Resource):
     @check_permission("ADMIN")
     def delete(self, image_id):
         '''Delete an equipment image by ID (admin only)'''
-        form = DeleteImageForm(request.get_json())
-        form.image_id = image_id
-        if delete_image_handler.handle(form.to_domain()):
+        if delete_image_handler.handle(image_id):
             return {"message": "Image deleted successfully"}
         else:
             return {"message": "Image not found"}
         
 
-@equipment_image_ns.route("/uploads/<path:filename>")
+@equipment_image_ns.route("/<path:filename>")
 class ExposeUploadedFiles(Resource):
     '''Endpoint to expose uploaded files for download'''
     @equipment_image_ns.doc(security="Bearer Auth", params={'filename': 'Path to the uploaded file'})
