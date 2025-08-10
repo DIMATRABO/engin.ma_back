@@ -107,7 +107,6 @@ class EquipmentImageDeleteEndpoint(Resource):
     '''Delete an equipment image'''
 
     @equipment_image_ns.doc(security="Bearer Auth", params={'image_id': 'ID of the image to delete'})
-    @equipment_image_ns.expect(DeleteImageForm.api_model(equipment_image_ns))
     @handle_exceptions
     @jwt_required()
     @check_permission("ADMIN")
