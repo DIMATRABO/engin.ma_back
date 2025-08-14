@@ -12,23 +12,22 @@ from typing import Optional, List
 
 @dataclass
 class EquipmentResponseForm:
-    id: str = None
-    owner: Optional[User]
-    pilot: Optional[User]
-    brand: Brand
-    model: Model
-    model_year: Optional[int]
-    construction_year: Optional[int]
-    date_of_customs_clearance: Optional[int]
-    city: City
-    title: str
-    description: str
-    price_per_day: float
+    id: Optional[str] = None
+    owner: Optional[User] = None
+    pilot: Optional[User] = None
+    brand: Optional[Brand] = None
+    model: Optional[Model] = None
+    model_year: Optional[int] = None
+    construction_year: Optional[int] = None
+    date_of_customs_clearance: Optional[int] = None
+    city: Optional[City] = None
+    title: Optional[str] = None
+    description: Optional[str] = None
+    price_per_day: Optional[float] = None
     is_available: bool = True
     rating_average: float = 0.0
     fields_of_activity: Optional[FieldsOfActivity] = None
     images: List[EquipmentImage] = None
-
 
     def __init__(self, equipment: Equipment):
         self.id = equipment.id
