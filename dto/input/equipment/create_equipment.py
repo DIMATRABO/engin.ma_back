@@ -29,13 +29,14 @@ class CreateEquipment:
         self.construction_year = valid_int(self.construction_year)
 
         self.date_of_customs_clearance = required("date_of_customs_clearance", json_data)
-        self.date_of_customs_clearance = valid_datetime(self.date_of_customs_clearance,format="%Y-%m-%d")
+        #self.date_of_customs_clearance = valid_datetime(self.date_of_customs_clearance,format="%Y-%m-%d")
+        self.date_of_customs_clearance = valid_int(self.date_of_customs_clearance)
 
         self.city_id = required("city_id", json_data)
         self.city_id = valid_string(self.city_id)
 
         self.title = required("title", json_data)
-        self.title = valid_string(self.title)   
+        self.title = valid_string(self.title)
 
         self.description = required("description", json_data)
         self.description = valid_string(self.description)
