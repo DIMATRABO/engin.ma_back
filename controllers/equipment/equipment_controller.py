@@ -5,9 +5,16 @@ from flask_jwt_extended import jwt_required
 from decorations.exception_handling import handle_exceptions
 
 from dto.input.equipment.create_equipment import CreateEquipment
+from dto.input.pagination.equipment_filter_form import EquipmentFilterForm
 
 from decorations.exception_handling import handle_exceptions
 from decorations.check_permission import check_permission
+
+from usecases.equipment.create import Create as CreateEquipmentUseCase
+from usecases.equipment.get_all_paginated import GetAllEquipmentsPaginated as GetAllEquipmentsUseCase
+
+equipment_creator = CreateEquipmentUseCase()
+equipments_getter = GetAllEquipmentsUseCase()
 
 equipments_ns = Namespace("equipments", description="equipments operations")
 
@@ -23,4 +30,18 @@ class EquipmentController(Resource):
     @check_permission("ADMIN")
     def post(self):
         ''' Handle equipment creation.'''
-        return {"message":"not implemented yet"}
+        return equipment_creator.handle(CreateEquipment(request.json).to_domain())
+
+@equipments_ns.route('/filter')
+class EquipmentFilterController(Resource):
+    ''' Endpoint to filter and paginate equipments. '''
+
+    @equipments_ns.expect(EquipmentFilterForm.api_model(equipments_ns))
+    @equipments_ns.doc(security="Bearer Auth")
+    @handle_exceptions
+    @jwt_required()
+    @check_permission("ADMIN")  # or "CLIENT", "OWNER", depending on your rules
+    def post(self):
+        ''' Retrieve equipments based on filters and pagination. '''
+        form = EquipmentFilterForm(request.json)
+        return equipments_getter.handle(form)

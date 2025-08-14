@@ -1,0 +1,62 @@
+'''EquipmentResponseForm Data Transfer Object'''
+from dataclasses import dataclass, asdict
+from datetime import datetime
+from models.equipment import Equipment
+from models.user import User
+from models.brand import Brand
+from models.model import Model
+from models.city import City
+from models.fields_of_activity import FieldsOfActivity
+from models.equipment_image import EquipmentImage
+from typing import Optional, List
+
+@dataclass
+class EquipmentResponseForm:
+    id: str = None
+    owner: Optional[User]
+    pilot: Optional[User]
+    brand: Brand
+    model: Model
+    model_year: Optional[int]
+    construction_year: Optional[int]
+    date_of_customs_clearance: Optional[int]
+    city: City
+    title: str
+    description: str
+    price_per_day: float
+    is_available: bool = True
+    rating_average: float = 0.0
+    fields_of_activity: Optional[FieldsOfActivity] = None
+    images: List[EquipmentImage] = None
+
+
+    def __init__(self, equipment: Equipment):
+        self.id = equipment.id
+        self.owner = equipment.owner
+        self.pilot = equipment.pilot
+        self.brand = equipment.brand
+        self.model = equipment.model
+        self.model_year = equipment.model_year
+        self.construction_year = equipment.construction_year
+        self.date_of_customs_clearance = equipment.date_of_customs_clearance
+        self.city = equipment.city
+        self.title = equipment.title
+        self.description = equipment.description
+        self.price_per_day = equipment.price_per_day
+        self.is_available = equipment.is_available
+        self.rating_average = equipment.rating_average
+        self.fields_of_activity = equipment.fields_of_activity
+        self.images = equipment.images if equipment.images else []
+        
+        # Convert datetime to ISO format if present
+        if isinstance(equipment.created_at, datetime):
+            self.birthday = equipment.created_at.isoformat()
+        else:
+            self.birthday = None
+
+    @classmethod
+    def from_dict(self, d):
+        return self(**d)
+    
+    def to_dict(self):
+        return asdict(self)

@@ -1,6 +1,11 @@
 ''' form to create an equipment '''
 from flask_restx import Namespace, fields
+from models.equipment import Equipment
+from models.user import User
+from models.brand import Brand
 from models.model import Model
+from models.city import City
+from models.fields_of_activity import FieldsOfActivity
 from dto.input.validator import required, valid_string, valid_int, valid_datetime, valid_float
 
 class CreateEquipment:
@@ -24,7 +29,7 @@ class CreateEquipment:
         self.construction_year = valid_int(self.construction_year)
 
         self.date_of_customs_clearance = required("date_of_customs_clearance", json_data)
-        self.date_of_customs_clearance = valid_datetime(self.date_of_customs_clearance)
+        self.date_of_customs_clearance = valid_datetime(self.date_of_customs_clearance,format="%Y-%m-%d")
 
         self.city_id = required("city_id", json_data)
         self.city_id = valid_string(self.city_id)
@@ -50,23 +55,23 @@ class CreateEquipment:
         """Converts the form data to an Equipment domain model."""
         return Equipment(
             id=None,
-            owner_id=self.owner_id,
-            pilot_id=self.pilot_id,
-            brand_id=self.brand_id,
-            model_id=self.model_id,
+            owner=User(id=self.owner_id),
+            pilot=User(id=self.pilot_id),
+            brand=Brand(id=self.brand_id),
+            model=Model(id=self.model_id),
             model_year=self.model_year,
             construction_year=self.construction_year,
             date_of_customs_clearance=self.date_of_customs_clearance,
-            city_id=self.city_id,
+            city=City(id=self.city_id),
             title=self.title,
             description=self.description,
             price_per_day=self.price_per_day,
             is_available=self.is_available,
             rating_average=self.rating_average,
-            fields_of_activity=self.fields_of_activity,
-            images=[], 
-            created_at=None  # This will be set in the service layer
+            fields_of_activity=FieldsOfActivity.from_string(self.fields_of_activity),
         )
+
+
     
     @staticmethod
     def api_model(namespace: Namespace):

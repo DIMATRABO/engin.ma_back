@@ -1,5 +1,5 @@
 from flask_restx import Namespace, fields
-from dto.input.validator import required, valid_string
+from dto.input.validator import required, valid_string, valid_email_format, valid_phone_format
 
 class ContactUsForm:
     """
@@ -11,10 +11,10 @@ class ContactUsForm:
         self.name = valid_string(self.name)
 
         self.phone = required("phone", json_data)
-        self.phone = valid_string(self.phone)
+        self.phone = valid_phone_format(self.phone)
 
         self.email = required("email", json_data)
-        self.email = valid_string(self.email)
+        self.email = valid_email_format(self.email)
 
         self.message = required("message", json_data)
         self.message = valid_string(self.message)

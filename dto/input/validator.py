@@ -36,6 +36,13 @@ def valid_email_format(email):
         if not re.match(email_pattern, email):
             raise ValidationException("invalid email format")
         return email
+
+def valid_phone_format(phone):
+    phone_pattern = r'^0[567]\d{8}$'
+    if not re.match(phone_pattern, phone):
+        raise ValidationException("invalid phone format")
+    return phone
+
         
 def valid_password(password):
           if(  len(password) <8 ):
