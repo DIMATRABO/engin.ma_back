@@ -84,7 +84,7 @@ class CreateEquipment:
             "model_id": fields.String(required=True, description="ID of the model"),
             "model_year": fields.Integer(required=True, description="Year of the model"),
             "construction_year": fields.Integer(required=True, description="Year of construction"),
-            "date_of_customs_clearance": fields.DateTime(required=True, description="Date of customs clearance"),
+            "date_of_customs_clearance": fields.Integer(required=True, description="Date of customs clearance"),
             "city_id": fields.String(required=True, description="ID of the city"),
             "title": fields.String(required=True, description="Title of the equipment"),
             "description": fields.String(required=True, description="Description of the equipment"),
