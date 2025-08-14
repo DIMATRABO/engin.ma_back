@@ -44,4 +44,4 @@ class EquipmentFilterController(Resource):
     def post(self):
         ''' Retrieve equipments based on filters and pagination. '''
         form = EquipmentFilterForm(request.json)
-        return equipments_getter.handle(form)
+        return equipments_getter.handle(form).to_dict()
