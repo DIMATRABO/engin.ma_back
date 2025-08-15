@@ -41,7 +41,7 @@ class GetAllEquipmentsPaginated:
                     equipment.model = model_getter.handle(equipment.model.id) if equipment.model else None
                     equipment.owner = user_getter.handle(equipment.owner.id) if equipment.owner else None
                     equipment.pilot = user_getter.handle(equipment.pilot.id) if equipment.pilot else None
-                    equipment.images = images_getter.handle(equipment.id) if equipment.images else []
+                    equipment.images = images_getter.handle(equipment.id)
                     equipments_to_return.append(EquipmentResponseForm(equipment))
                 equipments.data = equipments_to_return
                 return equipments
