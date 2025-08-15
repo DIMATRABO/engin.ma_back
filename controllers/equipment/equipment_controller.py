@@ -6,6 +6,7 @@ from decorations.exception_handling import handle_exceptions
 
 from dto.input.equipment.create_equipment import CreateEquipment
 from dto.input.pagination.equipment_filter_form import EquipmentFilterForm
+from dto.output.equipment.equipment_response_form import EquipmentResponseForm
 
 from decorations.exception_handling import handle_exceptions
 from decorations.check_permission import check_permission
@@ -30,7 +31,7 @@ class EquipmentController(Resource):
     @check_permission("ADMIN")
     def post(self):
         ''' Handle equipment creation.'''
-        return equipment_creator.handle(CreateEquipment(request.json).to_domain())
+        return EquipmentResponseForm(equipment_creator.handle(CreateEquipment(request.json).to_domain())).to_dict()
 
 @equipments_ns.route('/filter')
 class EquipmentFilterController(Resource):
