@@ -28,3 +28,12 @@ class Repository:
         '''Retrieve all brand entities from the database.'''
         brands = session.query(BrandEntity).all()
         return [citie.to_domain() for citie in brands]
+    
+    def get_by_id(self, session, id_: str) -> Brand:
+        '''Retrieve a brand entity by its ID from the database.'''
+        logger.debug(f"Retrieving brand with ID: {id_}")
+        brand_entity = session.query(BrandEntity).filter(BrandEntity.id == id_).first()
+        if not brand_entity:
+            logger.error(f"Brand with ID {id_} not found")
+            raise ValueError(f"Brand with ID {id_} not found")
+        return brand_entity.to_domain()

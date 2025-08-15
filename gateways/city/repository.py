@@ -28,3 +28,12 @@ class Repository:
         '''Retrieve all city entities from the database.'''
         cities = session.query(CityEntity).all()
         return [citie.to_domain() for citie in cities]
+    
+    def get_by_id(self, session, id_: str) -> City:
+        '''Retrieve a city entity by its ID from the database.'''
+        logger.debug(f"Retrieving city with ID: {id_}")
+        city_entity = session.query(CityEntity).filter_by(id=id_).first()
+        if not city_entity:
+            logger.error(f"City with ID {id_} not found")
+            return None
+        return city_entity.to_domain()

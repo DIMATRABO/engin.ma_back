@@ -30,6 +30,13 @@ class Repository:
         user_entity.created_at = datetime.now()
         session.add(user_entity)
         return user_entity.to_domain()
+    
+    def get_user_by_id(self, session , id_:str) -> User:
+        '''Retrieve a user by id from the database.'''
+        user = session.query(UserEntity).filter(UserEntity.id == id_).first()
+        if user is None:
+            return None
+        return user.to_domain()
           
     def get_user_by_username(self, session , username:str) -> User:
         '''Retrieve a user by username from the database.'''

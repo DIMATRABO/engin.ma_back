@@ -28,3 +28,12 @@ class Repository:
         '''Retrieve all model entities from the database.'''
         models = session.query(ModelEntity).all()
         return [citie.to_domain() for citie in models]
+    
+    def get_by_id(self, session, id_: str) -> Model:
+        '''Retrieve a model entity by its ID.'''
+        logger.debug(f"Retrieving model by id: {id_}")
+        model_entity = session.query(ModelEntity).filter(ModelEntity.id == id_).first()
+        if not model_entity:
+            logger.error(f"Model with id {id_} not found")
+            raise ValueError(f"Model with id {id_} not found")
+        return model_entity.to_domain()

@@ -1,7 +1,23 @@
 ''' Use Case: Get all equipments with pagination support'''
 from dto.input.pagination.equipment_filter_form import EquipmentFilterForm
+from dto.output.equipment.equipment_response_form import EquipmentResponseForm
+from dto.output.equipment.equipments_paginated import EquipmentsPaginated
 from gateways.dataBaseSession.session_context import SessionContext
 from gateways.equipment.repository import Repository as EquipmentRepo
+
+from usecases.city.get_by_id import GetById as GetCityById
+from usecases.brand.get_by_id import GetById as GetBrandById
+from usecases.user.details import Details as GetUserById
+from usecases.equipment_image.get_all_by_equipment_id import GetAllByEquipmentId
+
+
+
+city_getter = GetCityById()
+brqnd_getter = GetBrandById()
+user_getter = GetUserById()
+images_getter = GetAllByEquipmentId()
+
+
 
 
 class GetAllEquipmentsPaginated:
@@ -11,7 +27,18 @@ class GetAllEquipmentsPaginated:
         self.equipment_repo=EquipmentRepo()
         self.session_context = SessionContext()
 
-    def handle(self, input_form : EquipmentFilterForm):
+    def handle(self, input_form : EquipmentFilterForm) -> EquipmentsPaginated:
         ''' Handles the retrieval of all equipments with pagination.'''
         with self.session_context as session:
-                return self.equipment_repo.get_all_paginated(session,input_form)    
+                equipments = self.equipment_repo.get_all_paginated(session,input_form)
+                equipments_to_return = []
+                for equipment in equipments.data:
+                    
+                    equipment.city = city_getter.handle(equipment.city.id) if equipment.city else None
+                    equipment.brand = brqnd_getter.handle(equipment.brand.id) if equipment.brand else None
+                    equipment.owner = user_getter.handle(equipment.owner.id) if equipment.owner else None
+                    equipment.pilot = user_getter.handle(equipment.pilot.id) if equipment.pilot else None
+                    equipment.images = images_getter.handle(equipment.id) if equipment.images else []
+                    equipments_to_return.append(EquipmentResponseForm(equipment))
+                equipments.data = equipments_to_return
+                return equipments

@@ -2,19 +2,19 @@
 from dataclasses import dataclass, asdict
 from datetime import datetime
 from models.equipment import Equipment
-from models.user import User
 from models.brand import Brand
 from models.model import Model
 from models.city import City
 from models.fields_of_activity import FieldsOfActivity
 from models.equipment_image import EquipmentImage
 from typing import Optional, List
+from dto.output.user.user_response_form import UserResponseForm
 
 @dataclass
 class EquipmentResponseForm:
     id: Optional[str] = None
-    owner: Optional[User] = None
-    pilot: Optional[User] = None
+    owner: Optional[UserResponseForm] = None
+    pilot: Optional[UserResponseForm] = None
     brand: Optional[Brand] = None
     model: Optional[Model] = None
     model_year: Optional[int] = None
@@ -49,9 +49,9 @@ class EquipmentResponseForm:
         
         # Convert datetime to ISO format if present
         if isinstance(equipment.created_at, datetime):
-            self.birthday = equipment.created_at.isoformat()
+            self.created_at = equipment.created_at.isoformat()
         else:
-            self.birthday = None
+            self.created_at = None
 
     @classmethod
     def from_dict(self, d):
