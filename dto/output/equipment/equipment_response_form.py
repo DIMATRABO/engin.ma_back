@@ -53,4 +53,6 @@ class EquipmentResponseForm:
     
     def to_dict(self):
         '''Convert the EquipmentResponseForm object to a dictionary.'''
+        self.owner = self.owner.to_dict() if self.owner else None
+        self.pilot = self.pilot.to_dict() if self.pilot else None
         return asdict(self)
