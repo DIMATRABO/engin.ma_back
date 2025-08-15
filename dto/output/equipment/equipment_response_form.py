@@ -46,12 +46,7 @@ class EquipmentResponseForm:
         self.rating_average = float(equipment.rating_average)
         self.fields_of_activity = equipment.fields_of_activity
         self.images = equipment.images if equipment.images else []
-        
-        # Convert datetime to ISO format if present
-        if isinstance(equipment.created_at, datetime):
-            self.created_at = equipment.created_at.isoformat()
-        else:
-            self.created_at = None
+        self.created_at = equipment.created_at
 
     @classmethod
     def from_dict(self, d):
@@ -59,4 +54,5 @@ class EquipmentResponseForm:
     
     def to_dict(self):
         '''Convert the EquipmentResponseForm object to a dictionary.'''
+        self.created_at = self.created_at.isoformat() if self.created_at else None
         return asdict(self)
