@@ -14,8 +14,6 @@ from decorations.check_permission import check_permission
 from usecases.equipment.create import Create as CreateEquipmentUseCase
 from usecases.equipment.get_all_paginated import GetAllEquipmentsPaginated as GetAllEquipmentsUseCase
 
-from gateways.log import Log
-logger = Log()
 
 equipment_creator = CreateEquipmentUseCase()
 equipments_getter = GetAllEquipmentsUseCase()
@@ -48,4 +46,5 @@ class EquipmentFilterController(Resource):
     def post(self):
         ''' Retrieve equipments based on filters and pagination. '''
         form = EquipmentFilterForm(request.json)
-        return equipments_getter.handle(form).to_dict()
+        equipments = equipments_getter.handle(form)
+        return equipments.to_dict()
