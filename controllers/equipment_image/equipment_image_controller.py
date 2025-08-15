@@ -66,12 +66,8 @@ class EquipmentImageListEndpoint(Resource):
             filename = f"{timestamp}.{extension}"
             file_path = os.path.join(UPLOAD_FOLDER, filename)
             file.save(file_path)
-
-            # URL (adjust if hosted elsewhere or served statically)
-            file_url = f"/{file_path}"
-
-            # Now use DTO
-            form = CreateImageForm(equipment_id=equipment_id,file_url=file_url)
+            
+            form = CreateImageForm(equipment_id=equipment_id,file_url=filename)
             return create_image_handler.handle(form.to_domain()).to_dict()
 
         return {"error": "Invalid file type"}, 400
