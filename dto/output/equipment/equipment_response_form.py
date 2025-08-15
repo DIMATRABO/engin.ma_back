@@ -41,9 +41,9 @@ class EquipmentResponseForm:
         self.city = equipment.city
         self.title = equipment.title
         self.description = equipment.description
-        self.price_per_day = equipment.price_per_day
+        self.price_per_day = float(equipment.price_per_day)
         self.is_available = equipment.is_available
-        self.rating_average = equipment.rating_average
+        self.rating_average = float(equipment.rating_average)
         self.fields_of_activity = equipment.fields_of_activity
         self.images = equipment.images if equipment.images else []
         
@@ -58,4 +58,5 @@ class EquipmentResponseForm:
         return self(**d)
     
     def to_dict(self):
+        '''Convert the EquipmentResponseForm object to a dictionary.'''
         return asdict(self)
