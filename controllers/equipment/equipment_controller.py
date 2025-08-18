@@ -36,9 +36,10 @@ class EquipmentController(Resource):
         ''' Handle equipment creation.'''
         return EquipmentResponseForm(equipment_creator.handle(CreateEquipment(request.json).to_domain())).to_dict()
     
+@equipments_ns.route("/<string:equipment_id>")
+class EquipmentDeleteController(Resource):
+    ''' Endpoint to delete an equipment. '''
 
-    ''' endpoint to delete an equipment '''
-    @equipments_ns.route('/<string:equipment_id>')
     @equipments_ns.doc(security="Bearer Auth")
     @handle_exceptions
     @jwt_required()
@@ -47,6 +48,7 @@ class EquipmentController(Resource):
         ''' Delete an equipment by ID. '''
         equipment_deleter.handle(equipment_id)
         return {"message": "Equipment deleted successfully"}
+    
 
 @equipments_ns.route('/filter')
 class EquipmentFilterController(Resource):
