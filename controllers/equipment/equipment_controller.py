@@ -13,10 +13,12 @@ from decorations.check_permission import check_permission
 
 from usecases.equipment.create import Create as CreateEquipmentUseCase
 from usecases.equipment.get_all_paginated import GetAllEquipmentsPaginated as GetAllEquipmentsUseCase
+from usecases.equipment.delete import Delete
 
 
 equipment_creator = CreateEquipmentUseCase()
 equipments_getter = GetAllEquipmentsUseCase()
+equipment_deleter = Delete()
 
 equipments_ns = Namespace("equipments", description="equipments operations")
 
@@ -33,6 +35,18 @@ class EquipmentController(Resource):
     def post(self):
         ''' Handle equipment creation.'''
         return EquipmentResponseForm(equipment_creator.handle(CreateEquipment(request.json).to_domain())).to_dict()
+    
+
+    ''' endpoint to delete an equipment '''
+    @equipments_ns.route('/<string:equipment_id>')
+    @equipments_ns.doc(security="Bearer Auth")
+    @handle_exceptions
+    @jwt_required()
+    @check_permission("ADMIN")
+    def delete(self, equipment_id):
+        ''' Delete an equipment by ID. '''
+        equipment_deleter.handle(equipment_id)
+        return {"message": "Equipment deleted successfully"}
 
 @equipments_ns.route('/filter')
 class EquipmentFilterController(Resource):

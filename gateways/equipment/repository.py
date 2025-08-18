@@ -26,6 +26,13 @@ class Repository:
         equipment_entity.created_at = datetime.now()
         session.add(equipment_entity)
         return equipment_entity.to_domain()
+    
+    def delete(self, session , equipment_id:str) -> None:
+        '''Delete a equipment by ID from the database.'''
+        equipment = session.query(EquipmentEntity).filter(EquipmentEntity.id == equipment_id).first()
+        if equipment is None:
+            raise NotFoundException(f"Equipment with id {equipment_id} not found.")
+        session.delete(equipment)
           
     def get_equipment_by_id(self, session , equipmentname:str) -> Equipment:
         '''Retrieve a equipment by equipmentname from the database.'''
