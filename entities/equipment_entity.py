@@ -75,9 +75,11 @@ class EquipmentEntity(Base):
         )
     
     def update_non_null_fields_from_model(self, model: Equipment):
-        ''' Update non-null fields from a domain model to the EquipmentEntity instance. '''
-        attributes = [attr for attr in dir(model) if not callable(getattr(model, attr)) and not attr.startswith("__")]
-        for attr in attributes:
-            value = getattr(model, attr)
+        """Update only non-null fields from a domain model by leveraging from_domain()."""
+        temp = EquipmentEntity()
+        temp.from_domain(model)  # populate all fields from model
+
+        for column in self.__table__.columns.keys():
+            value = getattr(temp, column)
             if value is not None:
-                setattr(self, attr, value)
+                setattr(self, column, value)
