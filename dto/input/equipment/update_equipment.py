@@ -48,7 +48,7 @@ class UpdateEquipment:
         self.price_per_day = valid_float(self.price_per_day)
 
         self.is_available = optional("is_available", json_data)
-        self.is_available = valid_string(self.is_available).lower() == 'true'
+        self.is_available = None if self.is_available is None else valid_string(self.is_available).lower() == 'true'
 
         self.fields_of_activity= optional("fields_of_activity", json_data)
         self.fields_of_activity = valid_string(self.fields_of_activity)
