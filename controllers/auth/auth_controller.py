@@ -12,7 +12,7 @@ from usecases.utils.auth import create_additional_claims_from_user
 
 
 # Create a namespace
-auth_ns = Namespace("user", description="User management operations")
+auth_ns = Namespace("auth", description="User authentication operations")
 logger = Log()
 auth = Auth()
 

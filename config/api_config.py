@@ -51,7 +51,7 @@ def register_namespaces(api):
 
     api.add_namespace(healthcheck_ns, path="/health")
     api.add_namespace(contact_ns, path="/contact")
-    ##api.add_namespace(auth_ns, path="/auth")
+    api.add_namespace(auth_ns, path="/auth")
     api.add_namespace(user_ns, path="/users")
     api.add_namespace(city_ns, path="/cities")
     api.add_namespace(brand_ns, path="/brands")
