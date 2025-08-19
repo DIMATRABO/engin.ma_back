@@ -1,8 +1,7 @@
 ''' UserController.py'''
 from flask import request
 from flask_restx import Namespace, Resource, fields
-from flask_jwt_extended import  jwt_required, create_access_token, create_refresh_token
-
+from flask_jwt_extended import  jwt_required
 
 from gateways.log import Log
 from decorations.exception_handling import handle_exceptions
@@ -11,45 +10,23 @@ from models.user_role import UserRole
 
 from dto.input.user.create_user_form import CreateUserForm
 from dto.output.user.user_response_form import UserResponseForm
-from dto.input.user.login_form import LoginForm
+
 from dto.input.pagination.input_form import InputForm
 from dto.input.user.change_status_form import ChangeStatusForm
 
-from usecases.user.auth import Auth
+
 from usecases.user.create import Create
 from usecases.user.get_all_paginated import GetAllUsersPaginated
 from usecases.user.delete import Delete
 from usecases.user.change_status import ChangeStatus
-from usecases.utils.auth import create_additional_claims_from_user
 
 # Create a namespace
 user_ns = Namespace("user", description="User management operations")
 logger = Log()
-auth = Auth()
 delete_handler = Delete()
 creating_handler = Create()
 get_all_users_handler = GetAllUsersPaginated()
 change_status_handler = ChangeStatus()
-
-
-@user_ns.route('/auth')
-class AuthUser(Resource):
-    """
-    User authentication endpoint.
-    This endpoint allows users to log in and obtain access and refresh tokens.
-    """
-    @handle_exceptions
-    @user_ns.doc(security=None)
-    @user_ns.expect(LoginForm.api_model(user_ns))
-    def post(self):
-        ''' Authenticate a user and return access and refresh tokens.'''
-        form = LoginForm(request.get_json())
-        user = auth.handle(form)
-        additional_claims =create_additional_claims_from_user(user)
-        access_token = create_access_token(user.username, additional_claims=additional_claims)
-        refresh_token = create_refresh_token(user.username, additional_claims=additional_claims)
-        logger.log("Logged in as: " + user.username)
-        return {"access_token": access_token, "refresh_token": refresh_token}
 
 
 
