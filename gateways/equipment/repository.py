@@ -114,9 +114,7 @@ class Repository:
             raise Exception("Equipment not found")
 
         # Update only non-null fields
-        for attr, value in equipment.__dict__.items():
-            if value is not None and hasattr(entity, attr):
-                setattr(entity, attr, value)
+        entity.update_non_null_fields_from_model(model=equipment)
 
         session.add(entity)
         return entity.to_domain()
