@@ -106,3 +106,17 @@ class Repository:
             total=total_records,
             data=[EquipmentResponseForm(equipment=equipment.to_domain()) for equipment in equipments]
         )
+
+    def update(self, session, equipment: Equipment):
+        '''Update an existing equipment in the database.'''
+        entity = session.query(EquipmentEntity).filter_by(id=equipment.id).first()
+        if not entity:
+            raise Exception("Equipment not found")
+
+        # Update only non-null fields
+        for attr, value in equipment.__dict__.items():
+            if value is not None and hasattr(entity, attr):
+                setattr(entity, attr, value)
+
+        session.add(entity)
+        return entity.to_domain()

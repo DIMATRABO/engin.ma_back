@@ -7,6 +7,7 @@ from decorations.exception_handling import handle_exceptions
 from dto.input.equipment.create_equipment import CreateEquipment
 from dto.input.pagination.equipment_filter_form import EquipmentFilterForm
 from dto.output.equipment.equipment_response_form import EquipmentResponseForm
+from dto.input.equipment.update_equipment import UpdateEquipment
 
 from decorations.exception_handling import handle_exceptions
 from decorations.check_permission import check_permission
@@ -14,11 +15,14 @@ from decorations.check_permission import check_permission
 from usecases.equipment.create import Create as CreateEquipmentUseCase
 from usecases.equipment.get_all_paginated import GetAllEquipmentsPaginated as GetAllEquipmentsUseCase
 from usecases.equipment.delete import Delete
+from usecases.equipment.update import Update as UpdateEquipmentUseCase
+
 
 
 equipment_creator = CreateEquipmentUseCase()
 equipments_getter = GetAllEquipmentsUseCase()
 equipment_deleter = Delete()
+equipment_updater = UpdateEquipmentUseCase()
 
 equipments_ns = Namespace("equipments", description="equipments operations")
 
@@ -64,3 +68,19 @@ class EquipmentFilterController(Resource):
         form = EquipmentFilterForm(request.json)
         equipments = equipments_getter.handle(form)
         return equipments.to_dict()
+
+
+@equipments_ns.route('/update')
+class EquipmentUpdateController(Resource):
+    ''' Endpoint to update an equipment '''
+
+    @equipments_ns.expect(UpdateEquipment.api_model(equipments_ns))
+    @equipments_ns.doc(security="Bearer Auth")
+    @handle_exceptions
+    @jwt_required()
+    @check_permission("ADMIN")
+    def put(self):
+        ''' Update equipment details '''
+        form = UpdateEquipment(request.json)
+        updated_equipment = equipment_updater.handle(form.to_domain())
+        return EquipmentResponseForm(updated_equipment).to_dict()
