@@ -70,7 +70,7 @@ class UpdateEquipment:
             description=self.description,
             price_per_day=self.price_per_day,
             is_available=self.is_available,
-            fields_of_activity=FieldsOfActivity.from_string(self.fields_of_activity),
+            fields_of_activity=None if self.fields_of_activity is None else FieldsOfActivity.from_string(self.fields_of_activity)
         )
 
 
