@@ -50,30 +50,6 @@ class BookingEndpoint(Resource):
         bookings = get_all_bookings_handler.handle()
         return [booking.to_dict() for booking in bookings]
     
-
-@booking_ns.route('/equipment/<string:equipment_id>')
-class BookingByEquipmentEndpoint(Resource):
-    '''Endpoint to get bookings by equipment ID.'''
-    
-    @handle_exceptions
-    def get(self, equipment_id):
-        '''Get bookings by equipment ID'''
-        bookings = get_by_equipment_id_handler.handle(equipment_id)
-        return [booking.to_dict() for booking in bookings]
-    
-@booking_ns.route('/pilot/<string:pilot_id>')
-class BookingByPilotEndpoint(Resource):
-    '''Endpoint to get bookings by pilot ID.'''
-    
-    @handle_exceptions
-    def get(self, pilot_id):
-        '''Get bookings by pilot ID'''
-        bookings = get_by_pilot_id_handler.handle(pilot_id)
-        return [booking.to_dict() for booking in bookings]
-
-
-@booking_ns.route('')
-class UpdateBookingEndpoint(Resource):
     '''Endpoint to update a booking.'''
     @booking_ns.doc(security="Bearer Auth")
     @booking_ns.expect(UpdateBookingForm.api_model(booking_ns))
@@ -84,3 +60,30 @@ class UpdateBookingEndpoint(Resource):
         '''Update a booking (admin only)'''
         form = UpdateBookingForm(request.get_json())
         return update_booking_handler.handle(form.to_domain()).to_dict()
+    
+
+@booking_ns.route('/equipment/<string:equipment_id>')
+class BookingByEquipmentEndpoint(Resource):
+    '''Endpoint to get bookings by equipment ID.'''
+    @booking_ns.doc(security="Bearer Auth")
+    @booking_ns.expect(booking_ns.parser().add_argument('equipment_id', type=str, required=True, help='Equipment ID'))
+    @handle_exceptions
+    @jwt_required()
+    @check_permission("ADMIN")
+    def get(self, equipment_id):
+        '''Get bookings by equipment ID'''
+        bookings = get_by_equipment_id_handler.handle(equipment_id)
+        return [booking.to_dict() for booking in bookings]
+    
+@booking_ns.route('/pilot/<string:pilot_id>')
+class BookingByPilotEndpoint(Resource):
+    '''Endpoint to get bookings by pilot ID.'''
+    @booking_ns.doc(security="Bearer Auth")
+    @booking_ns.expect(booking_ns.parser().add_argument('pilot_id', type=str, required=True, help='Pilot ID'))
+    @handle_exceptions
+    @jwt_required()
+    @check_permission("ADMIN")
+    def get(self, pilot_id):
+        '''Get bookings by pilot ID'''
+        bookings = get_by_pilot_id_handler.handle(pilot_id)
+        return [booking.to_dict() for booking in bookings]
