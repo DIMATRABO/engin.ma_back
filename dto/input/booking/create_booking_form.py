@@ -4,6 +4,7 @@ from dto.input.validator import required, valid_string, valid_datetime
 from models.booking import Booking
 from models.user import User
 from models.equipment import Equipment
+from models.booking_status import BookingStatus
 
 class CreateBookingForm:
     ''' Input form for creating a booking. '''
@@ -46,5 +47,5 @@ class CreateBookingForm:
             pilot=User(id=self.pilot_id) if self.pilot_id else None,
             start_date=self.start_date,
             end_date=self.end_date,
-            status=self.status
+            status=BookingStatus(self.status)
         )
