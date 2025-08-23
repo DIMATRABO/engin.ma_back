@@ -27,7 +27,7 @@ class BookingEntity(Base):
         ''' Populate the BookingEntity instance from a domain model. '''
         self.id = model.id
         self.client_id = model.client.id if model.client else None
-        self.equipment_id = model.equipment_id
+        self.equipment_id = model.equipment.id if model.equipment else None
         self.pilot_id = model.pilot.id if model.pilot else None
         self.start_date = model.start_date
         self.end_date = model.end_date
