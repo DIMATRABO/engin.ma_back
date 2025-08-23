@@ -15,17 +15,17 @@ from models.equipment_image import EquipmentImage
 class Equipment:
     """ Equipment class representing a construction machine. """
     id: str
-    owner: Optional[User]
-    pilot: Optional[User]
-    brand: Brand
-    model: Model
-    model_year: Optional[int]
-    construction_year: Optional[int]
-    date_of_customs_clearance: Optional[int]
-    city: City
-    title: str
-    description: str
-    price_per_day: float
+    owner: Optional[User] = None
+    pilot: Optional[User] = None
+    brand: Brand = None
+    model: Model = None 
+    model_year: Optional[int] = None 
+    construction_year: Optional[int] = None
+    date_of_customs_clearance: Optional[int] = None
+    city: City = None
+    title: str = None
+    description: str = None
+    price_per_day: float = 0.0
     is_available: bool = True
     rating_average: float = 0.0
     fields_of_activity: Optional[FieldsOfActivity] = None
