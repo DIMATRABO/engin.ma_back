@@ -10,6 +10,7 @@ from controllers.brand.brand_controller import brand_ns
 from controllers.model.model_controller import model_ns
 from controllers.equipment_image.equipment_image_controller import equipment_image_ns
 from controllers.equipment.equipment_controller import equipments_ns
+from controllers.booking.booking_controller import booking_ns
 
 
 
@@ -58,6 +59,4 @@ def register_namespaces(api):
     api.add_namespace(model_ns, path="/models")
     api.add_namespace(equipment_image_ns, path="/equipment-images")
     api.add_namespace(equipments_ns, path="/equipments")
-
-
-    #api.add_namespace(auth_ns, path="/auth")
+    api.add_namespace(booking_ns, path="/bookings")

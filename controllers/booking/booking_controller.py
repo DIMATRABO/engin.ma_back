@@ -18,7 +18,7 @@ from usecases.booking.get_by_pilot_id import GetByPilotId
 
 
 # Create a namespace
-booking_ns = Namespace("bokkings", description="Bookings management operations")
+booking_ns = Namespace("bookings", description="Bookings management operations")
 logger = Log()
 create_booking_handler = Create()
 update_booking_handler = Update()
