@@ -41,8 +41,8 @@ class BookingEndpoint(Resource):
         form = CreateBookingForm(request.get_json())
         return create_booking_handler.handle(form.to_domain()).to_dict()
     
-    @booking_ns.doc(security="Bearer Auth")
     @handle_exceptions
+    @booking_ns.doc(security="Bearer Auth")
     @jwt_required()
     @check_permission("ADMIN")
     def get(self):
