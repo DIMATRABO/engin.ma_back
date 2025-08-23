@@ -26,4 +26,5 @@ class Booking:
         '''Convert the brand instance to a dictionary.'''
         self.start_date = self.start_date.isoformat() if self.start_date else None
         self.end_date = self.end_date.isoformat() if self.end_date else None
+        self.created_at = self.created_at.isoformat() if self.created_at else None
         return asdict(self)
