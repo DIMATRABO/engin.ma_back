@@ -65,9 +65,9 @@ class BookingEndpoint(Resource):
 @booking_ns.route('/equipment/<string:equipment_id>')
 class BookingByEquipmentEndpoint(Resource):
     '''Endpoint to get bookings by equipment ID.'''
+    @handle_exceptions
     @booking_ns.doc(security="Bearer Auth")
     @booking_ns.expect(booking_ns.parser().add_argument('equipment_id', type=str, required=True, help='Equipment ID'))
-    @handle_exceptions
     @jwt_required()
     @check_permission("ADMIN")
     def get(self, equipment_id):
