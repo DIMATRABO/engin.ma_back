@@ -19,7 +19,7 @@ def handle_exceptions(endpoint_function):
                 return result
             return result, 200
         
-        except (JWTExtendedException, jwt.ExpiredSignatureError, jwt.InvalidTokenError,NoAuthorizationError):
+        except (JWTExtendedException, jwt.ExpiredSignatureError, jwt.InvalidTokenError,NoAuthorizationError, jwt.PyJWTError):
             raise
 
         except UsernameAlreadyExists as e:
