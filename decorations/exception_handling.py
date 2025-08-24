@@ -18,9 +18,17 @@ def handle_exceptions(endpoint_function):
             if isinstance(result, Response):
                 return result
             return result, 200
+
+
+        except jwt.ExpiredSignatureError:
+            return {"error": "Token has expired"}, 401
+        except jwt.InvalidTokenError:
+            return {"error": "Invalid token"}, 401
+        except NoAuthorizationError:
+            return {"error": "Authorization token is required"}, 401
+        except JWTExtendedException as e:
+            return {"error": str(e)}, 401
         
-        except (JWTExtendedException, jwt.ExpiredSignatureError, jwt.InvalidTokenError,NoAuthorizationError, jwt.PyJWTError):
-            raise
 
         except UsernameAlreadyExists as e:
             logging.debug(str(e))
