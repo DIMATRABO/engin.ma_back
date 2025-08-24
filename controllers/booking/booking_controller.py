@@ -78,8 +78,7 @@ class BookingByEquipmentEndpoint(Resource):
 @booking_ns.route('/pilot/<string:pilot_id>')
 class BookingByPilotEndpoint(Resource):
     '''Endpoint to get bookings by pilot ID.'''
-    @booking_ns.doc(security="Bearer Auth")
-    @booking_ns.expect(booking_ns.parser().add_argument('pilot_id', type=str, required=True, help='Pilot ID'))
+    @booking_ns.doc(security="Bearer Auth", params={'pilot_id': 'The ID of the pilot'})
     @handle_exceptions
     @jwt_required()
     @check_permission("ADMIN")
