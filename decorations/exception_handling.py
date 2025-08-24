@@ -1,4 +1,5 @@
 from functools import wraps
+from flask_jwt_extended.exceptions import JWTExtendedException
 from flask import Response
 from exceptions.exception import *
 from flask_jwt_extended.exceptions import NoAuthorizationError
@@ -17,6 +18,9 @@ def handle_exceptions(endpoint_function):
             if isinstance(result, Response):
                 return result
             return result, 200
+        
+        except JWTExtendedException:
+            raise
 
         except UsernameAlreadyExists as e:
             logging.debug(str(e))
@@ -33,10 +37,6 @@ def handle_exceptions(endpoint_function):
         except UnauthorizedException as e:
             logging.debug(str(e))
             return {"error": str(e)}, 401
-
-        except NoAuthorizationError as e:  # <-- Add this block
-            logging.debug(str(e))
-            return {"error": "Missing or invalid Authorization token"}, 401
 
         except EmailNotVerifiedException as e:
             logging.debug(str(e))
