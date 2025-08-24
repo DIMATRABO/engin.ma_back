@@ -1,8 +1,8 @@
 from functools import wraps
-from flask_jwt_extended.exceptions import JWTExtendedException
+from flask_jwt_extended.exceptions import JWTExtendedException,NoAuthorizationError
 from flask import Response
 from exceptions.exception import *
-from flask_jwt_extended.exceptions import NoAuthorizationError
+import jwt
 from gateways.log import Log
 from config.config_handler import ConfigHandler
 import traceback
@@ -19,7 +19,7 @@ def handle_exceptions(endpoint_function):
                 return result
             return result, 200
         
-        except JWTExtendedException:
+        except (JWTExtendedException, jwt.ExpiredSignatureError, jwt.InvalidTokenError,NoAuthorizationError):
             raise
 
         except UsernameAlreadyExists as e:
