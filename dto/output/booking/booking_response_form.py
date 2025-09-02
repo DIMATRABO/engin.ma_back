@@ -40,4 +40,7 @@ class BookingResponseForm:
         self.start_date = self.start_date.isoformat() if self.start_date else None
         self.end_date = self.end_date.isoformat() if self.end_date else None
         self.created_at = self.created_at.isoformat() if self.created_at else None
+        self.client = self.client.to_dict() if self.client else None
+        self.equipment = self.equipment.to_dict() if self.equipment else None
+        self.pilot = self.pilot.to_dict() if self.pilot else None
         return asdict(self)
