@@ -38,6 +38,5 @@ class BookingResponseForm:
     def to_dict(self):
         ''' Convert the BookingResponseForm instance to a dictionary. '''
         return {
-            "id": str(self.id),
-            "status": self.status if self.status else None,
+            "id": str(self.id)
         }
