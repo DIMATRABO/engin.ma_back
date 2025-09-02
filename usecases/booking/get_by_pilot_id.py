@@ -23,4 +23,4 @@ class GetByPilotId:
             for booking in bookings:
                 booking = self.load_usecase.handle(session, booking)
                 results.append(BookingResponseForm(booking))
-            return bookings
+            return results
