@@ -7,7 +7,7 @@ from usecases.booking.load import Load
 from dto.output.booking.booking_response_form import BookingResponseForm
 
 
-class GetByPilotId:
+class GetByClientId:
     ''' retrieve booking details by client id use case '''
     def __init__(self):
         ''' initialize the GetByPilotId use case with a booking repository '''
