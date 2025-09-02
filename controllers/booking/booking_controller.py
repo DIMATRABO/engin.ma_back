@@ -87,6 +87,7 @@ class BookingByPilotEndpoint(Resource):
     def get(self, pilot_id):
         '''Get bookings by pilot ID'''
         bookings = get_by_pilot_id_handler.handle(pilot_id)
+        logger.log(f"Retrieved {bookings}")
         return [booking.to_dict() for booking in bookings]
 
 @booking_ns.route('/client/<string:client_id>')
