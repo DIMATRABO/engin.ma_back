@@ -15,6 +15,7 @@ from usecases.booking.update import Update
 from usecases.booking.get_all import GetAll
 from usecases.booking.get_by_equipment_id import GetByEquipmentId
 from usecases.booking.get_by_pilot_id import GetByPilotId
+from usecases.booking.get_by_client_id import GetByClientId
 
 
 # Create a namespace
@@ -25,6 +26,7 @@ update_booking_handler = Update()
 get_all_bookings_handler = GetAll()
 get_by_equipment_id_handler = GetByEquipmentId()
 get_by_pilot_id_handler = GetByPilotId()
+get_by_client_id_handler = GetByClientId()
 
 
 @booking_ns.route('')
@@ -85,4 +87,16 @@ class BookingByPilotEndpoint(Resource):
     def get(self, pilot_id):
         '''Get bookings by pilot ID'''
         bookings = get_by_pilot_id_handler.handle(pilot_id)
+        return [booking.to_dict() for booking in bookings]
+
+@booking_ns.route('/client/<string:client_id>')
+class BookingByClientEndpoint(Resource):
+    '''Endpoint to get bookings by client ID.'''
+    @booking_ns.doc(security="Bearer Auth", params={'client_id': 'The ID of the client'})
+    @handle_exceptions
+    @jwt_required()
+    @check_permission("ADMIN")
+    def get(self, client_id):
+        '''Get bookings by client ID'''
+        bookings = get_by_client_id_handler.handle(client_id)
         return [booking.to_dict() for booking in bookings]

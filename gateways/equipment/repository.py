@@ -34,11 +34,11 @@ class Repository:
             raise NotFoundException(f"Equipment with id {equipment_id} not found.")
         session.delete(equipment)
           
-    def get_equipment_by_id(self, session , equipmentname:str) -> Equipment:
-        '''Retrieve a equipment by equipmentname from the database.'''
-        equipment = session.query(EquipmentEntity).filter(EquipmentEntity.id == equipmentname).first()
+    def get_equipment_by_id(self, session , equipment_id:str) -> Equipment:
+        '''Retrieve a equipment by equipment_id from the database.'''
+        equipment = session.query(EquipmentEntity).filter(EquipmentEntity.id == equipment_id).first()
         if equipment is None:
-            raise NotFoundException(f"Equipment with id {equipmentname} not found.")
+            raise NotFoundException(f"Equipment with id {equipment_id} not found.")
         return equipment.to_domain()
 
     def get_all_paginated(self, session, input_form: EquipmentFilterForm) -> EquipmentsPaginated:
