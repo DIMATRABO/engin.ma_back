@@ -105,7 +105,7 @@ class Repository:
     
     def get_all_paginated(self, session, input_form: InputForm) -> UsersPaginated:
         '''Retrieve all users with pagination, filtering, and sorting.'''
-        allowed_sort_keys = ['username', 'full_name', 'email', 'creation_date']
+        allowed_sort_keys = ['username', 'full_name', 'email', 'created_at']
 
         query = session.query(UserEntity)
 
