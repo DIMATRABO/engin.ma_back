@@ -4,6 +4,7 @@ from models.booking import Booking
 from usecases.equipment.load import Load as EquipmentLoad
 from gateways.dataBaseSession.session_context import SessionContext
 from gateways.user.repository import Repository as UserRepository
+from gateways.equipment.repository import Repository as EquipmentRepository
 from gateways.log import Log
 
 
@@ -12,6 +13,7 @@ class Load:
     def __init__(self):
         ''' initialize the Load use case with user and equipment repositories '''
         self.user_repo= UserRepository()
+        self.equipment_repo= EquipmentRepository()
         self.load_equipment_usecase = EquipmentLoad()
         self.session_context = SessionContext()
         self.logger = Log()
@@ -26,6 +28,7 @@ class Load:
                 if booking.pilot and booking.pilot.id:
                     booking.pilot= self.user_repo.get_user_by_id(session, booking.pilot.id)
                 if booking.equipment and booking.equipment.id:
+                    booking.equipment=self.equipment_repo.get_equipment_by_id(session, booking.equipment.id)
                     booking.equipment= self.load_equipment_usecase.handle(session, booking.equipment)
 
         else:
@@ -35,6 +38,7 @@ class Load:
             if booking.pilot and booking.pilot.id:
                 booking.pilot= self.user_repo.get_user_by_id(session, booking.pilot.id)
             if booking.equipment and booking.equipment.id:
+                booking.equipment=self.equipment_repo.get_equipment_by_id(session, booking.equipment.id)
                 booking.equipment= self.load_equipment_usecase.handle(session, booking.equipment)
                 self.logger.debug(f'Loaded equipment details for booking ID: {booking.id} is {booking.equipment}')
         
