@@ -5,7 +5,7 @@ from usecases.equipment.load import Load as EquipmentLoad
 from gateways.dataBaseSession.session_context import SessionContext
 from gateways.user.repository import Repository as UserRepository
 from gateways.equipment.repository import Repository as EquipmentRepository
-from gateways.log import Log
+
 
 
 class Load:
@@ -16,12 +16,11 @@ class Load:
         self.equipment_repo= EquipmentRepository()
         self.load_equipment_usecase = EquipmentLoad()
         self.session_context = SessionContext()
-        self.logger = Log()
+
 
     def handle(self,session, booking:Booking)->Booking:
         ''' retrieve booking details by id '''
         if not session:
-            self.logger.debug(f'Session not provided, creating a new session to load booking details for booking ID: {booking.id}')
             with self.session_context as session:
                 if booking.client and booking.client.id:
                     booking.client= self.user_repo.get_user_by_id(session, booking.client.id)
@@ -32,7 +31,6 @@ class Load:
                     booking.equipment= self.load_equipment_usecase.handle(session, booking.equipment)
 
         else:
-            self.logger.debug(f'Using provided session to load booking details for booking ID: {booking.id}')
             if booking.client and booking.client.id:
                 booking.client= self.user_repo.get_user_by_id(session, booking.client.id)
             if booking.pilot and booking.pilot.id:
@@ -40,7 +38,5 @@ class Load:
             if booking.equipment and booking.equipment.id:
                 booking.equipment=self.equipment_repo.get_equipment_by_id(session, booking.equipment.id)
                 booking.equipment= self.load_equipment_usecase.handle(session, booking.equipment)
-                self.logger.debug(f'Loaded equipment details for booking ID: {booking.id} is {booking.equipment}')
-        
-        self.logger.debug(f'Loaded booking details for booking ID: {booking}')
+                
         return booking
