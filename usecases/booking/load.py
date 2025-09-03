@@ -35,5 +35,5 @@ class Load:
             if boking.equipment and boking.equipment.id:
                 boking.equipment= self.load_equipment_usecase.handle(session, boking.equipment)
         
-        self.logger.debug(f'Loaded booking details for booking ID: {boking.id}')
+        self.logger.debug(f'Loaded booking details for booking ID: {boking.to_dict()}')
         return boking
