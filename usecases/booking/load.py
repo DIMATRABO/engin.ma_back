@@ -16,24 +16,27 @@ class Load:
         self.session_context = SessionContext()
         self.logger = Log()
 
-    def handle(self,session, boking:Booking)->Booking:
+    def handle(self,session, booking:Booking)->Booking:
         ''' retrieve booking details by id '''
         if not session:
+            self.logger.debug(f'Session not provided, creating a new session to load booking details for booking ID: {booking.id}')
             with self.session_context as session:
-                if boking.client and boking.client.id:
-                    boking.client= self.user_repo.get_user_by_id(session, boking.client.id)
-                if boking.pilot and boking.pilot.id:
-                    boking.pilot= self.user_repo.get_user_by_id(session, boking.pilot.id)
-                if boking.equipment and boking.equipment.id:
-                    boking.equipment= self.load_equipment_usecase.handle(session, boking.equipment)
+                if booking.client and booking.client.id:
+                    booking.client= self.user_repo.get_user_by_id(session, booking.client.id)
+                if booking.pilot and booking.pilot.id:
+                    booking.pilot= self.user_repo.get_user_by_id(session, booking.pilot.id)
+                if booking.equipment and booking.equipment.id:
+                    booking.equipment= self.load_equipment_usecase.handle(session, booking.equipment)
 
         else:
-            if boking.client and boking.client.id:
-                boking.client= self.user_repo.get_user_by_id(session, boking.client.id)
-            if boking.pilot and boking.pilot.id:
-                boking.pilot= self.user_repo.get_user_by_id(session, boking.pilot.id)
-            if boking.equipment and boking.equipment.id:
-                boking.equipment= self.load_equipment_usecase.handle(session, boking.equipment)
+            self.logger.debug(f'Using provided session to load booking details for booking ID: {booking.id}')
+            if booking.client and booking.client.id:
+                booking.client= self.user_repo.get_user_by_id(session, booking.client.id)
+            if booking.pilot and booking.pilot.id:
+                booking.pilot= self.user_repo.get_user_by_id(session, booking.pilot.id)
+            if booking.equipment and booking.equipment.id:
+                booking.equipment= self.load_equipment_usecase.handle(session, booking.equipment)
+                self.logger.debug(f'Loaded equipment details for booking ID: {booking.id} is {booking.equipment}')
         
-        self.logger.debug(f'Loaded booking details for booking ID: {boking.to_dict()}')
-        return boking
+        self.logger.debug(f'Loaded booking details for booking ID: {booking}')
+        return booking
