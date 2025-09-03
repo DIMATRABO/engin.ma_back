@@ -4,6 +4,7 @@ from models.booking import Booking
 from usecases.equipment.load import Load as EquipmentLoad
 from gateways.dataBaseSession.session_context import SessionContext
 from gateways.user.repository import Repository as UserRepository
+from gateways.log import Log
 
 
 class Load:
@@ -13,6 +14,7 @@ class Load:
         self.user_repo= UserRepository()
         self.load_equipment_usecase = EquipmentLoad()
         self.session_context = SessionContext()
+        self.logger = Log()
 
     def handle(self,session, boking:Booking)->Booking:
         ''' retrieve booking details by id '''
@@ -24,7 +26,7 @@ class Load:
                     boking.pilot= self.user_repo.get_user_by_id(session, boking.pilot.id)
                 if boking.equipment and boking.equipment.id:
                     boking.equipment= self.load_equipment_usecase.handle(session, boking.equipment)
-            return boking
+
         else:
             if boking.client and boking.client.id:
                 boking.client= self.user_repo.get_user_by_id(session, boking.client.id)
@@ -32,4 +34,6 @@ class Load:
                 boking.pilot= self.user_repo.get_user_by_id(session, boking.pilot.id)
             if boking.equipment and boking.equipment.id:
                 boking.equipment= self.load_equipment_usecase.handle(session, boking.equipment)
-            return boking
+        
+        self.logger.debug(f'Loaded booking details for booking ID: {boking.id}')
+        return boking
