@@ -18,8 +18,8 @@ class GetByPilotId:
     def handle(self, pilot_id:str)->List[BookingResponseForm]:
         ''' retrieve booking details by id '''
         with self.session_context as session:
-            results = []
             bookings = self.repo.get_by_pilot_id(session, pilot_id)
+            results = []
             for booking in bookings:
                 booking = self.load_usecase.handle(session, booking)
                 results.append(BookingResponseForm(booking))

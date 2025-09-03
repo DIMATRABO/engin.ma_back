@@ -19,7 +19,9 @@ class GetByEquipmentId:
         ''' retrieve booking details by id '''
         with self.session_context as session:
             bookings = self.repo.get_by_equipment_id(session, equipment_id)
+            results = []
             for booking in bookings:
                 booking = self.load_usecase.handle(session, booking)
-                booking = BookingResponseForm(booking)
-            return bookings
+                results.append(BookingResponseForm(booking))
+            return results
+

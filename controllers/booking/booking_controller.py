@@ -87,25 +87,7 @@ class BookingByPilotEndpoint(Resource):
     def get(self, pilot_id):
         '''Get bookings by pilot ID'''
         bookings = get_by_pilot_id_handler.handle(pilot_id)
-        results = []
-
-        for i, booking in enumerate(bookings):
-            try:
-                results.append(booking.to_dict())
-            except TypeError as e:
-                logger.error(f"❌ Serialization error at booking index {i}: {booking}")
-                # Check if dict has datetime
-                try:
-                    data = booking.to_dict()
-                    for k, v in data.items():
-                        if hasattr(v, "isoformat"):  # naive datetime check
-                            logger.error(f"⚠️ Field '{k}' contains datetime: {v}")
-                except Exception:
-                    pass
-                raise  # re-raise so Flask still fails
-
-        logger.log(f"Retrieved {results}")
-        return results
+        return [booking.to_dict() for booking in bookings]
 
 @booking_ns.route('/client/<string:client_id>')
 class BookingByClientEndpoint(Resource):
