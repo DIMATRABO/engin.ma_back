@@ -17,7 +17,7 @@ def handle_exceptions(endpoint_function):
             result = endpoint_function(*args, **kwargs)
             if isinstance(result, Response):
                 return result
-            return result, 200
+            return result
 
 
         except jwt.ExpiredSignatureError:
