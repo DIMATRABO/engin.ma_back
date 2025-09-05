@@ -11,6 +11,7 @@ from controllers.model.model_controller import model_ns
 from controllers.equipment_image.equipment_image_controller import equipment_image_ns
 from controllers.equipment.equipment_controller import equipments_ns
 from controllers.booking.booking_controller import booking_ns
+from controllers.fields_of_activity.fields_of_activity_controler import foa_ns
 
 
 
@@ -60,3 +61,4 @@ def register_namespaces(api):
     api.add_namespace(equipment_image_ns, path="/equipment-images")
     api.add_namespace(equipments_ns, path="/equipments")
     api.add_namespace(booking_ns, path="/bookings")
+    api.add_namespace(foa_ns, path="/foa")
