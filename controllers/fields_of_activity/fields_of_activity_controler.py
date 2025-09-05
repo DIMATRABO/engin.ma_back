@@ -18,5 +18,5 @@ class FoaController(Resource):
     @handle_exceptions
     def get(self):
         '''Get all fields of activity'''
-        return [field.value for field in FieldsOfActivity], 200
+        return [field.value for field in FieldsOfActivity]
     
