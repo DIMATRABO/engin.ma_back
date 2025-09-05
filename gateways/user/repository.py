@@ -2,7 +2,7 @@
 import uuid
 from typing import List
 from datetime import datetime
-from sqlalchemy import  func , exc, desc , or_, text
+from sqlalchemy import  func , exc, desc , or_
 from models.user import User
 from models.user_status import UserStatus
 from models.user_role import UserRole
@@ -14,6 +14,7 @@ from exceptions.exception import InvalidRequestException
 from dto.input.pagination.input_form import InputForm
 from dto.output.user.user_response_form import UserResponseForm
 from dto.output.user.users_paginated import UsersPaginated
+from dto.output.user.user_simple import UserSimple
 
 logger = Log()
 class Repository:
@@ -62,6 +63,16 @@ class Repository:
         if user is None:
             return None  
         return user.to_domain()
+    
+    def get_all_simple_by_role(self, session, role: UserRole) -> List[UserSimple]:
+        '''Retrieve all users with a specific role in a simplified format.'''
+        users = (
+            session.query(UserEntity)
+            .join(UserRoleEntity, UserEntity.id == UserRoleEntity.user_id)
+            .filter(UserRoleEntity.role == role.value)
+            .all()
+        )
+        return [UserSimple(user=user.to_domain()) for user in users] if users else []
     
         
     def delete(self, session , id:str):

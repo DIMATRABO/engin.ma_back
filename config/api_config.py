@@ -12,6 +12,8 @@ from controllers.equipment_image.equipment_image_controller import equipment_ima
 from controllers.equipment.equipment_controller import equipments_ns
 from controllers.booking.booking_controller import booking_ns
 from controllers.fields_of_activity.fields_of_activity_controler import foa_ns
+from controllers.owner.owner_controller import owner_ns
+from controllers.pilote.pilote_controller import pilote_ns
 
 
 
@@ -55,6 +57,8 @@ def register_namespaces(api):
     api.add_namespace(contact_ns, path="/contact")
     api.add_namespace(auth_ns, path="/auth")
     api.add_namespace(user_ns, path="/users")
+    api.add_namespace(owner_ns, path="/owners")
+    api.add_namespace(pilote_ns, path="/pilotes")
     api.add_namespace(city_ns, path="/cities")
     api.add_namespace(brand_ns, path="/brands")
     api.add_namespace(model_ns, path="/models")
