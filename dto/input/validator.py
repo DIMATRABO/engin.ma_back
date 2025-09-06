@@ -160,7 +160,7 @@ def valid_status(value):
 def valid_field_of_activity(value):
     ''' Validates the field of activity by checking if it is a valid FieldOfActivity.'''
     try:
-        FieldsOfActivity(value.upper())
-        return value.upper()
+        foa = FieldsOfActivity(value.upper())
+        return foa
     except Exception as exception:
         raise ValidationException(f"Invalid field of activity: {value}. Error: {str(exception)}")
