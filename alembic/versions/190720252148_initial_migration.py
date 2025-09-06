@@ -80,14 +80,23 @@ def upgrade() -> None:
         sa.Column('is_available', sa.Boolean, default=True),
         sa.Column('rating_average', sa.Float, default=0.0),
         sa.Column('fields_of_activity', sa.Text),
+        sa.Column('category_id', sa.String(), sa.ForeignKey('categories.id')),
         sa.Column('created_at', sa.TIMESTAMP(timezone=True), server_default=sa.func.now())
     )
 
     op.create_table(
         'equipment_images',
         sa.Column('id', sa.String(), primary_key=True),
-        sa.Column('equipment_id', sa.String(), sa.ForeignKey('equipment.id', ondelete='CASCADE')),
-        sa.Column('url', sa.String(500), nullable=False)
+        sa.Column('field_of_activity', sa.String(), nullable=False),
+        sa.Column('name', sa.String(), nullable=False)
+    )
+
+    op.create_table(
+        'categories',
+        sa.Column('id', sa.String(),primary_key=True),
+        sa.Column('experience_years', sa.Integer),
+        sa.Column('rating_average', sa.Float, default=0.0),
+        sa.Column('fields_of_experience', sa.Text)
     )
 
     op.create_table(
@@ -106,6 +115,9 @@ def upgrade() -> None:
         sa.Column('pilot_id', sa.String(), sa.ForeignKey('users.id')),
         sa.Column('start_date', sa.Date),
         sa.Column('end_date', sa.Date),
+        sa.Column('number_of_days', sa.Integer, nullable=False),
+        sa.Column('unit_price', sa.Numeric(10, 2), nullable=False),
+        sa.Column('total_price', sa.Numeric(12, 2), nullable=False),
         sa.Column('status', sa.String(50)),
         sa.Column('created_at', sa.TIMESTAMP(timezone=True), server_default=sa.func.now())
     )
@@ -127,6 +139,7 @@ def downgrade():
     op.drop_table('bookings')
     op.drop_table('pilot_profiles')
     op.drop_table('equipment_images')
+    op.drop_table('categories')
     op.drop_table('equipment')
     op.drop_table('equipment_brands')
     op.drop_table('equipment_models')

@@ -8,6 +8,7 @@ from controllers.user.user_controller import user_ns
 from controllers.city.city_controller import city_ns
 from controllers.brand.brand_controller import brand_ns
 from controllers.model.model_controller import model_ns
+from controllers.category.category_controller import category_ns
 from controllers.equipment_image.equipment_image_controller import equipment_image_ns
 from controllers.equipment.equipment_controller import equipments_ns
 from controllers.booking.booking_controller import booking_ns
@@ -62,6 +63,7 @@ def register_namespaces(api):
     api.add_namespace(city_ns, path="/cities")
     api.add_namespace(brand_ns, path="/brands")
     api.add_namespace(model_ns, path="/models")
+    api.add_namespace(category_ns, path="/categories")
     api.add_namespace(equipment_image_ns, path="/equipment-images")
     api.add_namespace(equipments_ns, path="/equipments")
     api.add_namespace(booking_ns, path="/bookings")

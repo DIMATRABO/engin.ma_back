@@ -4,6 +4,7 @@ import json
 from datetime import datetime
 from exceptions.exception import ValidationException
 from models.user_status import UserStatus
+from models.fields_of_activity import FieldsOfActivity
 
 def required(field_name , json):
             if(  not  field_name in  json):
@@ -156,3 +157,10 @@ def valid_status(value):
     except Exception as exception:
         raise ValidationException(f"Invalid user status: {value}. Error: {str(exception)}")
     
+def valid_field_of_activity(value):
+    ''' Validates the field of activity by checking if it is a valid FieldOfActivity.'''
+    try:
+        FieldsOfActivity(value.upper())
+        return value.upper()
+    except Exception as exception:
+        raise ValidationException(f"Invalid field of activity: {value}. Error: {str(exception)}")

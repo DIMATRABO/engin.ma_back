@@ -59,6 +59,8 @@ class Repository:
             query = query.filter(EquipmentEntity.city_id.in_(input_form.city_ids))
         if input_form.fields_of_activity:
             query = query.filter(EquipmentEntity.fields_of_activity.in_(input_form.fields_of_activity))
+        if input_form.category_ids:
+            query = query.filter(EquipmentEntity.category_id.in_(input_form.category_ids))
 
         if input_form.model_year_range:
             query = query.filter(

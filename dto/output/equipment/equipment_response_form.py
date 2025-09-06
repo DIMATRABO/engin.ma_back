@@ -7,6 +7,7 @@ from models.model import Model
 from models.city import City
 from models.fields_of_activity import FieldsOfActivity
 from models.equipment_image import EquipmentImage
+from models.category import Category
 from typing import Optional, List
 from dto.output.user.user_response_form import UserResponseForm
 
@@ -27,6 +28,7 @@ class EquipmentResponseForm:
     is_available: bool = True
     rating_average: float = 0.0
     fields_of_activity: Optional[FieldsOfActivity] = None
+    category: Optional[Category] = None
     images: List[EquipmentImage] = None
 
     def __init__(self, equipment: Equipment):
@@ -45,6 +47,7 @@ class EquipmentResponseForm:
         self.is_available = equipment.is_available
         self.rating_average = float(equipment.rating_average)
         self.fields_of_activity = equipment.fields_of_activity
+        self.category = equipment.category
         self.images = equipment.images if equipment.images else []
 
     @classmethod

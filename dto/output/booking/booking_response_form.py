@@ -14,6 +14,9 @@ class BookingResponseForm:
     pilot: UserResponseForm = None
     start_date: datetime = None
     end_date: datetime = None
+    number_of_days: int = None
+    unit_price: float = None
+    total_price: float = None
     status: str = None
     created_at: datetime = None
 
@@ -26,6 +29,9 @@ class BookingResponseForm:
         self.pilot = UserResponseForm(booking.pilot) if booking.pilot else None
         self.start_date = booking.start_date
         self.end_date = booking.end_date
+        self.number_of_days = booking.number_of_days
+        self.unit_price = float(booking.unit_price) if booking.unit_price else None
+        self.total_price = float(booking.total_price) if booking.total_price else None
         self.status = booking.status.value if booking.status else None
         self.created_at = booking.created_at
         
@@ -45,5 +51,8 @@ class BookingResponseForm:
             "client": self.client.to_dict() if self.client else None,
             "equipment": self.equipment.to_dict() if self.equipment else None,
             "pilot": self.pilot.to_dict() if self.pilot else None,
+            "number_of_days": self.number_of_days if self.number_of_days else None,
+            "unit_price": self.unit_price if self.unit_price else None,
+            "total_price": self.total_price if self.total_price else None,
             "status": self.status if self.status else None,
         }

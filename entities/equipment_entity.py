@@ -5,6 +5,8 @@ from models.user import User
 from models.brand import Brand
 from models.model import Model
 from models.city import City
+from models.fields_of_activity import FieldsOfActivity
+from models.category import Category
 
 
 from entities.declarative_base_factory import Base
@@ -28,6 +30,7 @@ class EquipmentEntity(Base):
     is_available = Column("is_available", Boolean, default=True)
     rating_average = Column("rating_average", Float, default=0.0)
     fields_of_activity = Column("fields_of_activity", Text)
+    category_id = Column("category_id", String, ForeignKey("categories.id"))
     created_at = Column("created_at", TIMESTAMP(timezone=True), server_default=func.now())
 
     def __repr__(self):
@@ -50,6 +53,7 @@ class EquipmentEntity(Base):
         self.is_available = model.is_available
         self.rating_average = model.rating_average
         self.fields_of_activity = model.fields_of_activity
+        self.category_id = model.category.id if model.category else None
         self.created_at = model.created_at
 
     def to_domain(self) -> Equipment:
@@ -69,7 +73,8 @@ class EquipmentEntity(Base):
             price_per_day=self.price_per_day,
             is_available=self.is_available,
             rating_average=self.rating_average,
-            fields_of_activity= self.fields_of_activity,
+            fields_of_activity= FieldsOfActivity(name=self.fields_of_activity) if self.fields_of_activity else None,
+            category=Category(name=self.category_id) if self.category_id else None,
             images=[],
             created_at=self.created_at
         )

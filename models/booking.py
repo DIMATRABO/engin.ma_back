@@ -14,6 +14,9 @@ class Booking:
     pilot: Optional[User]
     start_date: date
     end_date: date
+    number_of_days: int
+    unit_price: float
+    total_price: float
     status: BookingStatus
     created_at: Optional[datetime] = None
 

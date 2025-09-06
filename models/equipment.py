@@ -8,6 +8,7 @@ from models.model import Model
 from models.city import City
 from models.fields_of_activity import FieldsOfActivity
 from models.equipment_image import EquipmentImage
+from models.category import Category
 
 
 
@@ -29,5 +30,6 @@ class Equipment:
     is_available: bool = True
     rating_average: float = 0.0
     fields_of_activity: Optional[FieldsOfActivity] = None
+    category: Optional[Category] = None
     images: List[EquipmentImage] = None
     created_at: Optional[datetime] = None

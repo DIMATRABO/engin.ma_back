@@ -3,11 +3,11 @@ from enum import Enum
 
 class FieldsOfActivity(str, Enum):
     ''' Enum representing different fields of activity. '''
-    CONSTRUCTION = "Construction"
-    TRANSPORT = "Transport"
-    LIFTING = "Lifting"
-    ROADWORKS = "Roadworks"
-    AGRICULTURE = "Agriculture"
+    CONSTRUCTION = "CONSTRUCTION"
+    TRANSPORT = "TRANSPORT"
+    LIFTING = "LIFTING"
+    ROADWORKS = "ROADWORKS"
+    AGRICULTURE = "AGRICULTURE"
 
     def __str__(self):
         return self.value

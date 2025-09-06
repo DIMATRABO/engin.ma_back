@@ -37,6 +37,7 @@ class EquipmentFilterForm:
             'pilot_id': str,
             'city_ids': list,
             'fields_of_activity': list,
+            'category_ids': list,
             'model_year_range': list,
             'construction_year_range': list,
             'date_of_customs_clearance_range': list,
@@ -56,6 +57,7 @@ class EquipmentFilterForm:
         self.pilot_id = filter_data.get('pilot_id')
         self.city_ids = filter_data.get('city_ids')
         self.fields_of_activity = filter_data.get('fields_of_activity')
+        self.category_ids = filter_data.get('category_ids')
         self.model_year_range = filter_data.get('model_year_range')
         self.construction_year_range = filter_data.get('construction_year_range')
         self.customs_clearance_range = filter_data.get('date_of_customs_clearance_range')
@@ -72,6 +74,7 @@ class EquipmentFilterForm:
             "    'pilot_id': 'uuid',\n"
             "    'city_ids': ['city1', 'city2'],\n"
             "    'fields_of_activity': ['TRANSPORT', 'CHANTIER'],\n"
+            "    'category_ids': ['cat1', 'cat2'],\n"
             "    'model_year_range': [2010, 2020],\n"
             "    'construction_year_range': [2005, 2022],\n"
             "    'date_of_customs_clearance_range': [2015, 2020],\n"

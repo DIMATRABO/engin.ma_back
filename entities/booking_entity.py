@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, Date, TIMESTAMP, ForeignKey, func
+from sqlalchemy import Column, String, Date, TIMESTAMP,Integer,Numeric, ForeignKey, func
 from entities.declarative_base_factory import Base
 from models.booking import Booking
 from models.user import User
@@ -15,6 +15,9 @@ class BookingEntity(Base):
     pilot_id = Column("pilot_id", String, ForeignKey("users.id"))
     start_date = Column("start_date", Date)
     end_date = Column("end_date", Date)
+    number_of_days = Column("number_of_days", Integer, nullable=False)
+    unit_price = Column("unit_price", Numeric(10, 2), nullable=False)
+    total_price = Column("total_price", Numeric(12, 2), nullable=False)
     status = Column("status", String(50))
     created_at = Column("created_at", TIMESTAMP(timezone=True), server_default=func.now())
 
@@ -31,6 +34,9 @@ class BookingEntity(Base):
         self.pilot_id = model.pilot.id if model.pilot else None
         self.start_date = model.start_date
         self.end_date = model.end_date
+        self.number_of_days = model.number_of_days
+        self.unit_price = model.unit_price
+        self.total_price = model.total_price
         self.status = model.status.value if model.status else None
         self.created_at = model.created_at
 
@@ -43,6 +49,9 @@ class BookingEntity(Base):
             pilot=User(id=self.pilot_id) if self.pilot_id else None,
             start_date=self.start_date,
             end_date=self.end_date,
+            number_of_days=self.number_of_days,
+            unit_price=self.unit_price,
+            total_price=self.total_price,
             status=BookingStatus(self.status) if self.status else None,
             created_at=self.created_at
         )
