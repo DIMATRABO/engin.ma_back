@@ -62,6 +62,14 @@ def upgrade() -> None:
         sa.Column('id', sa.String(), primary_key=True),
         sa.Column('name', sa.String(100), nullable=False)
     )
+    
+    op.create_table(
+        'categories',
+        sa.Column('id', sa.String(),primary_key=True),
+        sa.Column('experience_years', sa.Integer),
+        sa.Column('rating_average', sa.Float, default=0.0),
+        sa.Column('fields_of_experience', sa.Text)
+    )
 
     op.create_table(
         'equipment',
@@ -89,14 +97,6 @@ def upgrade() -> None:
         sa.Column('id', sa.String(), primary_key=True),
         sa.Column('field_of_activity', sa.String(), nullable=False),
         sa.Column('name', sa.String(), nullable=False)
-    )
-
-    op.create_table(
-        'categories',
-        sa.Column('id', sa.String(),primary_key=True),
-        sa.Column('experience_years', sa.Integer),
-        sa.Column('rating_average', sa.Float, default=0.0),
-        sa.Column('fields_of_experience', sa.Text)
     )
 
     op.create_table(
