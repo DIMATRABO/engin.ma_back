@@ -87,7 +87,7 @@ def upgrade() -> None:
         sa.Column('is_available', sa.Boolean, default=True),
         sa.Column('rating_average', sa.Float, default=0.0),
         sa.Column('fields_of_activity', sa.Text),
-        sa.Column('category_id', sa.String(), sa.ForeignKey('categories.id',ondelete='SET NULL')),)),
+        sa.Column('category_id', sa.String(), sa.ForeignKey('categories.id',ondelete='SET NULL')),
         sa.Column('created_at', sa.TIMESTAMP(timezone=True), server_default=sa.func.now())
     )
 
