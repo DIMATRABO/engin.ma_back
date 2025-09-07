@@ -11,7 +11,7 @@ class UserSimple:
 
     def __init__(self, user: User):
         self.id = user.id
-        self.name = user.full_name
+        self.full_name = user.full_name
         self.username = user.username
 
 

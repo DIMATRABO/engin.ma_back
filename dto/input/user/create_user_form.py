@@ -63,5 +63,5 @@ class CreateUserForm:
         "birthdate": fields.String(required=False,description="Birth date in format YYYY-MM-DD"),
         "address": fields.String(required=False),
         "phoneNumber": fields.String(required=False),
-        "role": fields.String(required=True, description="Role of the user. Possible values: CLIENT, OWNER, PILOT, ADMIN", enum=[role.value for role in UserRole])
+        "role": fields.String(required=True, description="Role of the user. Possible values: CLIENT, OWNER, PILOT", enum=[role.value for role in UserRole])
     })
