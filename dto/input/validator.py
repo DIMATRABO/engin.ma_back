@@ -5,6 +5,7 @@ from datetime import datetime
 from exceptions.exception import ValidationException
 from models.user_status import UserStatus
 from models.fields_of_activity import FieldsOfActivity
+from models.user_role import UserRole
 
 def required(field_name , json):
             if(  not  field_name in  json):
@@ -164,3 +165,11 @@ def valid_field_of_activity(value):
         return foa
     except Exception as exception:
         raise ValidationException(f"Invalid field of activity: {value}. Error: {str(exception)}")
+    
+def valid_role(value):
+    ''' Validates the user role by checking if it is a valid UserRole.'''
+    try:
+        role = UserRole(value.upper())
+        return role
+    except Exception as exception:
+        raise ValidationException(f"Invalid user role: {value}. Error: {str(exception)}")

@@ -4,7 +4,7 @@ from models.user import User
 from models.user_status import UserStatus
 from models.user_role import UserRole
 from dto.input.validator import required, optional, valid_string
-from dto.input.validator import valid_password, valid_email_format, valid_datetime
+from dto.input.validator import valid_password, valid_email_format, valid_datetime, valid_role
 
 
 
@@ -35,6 +35,9 @@ class CreateUserForm:
             self.phone_number = optional("phoneNumber", json_user)
             self.phone_number = valid_string(self.phone_number)
 
+            self.role = required("role", json_user)
+            self.role = valid_role(self.role)
+
 
     def to_domain(self, user_roles: list[UserRole] = UserRole.CLIENT):
         return User(
@@ -47,7 +50,7 @@ class CreateUserForm:
             address=self.address,
             phone_number=self.phone_number,
             user_status=UserStatus(UserStatus.PENDING.value),
-            roles=user_roles
+            roles=[self.role] if self.role else user_roles
             )
     @staticmethod
     def api_model(namespace: Namespace):
@@ -60,4 +63,5 @@ class CreateUserForm:
         "birthdate": fields.String(required=False,description="Birth date in format YYYY-MM-DD"),
         "address": fields.String(required=False),
         "phoneNumber": fields.String(required=False),
+        "role": fields.String(required=True, description="Role of the user. Possible values: CLIENT, OWNER, PILOT, ADMIN", enum=[role.value for role in UserRole])
     })

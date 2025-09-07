@@ -53,6 +53,9 @@ class UpdateBookingForm:
             pilot=User(id=self.pilot_id) if self.pilot_id else None,
             start_date=self.start_date,
             end_date=self.end_date,
+            number_of_days=(self.end_date - self.start_date).days if self.start_date and self.end_date else 0,
+            unit_price=0.0,  # To be set later based on equipment pricing
+            total_price=0.0,  # To be calculated later
             status=BookingStatus(self.status) if self.status else None
         )
 
