@@ -94,8 +94,8 @@ def upgrade() -> None:
     op.create_table(
         'equipment_images',
         sa.Column('id', sa.String(), primary_key=True),
-        sa.Column('field_of_activity', sa.String(), nullable=False),
-        sa.Column('name', sa.String(), nullable=False)
+        sa.Column('equipment_id', sa.String(), sa.ForeignKey('equipment.id', ondelete='CASCADE')),
+        sa.Column('url', sa.String(500), nullable=False)
     )
 
     op.create_table(
