@@ -73,7 +73,7 @@ class EquipmentEntity(Base):
             price_per_day=self.price_per_day,
             is_available=self.is_available,
             rating_average=self.rating_average,
-            fields_of_activity= FieldsOfActivity(name=self.fields_of_activity) if self.fields_of_activity else None,
+            fields_of_activity= FieldsOfActivity(self.fields_of_activity) if self.fields_of_activity else None,
             category=Category(name=self.category_id) if self.category_id else None,
             images=[],
             created_at=self.created_at
