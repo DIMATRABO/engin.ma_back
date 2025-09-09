@@ -7,7 +7,7 @@ from models.model import Model
 from models.city import City
 from models.fields_of_activity import FieldsOfActivity
 from models.category import Category
-from dto.input.validator import required,optional, valid_string, valid_int, valid_float
+from dto.input.validator import required,optional, valid_string, valid_int, valid_float, valid_boolean
 
 class UpdateEquipment:
     ''' Form to update equipment '''
@@ -49,7 +49,7 @@ class UpdateEquipment:
         self.price_per_day = valid_float(self.price_per_day)
 
         self.is_available = required("is_available", json_data)
-        self.is_available = None if self.is_available is None else valid_string(self.is_available).lower() == 'true'
+        self.is_available = valid_boolean(self.is_available)
 
         self.fields_of_activity= required("fields_of_activity", json_data)
         self.fields_of_activity = valid_string(self.fields_of_activity)
