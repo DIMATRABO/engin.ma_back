@@ -6,6 +6,7 @@ from models.brand import Brand
 from models.model import Model
 from models.city import City
 from models.fields_of_activity import FieldsOfActivity
+from models.category import Category
 from dto.input.validator import required, valid_string, valid_int, valid_datetime, valid_float
 
 class CreateEquipment:
@@ -51,6 +52,9 @@ class CreateEquipment:
         self.fields_of_activity= required("fields_of_activity", json_data)
         self.fields_of_activity = valid_string(self.fields_of_activity)
 
+        self.category_id = required("category_id", json_data)
+        self.category_id = valid_string(self.category_id)
+
 
     def to_domain(self):
         """Converts the form data to an Equipment domain model."""
@@ -70,6 +74,7 @@ class CreateEquipment:
             is_available=self.is_available,
             rating_average=self.rating_average,
             fields_of_activity=FieldsOfActivity.from_string(self.fields_of_activity),
+            category= Category(id=self.category_id) if self.category_id else None,
         )
 
 
