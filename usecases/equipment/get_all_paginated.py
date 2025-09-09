@@ -7,6 +7,8 @@ from gateways.equipment.repository import Repository as EquipmentRepo
 
 from usecases.equipment.load import Load as LoadEquipment
 
+from gateways.log import Log
+
 
 
 class GetAllEquipmentsPaginated:
@@ -16,6 +18,7 @@ class GetAllEquipmentsPaginated:
         self.load_equipment = LoadEquipment()
         self.equipment_repo=EquipmentRepo()
         self.session_context = SessionContext()
+        self.logger = Log()
 
     def handle(self, input_form : EquipmentFilterForm) -> EquipmentsPaginated:
         ''' Handles the retrieval of all equipments with pagination.'''
@@ -23,6 +26,8 @@ class GetAllEquipmentsPaginated:
                 equipments = self.equipment_repo.get_all_paginated(session,input_form)
                 equipments_to_return = []
                 for equipment in equipments.data:
+                    self.logger.debug(f"loading equipment id: {equipment.category.id}")
+
                     equipment = self.load_equipment.handle(session,equipment)
                     equipments_to_return.append(EquipmentResponseForm(equipment))
                 equipments.data = equipments_to_return
