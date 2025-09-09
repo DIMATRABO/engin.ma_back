@@ -56,7 +56,8 @@ def valid_string(value):
     if value is None:
         return None
     if not isinstance(value, str):
-        raise ValidationException("Invalid string format")
+        raise ValidationException(f"Invalid type: expected string, got {type(value).__name__}")
+
     # Check if the string is empty
     if not value.strip():
         return value
