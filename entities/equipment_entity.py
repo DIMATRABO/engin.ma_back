@@ -74,7 +74,7 @@ class EquipmentEntity(Base):
             is_available=self.is_available,
             rating_average=self.rating_average,
             fields_of_activity= FieldsOfActivity(self.fields_of_activity) if self.fields_of_activity else None,
-            category=Category(name=self.category_id) if self.category_id else None,
+            category=Category(id=self.category_id) if self.category_id else None,
             images=[],
             created_at=self.created_at
         )
