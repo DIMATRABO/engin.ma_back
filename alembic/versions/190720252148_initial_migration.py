@@ -48,7 +48,10 @@ def upgrade() -> None:
     op.create_table(
         'cities',
         sa.Column('id', sa.String(), primary_key=True),
-        sa.Column('name', sa.String(100), nullable=False)
+        sa.Column('name_en', sa.String(100), nullable=False),
+        sa.Column('name_ar', sa.String(100), nullable=False),
+        sa.Column('name_fr', sa.String(100), nullable=False)
+
     )
 
     op.create_table(
@@ -60,14 +63,18 @@ def upgrade() -> None:
     op.create_table(
         'equipment_models',
         sa.Column('id', sa.String(), primary_key=True),
-        sa.Column('name', sa.String(100), nullable=False)
+        sa.Column('name', sa.String(100), nullable=False),
+        sa.Column('brand_id', sa.String(), sa.ForeignKey('equipment_brands.id')),
+        sa.Column('category_id', sa.String(), sa.ForeignKey('categories.id'))
     )
     
     op.create_table(
         'categories',
         sa.Column('id', sa.String(),primary_key=True),
         sa.Column('field_of_activity', sa.String(), nullable=False),
-        sa.Column('name', sa.String(), nullable=False)
+        sa.Column('name_en', sa.String(), nullable=False),
+        sa.Column('name_ar', sa.String(), nullable=False),
+        sa.Column('name_fr', sa.String(), nullable=False)
     )
 
     op.create_table(

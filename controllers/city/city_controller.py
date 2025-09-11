@@ -31,9 +31,20 @@ class CreateEndpoint(Resource):
         form = CreateCityForm(request.get_json())
         return create_city_handler.handle(form.to_domain()).to_dict()
     
+    @city_ns.doc(
+        params={
+            "Accept-Language": {
+                "description": "Preferred language for the response (e.g. 'en', 'fr', 'ar')",
+                "in": "header",
+                "type": "string",
+                "required": False
+            }
+        }
+    )
     @handle_exceptions
     def get(self):
         '''Get all cities'''
-        cities = get_all_cities_handler.handle()
+        accept_language = request.headers.get("Accept-Language", "en") 
+        cities = get_all_cities_handler.handle(accept_language)
         return [city.to_dict() for city in cities]
     

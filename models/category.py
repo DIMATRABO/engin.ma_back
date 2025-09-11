@@ -7,7 +7,9 @@ class Category:
     '''Category model representing a category with an ID and name.'''
     id: str = None
     field_of_activity:FieldsOfActivity = None
-    name: str = None
+    name_en: str = None
+    name_ar: str = None
+    name_fr: str = None
 
     @classmethod
     def from_dict(cls, self, d):

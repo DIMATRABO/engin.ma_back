@@ -5,7 +5,9 @@ from dataclasses import dataclass, asdict
 class City:
     '''City model representing a city with an ID and name.'''
     id: str = None
-    name: str = None
+    name_en: str = None
+    name_ar: str = None
+    name_fr: str = None
 
     @classmethod
     def from_dict(cls, self, d):

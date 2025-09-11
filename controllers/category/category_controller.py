@@ -31,9 +31,20 @@ class CreateEndpoint(Resource):
         form = CreateCategoryForm(request.get_json())
         return create_category_handler.handle(form.to_domain()).to_dict()
     
+    @category_ns.doc(
+    params={
+            "Accept-Language": {
+                "description": "Preferred language for the response (e.g. 'en', 'fr', 'ar')",
+                "in": "header",
+                "type": "string",
+                "required": False
+            }
+        }
+    )
     @handle_exceptions
     def get(self):
         '''Get all categories'''
-        categories = get_all_categories_handler.handle()
+        accept_language = request.headers.get("Accept-Language", "en") 
+        categories = get_all_categories_handler.handle(accept_language)
         return [category.to_dict() for category in categories]
     
