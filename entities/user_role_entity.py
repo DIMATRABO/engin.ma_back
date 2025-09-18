@@ -12,3 +12,7 @@ class UserRoleEntity(Base):
 
     def __repr__(self):
         return f"<UserRoleEntity(user_id={self.user_id}, role='{self.role}')>"
+    
+    def to_domain(self) -> UserRole:
+        '''Convert entity to domain enum.'''
+        return UserRole(self.role)

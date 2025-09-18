@@ -13,5 +13,5 @@ class Repository:
 
     def get_user_roles_by_user_id(self, session, user_id) -> List[UserRole]:
         '''Retrieve roles associated with a user by user ID.'''
-        return session.query(UserRoleEntity).filter_by(user_id=user_id).all()
-        
+        roles = session.query(UserRoleEntity).filter_by(user_id=user_id).all()
+        return [role_entity.to_domain() for role_entity in roles]
