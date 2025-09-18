@@ -20,6 +20,7 @@ class UserResponseForm:
         self.name = user.full_name
         self.email = user.email
         self.username = user.username
+        self.roles = [role.value for  role in user.roles]
         self.status = user.user_status.value.upper()
         self.address = user.address
         self.birthday = user.birthdate
