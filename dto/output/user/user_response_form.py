@@ -32,4 +32,5 @@ class UserResponseForm:
  
     def to_dict(self):
         self.birthday = self.birthday.isoformat() if self.birthday else None
+        self.roles = [role.value for role in self.roles] if self.roles else []
         return asdict(self)
