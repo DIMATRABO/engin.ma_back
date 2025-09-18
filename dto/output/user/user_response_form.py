@@ -9,6 +9,7 @@ class UserResponseForm:
     name: str = None
     email: str = None
     username:  str = None
+    roles:  list = None
     status:  str = None
     address: str = None
     birthday: datetime = None
