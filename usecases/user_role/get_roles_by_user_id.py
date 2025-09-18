@@ -1,9 +1,10 @@
 from gateways.user_role.repository import Repository as UserRoleRepository
+from gateways.dataBaseSession.session_context import SessionContext
 
 class GetRolesByUserId:
     ''' Use case for getting roles by user id '''
-    def __init__(self, session_context):
-        self.session_context = session_context
+    def __init__(self):
+        self.session_context = SessionContext()
         self.user_role_repository = UserRoleRepository()
 
     def handle(self, session, user_id):
