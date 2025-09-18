@@ -10,7 +10,7 @@ class UserResponseForm:
     email: str = None
     username:  str = None
     status:  str = None
-    location: str = None
+    address: str = None
     birthday: datetime = None
    
 
@@ -20,7 +20,7 @@ class UserResponseForm:
         self.email = user.email
         self.username = user.username
         self.status = user.user_status.value.upper()
-        self.location = user.address
+        self.address = user.address
         self.birthday = user.birthdate
 
     @classmethod
