@@ -15,6 +15,7 @@ from controllers.booking.booking_controller import booking_ns
 from controllers.fields_of_activity.fields_of_activity_controler import foa_ns
 from controllers.owner.owner_controller import owner_ns
 from controllers.pilote.pilote_controller import pilote_ns
+from controllers.review.review_controller import review_ns
 
 
 
@@ -68,3 +69,4 @@ def register_namespaces(api):
     api.add_namespace(equipments_ns, path="/equipments")
     api.add_namespace(booking_ns, path="/bookings")
     api.add_namespace(foa_ns, path="/foa")
+    api.add_namespace(review_ns, path="/reviews")
