@@ -6,7 +6,7 @@ from entities.declarative_base_factory import Base
 
 class ReviewEntity(Base):
     ''' Reviewentity class representing a review in the database. '''
-    __tablename__ = "cities"
+    __tablename__ = "reviews"
 
     id = Column("id", String, primary_key=True)
     client_id = Column("client_id", String)
