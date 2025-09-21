@@ -30,4 +30,6 @@ class Booking:
         self.start_date = self.start_date.isoformat() if self.start_date else None
         self.end_date = self.end_date.isoformat() if self.end_date else None
         self.created_at = self.created_at.isoformat() if self.created_at else None
+        self.unit_price = float(self.unit_price) if self.unit_price else None
+        self.total_price = float(self.total_price) if self.total_price else None
         return asdict(self)
