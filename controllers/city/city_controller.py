@@ -11,12 +11,14 @@ from dto.input.city.create_city_form import CreateCityForm
 
 from usecases.city.create import Create
 from usecases.city.get_all import GetAll
+from usecases.city.delete import Delete
 
 # Create a namespace
 city_ns = Namespace("cities", description="Cities management operations")
 logger = Log()
 create_city_handler = Create()
 get_all_cities_handler = GetAll()
+delete_city_handler = Delete()
 
 @city_ns.route('')
 class CreateEndpoint(Resource):
@@ -47,4 +49,15 @@ class CreateEndpoint(Resource):
         accept_language = request.headers.get("Accept-Language", "en") 
         cities = get_all_cities_handler.handle(accept_language)
         return [city.to_dict() for city in cities]
-    
+
+@city_ns.route('/<string:city_id>')
+class CityDeleteEndpoint(Resource):
+    '''Endpoint to delete a city by ID.'''
+    @city_ns.doc(security="Bearer Auth")
+    @handle_exceptions
+    @jwt_required()
+    @check_permission("ADMIN")
+    def delete(self, city_id):
+        '''Delete a city by ID (admin only)'''
+        delete_city_handler.handle(city_id)
+        return {"message": "City deleted successfully"}

@@ -4,6 +4,7 @@ from typing import List
 from entities.category_entity import CategoryEntity
 from models.category import Category
 from gateways.log import Log
+from exceptions.exception import NotFoundException
 
 
 logger = Log()
@@ -37,3 +38,14 @@ class Repository:
             logger.error(f"Category with ID {id_} not found")
             return None
         return category_entity.to_domain()
+    
+    def delete(self, session, id_: str) -> bool:
+        '''Delete a category entity by its ID from the database.'''
+        logger.debug(f"Deleting category with ID: {id_}")
+        category_entity = session.query(CategoryEntity).filter_by(id=id_).first()
+        if not category_entity:
+            logger.error(f"Category with ID {id_} not found")
+            raise NotFoundException(f"Category with ID {id_} not found")
+        session.delete(category_entity)
+        logger.debug("Category deleted successfully")
+        return True

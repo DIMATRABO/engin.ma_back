@@ -4,7 +4,7 @@ from typing import List
 from entities.review_entity import ReviewEntity
 from models.review import Review
 from gateways.log import Log
-
+from exceptions.exception import NotFoundException
 
 logger = Log()
 class Repository:
@@ -65,3 +65,13 @@ class Repository:
             return []
         return [review.to_domain() for review in review_entities]
     
+    def delete(self, session, id_: str) -> bool:
+        '''Delete a review entity by its ID.'''
+        logger.debug(f"Deleting review by id: {id_}")
+        review_entity = session.query(ReviewEntity).filter(ReviewEntity.id == id_).first()
+        if not review_entity:
+            logger.error(f"Review with id {id_} not found for deletion")
+            raise NotFoundException(f"Review with id {id_} not found for deletion")
+        session.delete(review_entity)
+        logger.debug("Review deleted successfully")
+        return True

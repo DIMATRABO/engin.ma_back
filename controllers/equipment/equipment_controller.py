@@ -84,3 +84,4 @@ class EquipmentUpdateController(Resource):
         form = UpdateEquipment(request.json)
         updated_equipment = equipment_updater.handle(form.to_domain())
         return EquipmentResponseForm(updated_equipment).to_dict()
+    

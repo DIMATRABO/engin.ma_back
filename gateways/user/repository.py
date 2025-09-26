@@ -78,18 +78,12 @@ class Repository:
     def delete(self, session , id:str):
         '''Delete a user by ID from the database.'''
         existing_user_entity = session.query(UserEntity).filter(UserEntity.id == id).first()
-
-        # Check if the user exists
-        if existing_user_entity:
-            existing_user_entity.user_status = UserStatus.DELETED.value
-            try:
-                session.commit()
-            except exc.SQLAlchemyError as e:
-                logger.log(e)
-                session.rollback()
-                raise Exception("User not deleted")
-            return {"msg":"deleted"}
-        raise NotFoundException("User not found")
+        if not existing_user_entity:
+            logger.error(f"User with id {id} not found for deletion")
+            raise NotFoundException(f"User with id {id} not found for deletion")
+        session.delete(existing_user_entity)
+        logger.debug("User deleted successfully")
+        return True
     
 
     def get_roles_by_user_id(self, session, user_id: str) -> List[UserRole]:

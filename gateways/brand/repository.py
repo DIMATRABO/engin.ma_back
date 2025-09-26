@@ -4,6 +4,7 @@ from typing import List
 from entities.brand_entity import BrandEntity
 from models.brand import Brand
 from gateways.log import Log
+from exceptions.exception import NotFoundException
 
 
 logger = Log()
@@ -37,3 +38,14 @@ class Repository:
             logger.error(f"Brand with ID {id_} not found")
             raise ValueError(f"Brand with ID {id_} not found")
         return brand_entity.to_domain()
+    
+    def delete(self, session, id_: str) -> bool:
+        '''Delete a brand entity by its ID from the database.'''
+        logger.debug(f"Deleting brand with ID: {id_}")
+        brand_entity = session.query(BrandEntity).filter_by(id=id_).first()
+        if not brand_entity:
+            logger.error(f"Brand with ID {id_} not found")
+            raise NotFoundException(f"Brand with ID {id_} not found")
+        session.delete(brand_entity)
+        logger.debug("Brand deleted successfully")
+        return True

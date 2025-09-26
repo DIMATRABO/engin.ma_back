@@ -4,6 +4,7 @@ from typing import List
 from entities.city_entity import CityEntity
 from models.city import City
 from gateways.log import Log
+from exceptions.exception import NotFoundException
 
 
 logger = Log()
@@ -37,3 +38,14 @@ class Repository:
             logger.error(f"City with ID {id_} not found")
             return None
         return city_entity.to_domain()
+    
+    def delete(self, session, id_: str) -> bool:
+        '''Delete a city entity by its ID from the database.'''
+        logger.debug(f"Deleting city with ID: {id_}")
+        city_entity = session.query(CityEntity).filter_by(id=id_).first()
+        if not city_entity:
+            logger.error(f"City with ID {id_} not found")
+            raise NotFoundException(f"City with ID {id_} not found")
+        session.delete(city_entity)
+        logger.debug("City deleted successfully")
+        return True

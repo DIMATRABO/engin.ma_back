@@ -11,12 +11,14 @@ from dto.input.brand.create_brand_form import CreateBrandForm
 
 from usecases.brand.create import Create
 from usecases.brand.get_all import GetAll
+from usecases.brand.delete import Delete
 
 # Create a namespace
 brand_ns = Namespace("brands", description="Brands management operations")
 logger = Log()
 create_brand_handler = Create()
 get_all_brands_handler = GetAll()
+delete_brand_handler = Delete()
 
 @brand_ns.route('')
 class CreateEndpoint(Resource):
@@ -36,4 +38,16 @@ class CreateEndpoint(Resource):
         '''Get all brands'''
         brands = get_all_brands_handler.handle()
         return [brand.to_dict() for brand in brands]
+
+@brand_ns.route('/<string:brand_id>')
+class BrandDeleteEndpoint(Resource):
+    '''Endpoint to delete a brand by ID.'''
+    @brand_ns.doc(security="Bearer Auth")
+    @handle_exceptions
+    @jwt_required()
+    @check_permission("ADMIN")
+    def delete(self, brand_id):
+        '''Delete a brand by ID (admin only)'''
+        delete_brand_handler.handle(brand_id)
+        return {"message": "Brand deleted successfully"}
     

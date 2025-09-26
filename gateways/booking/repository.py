@@ -4,6 +4,7 @@ from typing import List, Optional
 from entities.booking_entity import BookingEntity
 from models.booking import Booking
 from gateways.log import Log
+from exceptions.exception import NotFoundException
 
 logger = Log()
 
@@ -67,6 +68,17 @@ class Repository:
         logger.debug(f"Retrieving bookings for pilot ID: {pilot_id}")
         bookings = session.query(BookingEntity).filter_by(pilot_id=pilot_id).all()
         return [booking.to_domain() for booking in bookings]
+    
+    def delete(self, session, booking_id: str) -> bool:
+        '''Delete a booking entity by its ID from the database.'''
+        logger.debug(f"Deleting booking with ID: {booking_id}")
+        booking_entity = session.query(BookingEntity).filter_by(id=booking_id).first()
+        if not booking_entity:
+            logger.error(f"Booking with ID {booking_id} not found")
+            raise NotFoundException(f"Booking with ID {booking_id} not found")
+        session.delete(booking_entity)
+        logger.debug("Booking deleted successfully")
+        return True
     
 
     

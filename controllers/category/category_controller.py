@@ -11,12 +11,14 @@ from dto.input.category.create_category_form import CreateCategoryForm
 
 from usecases.category.create import Create
 from usecases.category.get_all import GetAll
+from usecases.category.delete import Delete
 
 # Create a namespace
 category_ns = Namespace("categories", description="Categories management operations")
 logger = Log()
 create_category_handler = Create()
 get_all_categories_handler = GetAll()
+delete_category_handler = Delete()
 
 @category_ns.route('')
 class CreateEndpoint(Resource):
@@ -48,3 +50,14 @@ class CreateEndpoint(Resource):
         categories = get_all_categories_handler.handle(accept_language)
         return [category.to_dict() for category in categories]
     
+@category_ns.route('/<string:category_id>')
+class CategoryDeleteEndpoint(Resource):
+    '''Endpoint to delete a category by ID.'''
+    @category_ns.doc(security="Bearer Auth")
+    @handle_exceptions
+    @jwt_required()
+    @check_permission("ADMIN")
+    def delete(self, category_id):
+        '''Delete a category by ID (admin only)'''
+        delete_category_handler.handle(category_id)
+        return {"message": "Category deleted successfully"}

@@ -14,6 +14,7 @@ from usecases.review.get_all import GetAll
 from usecases.review.get_all_by_client_id import GetAll as GetAllByClientId
 from usecases.review.get_all_by_equipment_id import GetAll as GetAllByEquipmentId
 from usecases.review.get_all_by_pilot_id import GetAll as GetAllByPilotId
+from usecases.review.delete import Delete
 
 # Create a namespace
 review_ns = Namespace("reviews", description="Reviews management operations")
@@ -23,6 +24,7 @@ get_all_reviews_handler = GetAll()
 get_reviews_by_client_id_handler = GetAllByClientId()
 get_reviews_by_equipment_id_handler = GetAllByEquipmentId()
 get_reviews_by_pilot_id_handler = GetAllByPilotId()
+delete_review_handler = Delete()
 
 @review_ns.route('')
 class CreateEndpoint(Resource):
@@ -84,3 +86,15 @@ class GetByPilotIdEndpoint(Resource):
         '''Get reviews by pilot ID (admin, pilot, client)'''
         reviews = get_reviews_by_pilot_id_handler.handle(pilot_id)
         return [review.to_dict() for review in reviews]
+
+@review_ns.route('/<string:review_id>')
+class ReviewDeleteEndpoint(Resource):
+    '''Endpoint to delete a review by ID.'''
+    @review_ns.doc(security="Bearer Auth")
+    @handle_exceptions
+    @jwt_required()
+    @check_permission("ADMIN")
+    def delete(self, review_id):
+        '''Delete a review by ID (admin only)'''
+        delete_review_handler.handle(review_id)
+        return {"message": "Review deleted successfully"}
