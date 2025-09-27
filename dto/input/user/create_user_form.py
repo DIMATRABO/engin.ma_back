@@ -63,7 +63,7 @@ class CreateUserForm:
             birthdate=self.birthdate ,
             address=self.address,
             phone_number=self.phone_number,
-            user_status=UserStatus(UserStatus.PENDING.value),
+            user_status=UserStatus(UserStatus.ACTIVATED.value),
             roles = [self.role]
             )
 
