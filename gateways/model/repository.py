@@ -4,7 +4,7 @@ from typing import List
 from entities.model_entity import ModelEntity
 from models.model import Model
 from gateways.log import Log
-from exceptions.exception import NotFoundError
+from exceptions.exception import NotFoundException
 
 logger = Log()
 class Repository:
@@ -44,7 +44,7 @@ class Repository:
         model_entity = session.query(ModelEntity).filter(ModelEntity.id == id_).first()
         if not model_entity:
             logger.error(f"Model with id {id_} not found for deletion")
-            raise NotFoundError(f"Model with id {id_} not found for deletion")
+            raise NotFoundException(f"Model with id {id_} not found for deletion")
         session.delete(model_entity)
         logger.debug("Model deleted successfully")
         return True
