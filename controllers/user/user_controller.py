@@ -55,9 +55,9 @@ class CreateEndpoint(Resource):
     ''' User signup endpoint.'''
     @user_ns.expect(CreateUserForm.api_model(user_ns))
     @user_ns.doc(security="Bearer Auth")
+    @handle_exceptions
     @jwt_required()
     @check_permission("ADMIN")
-    @handle_exceptions
     def post(self):
         """Create a new user"""
         user_json = request.get_json()
