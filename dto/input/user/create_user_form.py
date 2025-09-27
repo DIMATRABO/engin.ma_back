@@ -50,8 +50,23 @@ class CreateUserForm:
             address=self.address,
             phone_number=self.phone_number,
             user_status=UserStatus(UserStatus.PENDING.value),
-            roles=[self.role] if self.role else user_roles
+            roles = user_roles
             )
+    
+    def to_domain_with_role(self):
+        return User(
+            id=None,
+            username=self.username,
+            password=self.password,
+            full_name=self.full_name,
+            email=self.email,
+            birthdate=self.birthdate ,
+            address=self.address,
+            phone_number=self.phone_number,
+            user_status=UserStatus(UserStatus.PENDING.value),
+            roles = [self.role]
+            )
+
     @staticmethod
     def api_model(namespace: Namespace):
         """Returns the API model for the user creation form."""

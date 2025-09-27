@@ -36,7 +36,7 @@ class SignUp(Resource):
     @user_ns.expect(CreateUserForm.api_model(user_ns))
     @handle_exceptions
     def post(self):
-        """Create a new user"""
+        """Register a new user"""
         user_json = request.get_json()
         form = CreateUserForm(user_json)
         user = form.to_domain([UserRole(UserRole.CLIENT.value)])
@@ -48,6 +48,24 @@ class SignUp(Resource):
 delete_model = user_ns.model("DeleteUser", {
     "id": fields.String(required=True)
 })
+
+
+@user_ns.route('/create')
+class CreateEndpoint(Resource):
+    ''' User signup endpoint.'''
+    @user_ns.expect(CreateUserForm.api_model(user_ns))
+    @user_ns.doc(security="Bearer Auth")
+    @jwt_required()
+    @check_permission("ADMIN")
+    @handle_exceptions
+    def post(self):
+        """Create a new user"""
+        user_json = request.get_json()
+        form = CreateUserForm(user_json)
+        user = form.to_domain_with_role()
+        logger.log(f'Creating User {user.username}')
+        response = creating_handler.handle(user)
+        return UserResponseForm(response).to_dict()
 
 
 @user_ns.route('/change_status')
@@ -64,7 +82,9 @@ class ChangeStatusEndPoint(Resource):
         logger.log(f'Changing status for User {form.id} to {form.user_status}')
         return change_status_handler.handle(form.to_domain()).to_dict()
     
-
+delete_model = user_ns.model("DeleteUser", {
+    "id": fields.String(required=True)
+})
 @user_ns.route('/delete')
 class DeleteUser(Resource):
     ''' User deletion endpoint.'''
