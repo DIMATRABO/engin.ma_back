@@ -45,12 +45,11 @@ class EquipmentController(Resource):
 @equipments_ns.route("/<string:equipment_id>")
 class GetEquipmentByIdController(Resource):
     ''' Endpoint to Get an equipment by ID. '''
-
     @equipments_ns.doc(security="Bearer Auth")
     @handle_exceptions
     @jwt_required()
     @check_permission("ADMIN,CLIENT,OWNER")
-    def get_by_id(self, equipment_id):
+    def get(self, equipment_id):
         ''' get an equipment by ID. '''
         return equiment_getter_by_id.handle(equipment_id).to_dict()
     
