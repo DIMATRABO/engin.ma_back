@@ -43,8 +43,8 @@ class EquipmentController(Resource):
         return EquipmentResponseForm(equipment_creator.handle(CreateEquipment(request.json).to_domain())).to_dict()
     
 @equipments_ns.route("/<string:equipment_id>")
-class GetEquipmentByIdController(Resource):
-    ''' Endpoint to Get an equipment by ID. '''
+class EquipmentByIdController(Resource):
+    ''' Endpoint to get or delete an equipment by ID.'''
     @equipments_ns.doc(security="Bearer Auth")
     @handle_exceptions
     @jwt_required()
@@ -52,10 +52,6 @@ class GetEquipmentByIdController(Resource):
     def get(self, equipment_id):
         ''' get an equipment by ID. '''
         return equiment_getter_by_id.handle(equipment_id).to_dict()
-    
-@equipments_ns.route("/<string:equipment_id>")
-class EquipmentDeleteController(Resource):
-    ''' Endpoint to delete an equipment. '''
 
     @equipments_ns.doc(security="Bearer Auth")
     @handle_exceptions
