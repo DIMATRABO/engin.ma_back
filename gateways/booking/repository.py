@@ -1,10 +1,15 @@
 ''' Repository for booking management operations. '''
 import uuid
+from sqlalchemy import desc
 from typing import List, Optional
 from entities.booking_entity import BookingEntity
 from models.booking import Booking
 from gateways.log import Log
 from exceptions.exception import NotFoundException
+from exceptions.exception import InvalidRequestException
+from dto.input.pagination.booking_filter_form import BookingFilterForm
+from dto.output.booking.booking_paginated import BookingsPaginated
+from dto.output.booking.booking_response_form import BookingResponseForm
 
 logger = Log()
 
@@ -57,10 +62,10 @@ class Repository:
         bookings = session.query(BookingEntity).filter_by(client_id=client_id).all()
         return [booking.to_domain() for booking in bookings]
     
-    def get_by_equipment_id(self, session, equipment_id: str) -> List[Booking]:
-        '''Retrieve all bookings for a specific equipment ID.'''
-        logger.debug(f"Retrieving bookings for equipment ID: {equipment_id}")
-        bookings = session.query(BookingEntity).filter_by(equipment_id=equipment_id).all()
+    def get_by_booking_id(self, session, booking_id: str) -> List[Booking]:
+        '''Retrieve all bookings for a specific booking ID.'''
+        logger.debug(f"Retrieving bookings for booking ID: {booking_id}")
+        bookings = session.query(BookingEntity).filter_by(booking_id=booking_id).all()
         return [booking.to_domain() for booking in bookings]
     
     def get_by_pilot_id(self, session, pilot_id: str) -> List[Booking]:
@@ -79,6 +84,93 @@ class Repository:
         session.delete(booking_entity)
         logger.debug("Booking deleted successfully")
         return True
+    
+    def get_all_paginated(self, session, input_form: BookingFilterForm) -> BookingsPaginated:
+        '''Retrieve all bookings with pagination, filtering, and sorting.'''
+
+        allowed_filter_keys = {
+            'client_id': str,
+            'equipment_id': str,
+            'pilot_id': str,
+            'start_date_range': list,
+            'end_date_range': list,
+            'number_of_days_range': list,
+            'unit_price_range': list,
+            'total_price_range': list,
+            'status': str
+        }
+
+        allowed_sort_keys = [
+            'start_date',
+            'end_date',
+            'number_of_days',
+            'unit_price',
+            'total_price',
+            'created_at'
+        ]
+
+        query = session.query(BookingEntity)
+
+        # Apply filters from filterData
+        if input_form.client_id:
+            query = query.filter(BookingEntity.client_id == input_form.client_id)
+        if input_form.equipment_id:
+            query = query.filter(BookingEntity.equipment_id == input_form.equipment_id)
+        if input_form.pilot_id:
+            query = query.filter(BookingEntity.pilot_id == input_form.pilot_id)
+        if input_form.status:
+            query = query.filter(BookingEntity.status == input_form.status)
+        if input_form.start_date_range: 
+            query = query.filter(
+                BookingEntity.start_date >= input_form.start_date_range[0],
+                BookingEntity.start_date <= input_form.start_date_range[1]
+            )
+        if input_form.end_date_range:
+            query = query.filter(
+                BookingEntity.end_date >= input_form.end_date_range[0],
+                BookingEntity.end_date <= input_form.end_date_range[1]
+            )
+        if input_form.number_of_days_range:
+            query = query.filter(
+                BookingEntity.number_of_days >= input_form.number_of_days_range[0],
+                BookingEntity.number_of_days <= input_form.number_of_days_range[1]
+            )
+        if input_form.unit_price_range:
+            query = query.filter(
+                BookingEntity.unit_price >= input_form.unit_price_range[0],
+                BookingEntity.unit_price <= input_form.unit_price_range[1]
+            )
+        if input_form.total_price_range:
+            query = query.filter(
+                BookingEntity.total_price >= input_form.total_price_range[0],
+                BookingEntity.total_price <= input_form.total_price_range[1]
+            )
+        if input_form.status:
+            query = query.filter(BookingEntity.status == input_form.status)
+  
+
+
+
+        # Sorting
+        if input_form.key and input_form.order:
+            sort_key = input_form.key.lower()
+            if sort_key in allowed_sort_keys:
+                sort_column = getattr(BookingEntity, sort_key)
+                query = query.order_by(desc(sort_column) if input_form.order.lower() == 'desc' else sort_column)
+            else:
+                raise InvalidRequestException(f"Invalid sort key: {sort_key}")
+        else:
+            query = query.order_by(desc(BookingEntity.created_at))
+
+        # Pagination
+        total_records = query.count()
+        starting_index = (input_form.pageIndex - 1) * input_form.pageSize
+        bookings = query.offset(starting_index).limit(input_form.pageSize).all()
+
+        return BookingsPaginated(
+            total=total_records,
+            data=[BookingResponseForm(booking=booking.to_domain()) for booking in bookings]
+        )
     
 
     

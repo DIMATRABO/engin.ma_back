@@ -9,6 +9,7 @@ from decorations.check_permission import check_permission
 
 from dto.input.booking.create_booking_form import CreateBookingForm
 from dto.input.booking.update_booking_form import UpdateBookingForm
+from dto.input.pagination.booking_filter_form import BookingFilterForm
 
 from usecases.booking.create import Create
 from usecases.booking.update import Update
@@ -16,6 +17,9 @@ from usecases.booking.get_all import GetAll
 from usecases.booking.get_by_equipment_id import GetByEquipmentId
 from usecases.booking.get_by_pilot_id import GetByPilotId
 from usecases.booking.get_by_client_id import GetByClientId
+
+from usecases.booking.get_all_paginated import GetAllBookingsPaginated as GetAllBookingsUseCase
+
 
 
 # Create a namespace
@@ -27,6 +31,7 @@ get_all_bookings_handler = GetAll()
 get_by_equipment_id_handler = GetByEquipmentId()
 get_by_pilot_id_handler = GetByPilotId()
 get_by_client_id_handler = GetByClientId()
+bookings_getter = GetAllBookingsUseCase()
 
 
 @booking_ns.route('')
@@ -66,7 +71,7 @@ class BookingEndpoint(Resource):
     
 
 @booking_ns.route('/equipment/<string:equipment_id>')
-class BookingByEquipmentEndpoint(Resource):
+class BookingByBookingEndpoint(Resource):
     '''Endpoint to get bookings by equipment ID.'''
     @booking_ns.doc(security="Bearer Auth",params={'equipment_id': 'The ID of the equipment'})
     @handle_exceptions
@@ -100,3 +105,18 @@ class BookingByClientEndpoint(Resource):
         '''Get bookings by client ID'''
         bookings = get_by_client_id_handler.handle(client_id)
         return [booking.to_dict() for booking in bookings]
+    
+@booking_ns.route('/filter')
+class BookingFilterController(Resource):
+    ''' Endpoint to filter and paginate bookings. '''
+
+    @booking_ns.expect(BookingFilterForm.api_model(booking_ns))
+    @booking_ns.doc(security="Bearer Auth")
+    @handle_exceptions
+    @jwt_required()
+    @check_permission("ADMIN")  # or "CLIENT", "OWNER", depending on your rules
+    def post(self):
+        ''' Retrieve bookings based on filters and pagination. '''
+        form = BookingFilterForm(request.json)
+        bookings = bookings_getter.handle(form)
+        return bookings.to_dict()
