@@ -35,8 +35,14 @@ class CreateUserForm:
             self.phone_number = optional("phoneNumber", json_user)
             self.phone_number = valid_string(self.phone_number)
 
-            self.role = required("role", json_user)
-            self.role = valid_role(self.role)
+            # Expecting list of roles
+            self.roles = required("roles", json_user)
+            if not isinstance(self.roles, list):
+                raise ValueError("roles must be a list of role names (e.g. ['CLIENT', 'OWNER']).")
+            
+            # Validate each role in the list
+            self.roles = [valid_role(role) for role in self.roles]
+
 
 
     def to_domain(self, user_roles: list[UserRole] = UserRole.CLIENT):
@@ -64,19 +70,26 @@ class CreateUserForm:
             address=self.address,
             phone_number=self.phone_number,
             user_status=UserStatus(UserStatus.ACTIVATED.value),
-            roles = [self.role]
+            roles = self.roles
             )
-
+    
     @staticmethod
     def api_model(namespace: Namespace):
         """Returns the API model for the user creation form."""
         return namespace.model("SignUp", {
-        "username": fields.String(required=True),
-        "password": fields.String(required=True),
-        "fullname": fields.String(required=True),
-        "email": fields.String(required=True),
-        "birthdate": fields.String(required=False,description="Birth date in format YYYY-MM-DD"),
-        "address": fields.String(required=False),
-        "phoneNumber": fields.String(required=False),
-        "role": fields.String(required=True, description="Role of the user. Possible values: CLIENT, OWNER, PILOT", enum=[role.value for role in UserRole])
-    })
+            "username": fields.String(required=True),
+            "password": fields.String(required=True),
+            "fullname": fields.String(required=True),
+            "email": fields.String(required=True),
+            "birthdate": fields.String(required=False, description="Birth date in format YYYY-MM-DD"),
+            "address": fields.String(required=False),
+            "phoneNumber": fields.String(required=False),
+            "roles": fields.List(
+                fields.String(
+                    description="Role of the user. Possible values: CLIENT, OWNER, PILOT",
+                    enum=[role.value for role in UserRole]
+                ),
+                required=True,
+                description="List of roles assigned to the user"
+            )
+        })
