@@ -88,18 +88,6 @@ class Repository:
     def get_all_paginated(self, session, input_form: BookingFilterForm) -> BookingsPaginated:
         '''Retrieve all bookings with pagination, filtering, and sorting.'''
 
-        allowed_filter_keys = {
-            'client_id': str,
-            'equipment_id': str,
-            'pilot_id': str,
-            'start_date_range': list,
-            'end_date_range': list,
-            'number_of_days_range': list,
-            'unit_price_range': list,
-            'total_price_range': list,
-            'status': str
-        }
-
         allowed_sort_keys = [
             'start_date',
             'end_date',

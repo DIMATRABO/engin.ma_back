@@ -21,7 +21,7 @@ class UserResponseForm:
         self.email = user.email
         self.username = user.username
         self.roles = [role.value for  role in user.roles]
-        self.status = user.user_status.value.upper()
+        self.status = None if user.user_status is None else user.user_status.value.upper()
         self.address = user.address
         self.birthday = user.birthdate
 
