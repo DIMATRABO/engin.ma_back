@@ -32,7 +32,7 @@ class BookingResponseForm:
         self.number_of_days = booking.number_of_days
         self.unit_price = float(booking.unit_price) if booking.unit_price else None
         self.total_price = float(booking.total_price) if booking.total_price else None
-        self.status = booking.status.value if booking.status else None
+        self.status = None if not booking.status else booking.status
         self.created_at = booking.created_at
         
     @classmethod
