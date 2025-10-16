@@ -10,4 +10,6 @@ docker compose down
 # Start containers with the specified environment variables
 docker compose up -d
 
+# docker compose -f docker-compose.test.yml up -d --build
+
 docker image prune

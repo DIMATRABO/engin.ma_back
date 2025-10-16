@@ -1,5 +1,5 @@
 *.pyc
-*.yml
+.yml
 *.json
 uploads/
 ### VS Code ###
